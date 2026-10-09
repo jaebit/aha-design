@@ -39,6 +39,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 아이콘만 있는 버튼에는 `aria-label`을 준다. Storybook a11y 검사가 오류로 처리한다.
 - 텍스트 입력은 한글 IME 조합 중의 Enter(`event.nativeEvent.isComposing`)를 제출로 처리하지 않는다.
 - 아이콘은 `lucide-react`를 쓴다.
+- 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 
 ## 버전 메모
 

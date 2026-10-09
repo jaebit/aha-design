@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import { ahaBottomItems, ahaServices, ahaUser } from '../fixtures';
+import { withLinkActions } from '../link-actions';
 import { GuideChatScreen, type GuideAnswer, type GuideConversation, type GuideTurn } from './guide-chat-screen';
 
 const answers: Record<string, GuideAnswer> = {
@@ -74,6 +75,7 @@ const meta = {
   title: 'Templates/GuideChat',
   component: GuideChatScreen,
   parameters: { layout: 'fullscreen' },
+  decorators: [withLinkActions(['#guide-chat/'])],
   args: {
     user: ahaUser,
     navItems: ahaServices,

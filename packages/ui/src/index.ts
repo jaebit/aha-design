@@ -66,3 +66,29 @@ export {
   type GuideConversation,
   type GuideTurn,
 } from './templates/guide-chat-screen/guide-chat-screen';
+
+// P1: AI 작업 흐름
+export { AttachmentCard, type AttachmentCardProps } from './components/attachment-card/attachment-card';
+export { Card, cardVariants, type CardProps } from './components/card/card';
+export { ChoiceCardGroup, type ChoiceCardGroupProps, type ChoiceOption } from './components/choice-card/choice-card';
+export { PreviewCard, type PreviewCardProps } from './components/preview-card/preview-card';
+export { RecipientInput, type RecipientInputProps } from './components/recipient-input/recipient-input';
+export { ResultCard, type ResultCardProps, ResultSection, type ResultSectionProps } from './components/result-card/result-card';
+export { RiskItem, type RiskItemProps } from './components/risk-item/risk-item';
+export { SidePanel, type SidePanelProps } from './components/side-panel/side-panel';
+export { Stepper, type StepperProps } from './components/stepper/stepper';
+
+// P1: 데이터 · 목록
+export {
+  CellText,
+  type CellTextProps,
+  DataTable,
+  type DataTableColumn,
+  type DataTableProps,
+} from './components/data-table/data-table';
+export { FilterBar, type FilterBarProps, FilterField, type FilterFieldProps } from './components/filter-bar/filter-bar';
+export { List, ListRow, type ListRowProps } from './components/list-row/list-row';
+export { NativeSelect } from './components/native-select/native-select';
+export { Pagination, type PaginationProps } from './components/pagination/pagination';
+export { SearchInput, type SearchInputProps } from './components/search-input/search-input';
+export { ServiceCard, type ServiceCardProps } from './components/service-card/service-card';
