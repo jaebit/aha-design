@@ -1,0 +1,34 @@
+{
+  "color": {
+    "$type": "color",
+    "chart-1": {
+      "$value": "{color.data.blue}",
+      "$description": "범주형 1번. 시리즈가 하나뿐인 차트(막대 목록 등)도 이 색을 쓴다. 범주 색은 1번부터 순서대로 배정하고 건너뛰거나 순환하지 않는다"
+    },
+    "chart-2": { "$value": "{color.data.orange}", "$description": "범주형 2번" },
+    "chart-3": {
+      "$value": "{color.data.aqua}",
+      "$description": "범주형 3번. 흰 배경 대비 3:1 미만이라 범례·표 보기와 함께 쓴다"
+    },
+    "chart-4": {
+      "$value": "{color.data.yellow}",
+      "$description": "범주형 4번. 흰 배경 대비 3:1 미만. 4개 이상이면 직접 라벨 또는 표 보기가 필수"
+    },
+    "chart-5": {
+      "$value": "{color.data.magenta}",
+      "$description": "범주형 5번. 흰 배경 대비 3:1 미만"
+    },
+    "chart-6": {
+      "$value": "{color.data.green}",
+      "$description": "범주형 6번. 6개가 상한이며, 더 많으면 '기타'로 묶는다"
+    },
+    "chart-grid": {
+      "$value": "{color.neutral.200}",
+      "$description": "차트 격자선 (1px 실선)"
+    },
+    "chart-axis": {
+      "$value": "{color.neutral.300}",
+      "$description": "차트 기준선과 축"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@aha/ui": ["./src/index.ts"]
+    }
+  },
+  "include": ["src", ".storybook", "vite.config.ts"]
+}

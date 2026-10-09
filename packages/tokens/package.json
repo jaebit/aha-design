@@ -1,0 +1,23 @@
+{
+  "name": "@aha/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AHA 디자인 토큰 (W3C DTCG 2025.10 → CSS 변수, JS 상수, 에이전트용 manifest)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind.css": "./src/tailwind.css",
+    "./manifest.json": "./dist/tokens.manifest.json"
+  },
+  "files": ["dist", "src", "tokens"],
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "style-dictionary": "^5.6.0"
+  }
+}

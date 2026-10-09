@@ -1,0 +1,68 @@
+/*
+ * AHA 토큰 → Tailwind v4 테마 매핑.
+ * 색상 이름은 shadcn/ui 규약(background, primary, muted ...)을 따른다.
+ * 그래서 shadcn CLI나 AI Elements로 가져온 컴포넌트가 수정 없이 AHA 토큰을 쓴다.
+ *
+ * 사용: @import "tailwindcss"; @import "@aha/tokens/tokens.css"; @import "@aha/tokens/tailwind.css";
+ */
+@theme inline {
+  --color-background: var(--aha-color-background);
+  --color-foreground: var(--aha-color-foreground);
+  --color-subtle: var(--aha-color-subtle);
+  --color-muted: var(--aha-color-muted);
+  --color-muted-foreground: var(--aha-color-muted-foreground);
+  --color-primary: var(--aha-color-primary);
+  --color-primary-foreground: var(--aha-color-primary-foreground);
+  --color-primary-hover: var(--aha-color-primary-hover);
+  --color-secondary: var(--aha-color-secondary);
+  --color-secondary-foreground: var(--aha-color-secondary-foreground);
+  --color-accent: var(--aha-color-accent);
+  --color-accent-foreground: var(--aha-color-accent-foreground);
+  --color-destructive: var(--aha-color-destructive);
+  --color-destructive-foreground: var(--aha-color-destructive-foreground);
+  --color-border: var(--aha-color-border);
+  --color-border-strong: var(--aha-color-border-strong);
+  --color-input: var(--aha-color-input);
+  --color-ring: var(--aha-color-ring);
+  --color-card: var(--aha-color-card);
+  --color-card-foreground: var(--aha-color-card-foreground);
+  --color-popover: var(--aha-color-popover);
+  --color-popover-foreground: var(--aha-color-popover-foreground);
+  --color-tooltip: var(--aha-color-tooltip);
+  --color-tooltip-foreground: var(--aha-color-tooltip-foreground);
+
+  /* 데이터 시각화: 범주형 chart-1~6은 순서대로 배정한다. 텍스트에는 쓰지 않는다 (마크 전용). */
+  --color-chart-1: var(--aha-color-chart-1);
+  --color-chart-2: var(--aha-color-chart-2);
+  --color-chart-3: var(--aha-color-chart-3);
+  --color-chart-4: var(--aha-color-chart-4);
+  --color-chart-5: var(--aha-color-chart-5);
+  --color-chart-6: var(--aha-color-chart-6);
+  --color-chart-grid: var(--aha-color-chart-grid);
+  --color-chart-axis: var(--aha-color-chart-axis);
+
+  --font-sans: var(--aha-font-family-sans);
+  --font-mono: var(--aha-font-family-mono);
+
+  /* 의미 기반 글자 크기: text-caption, text-body-sm, text-body, text-heading, text-title, text-display */
+  --text-caption: var(--aha-font-size-caption);
+  --text-caption--line-height: var(--aha-font-line-height-normal);
+  --text-body-sm: var(--aha-font-size-body-sm);
+  --text-body-sm--line-height: var(--aha-font-line-height-normal);
+  --text-body: var(--aha-font-size-body);
+  --text-body--line-height: var(--aha-font-line-height-normal);
+  --text-heading: var(--aha-font-size-heading);
+  --text-heading--line-height: var(--aha-font-line-height-tight);
+  --text-title: var(--aha-font-size-title);
+  --text-title--line-height: var(--aha-font-line-height-tight);
+  --text-display: var(--aha-font-size-display);
+  --text-display--line-height: var(--aha-font-line-height-tight);
+
+  --radius-sm: var(--aha-radius-sm);
+  --radius-md: var(--aha-radius-md);
+  --radius-lg: var(--aha-radius-lg);
+  --radius-xl: var(--aha-radius-xl);
+  --radius-full: var(--aha-radius-full);
+
+  --shadow-popover: var(--aha-shadow-popover);
+}
