@@ -1,0 +1,186 @@
+{
+  "color": {
+    "$type": "color",
+    "$description": "원시 팔레트. 컴포넌트에서 직접 쓰지 말고 semantic 토큰을 통해서만 참조한다.",
+    "neutral": {
+      "0": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "hex": "#ffffff"
+        }
+      },
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9686,
+            0.9686,
+            0.9608
+          ],
+          "hex": "#f7f7f5"
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9412,
+            0.9373,
+            0.9255
+          ],
+          "hex": "#f0efec"
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8941,
+            0.8902,
+            0.8745
+          ],
+          "hex": "#e4e3df"
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8118,
+            0.8039,
+            0.7804
+          ],
+          "hex": "#cfcdc7"
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6588,
+            0.651,
+            0.6275
+          ],
+          "hex": "#a8a6a0"
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4902,
+            0.4824,
+            0.4627
+          ],
+          "hex": "#7d7b76"
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3608,
+            0.3529,
+            0.3373
+          ],
+          "hex": "#5c5a56"
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2471,
+            0.2431,
+            0.2314
+          ],
+          "hex": "#3f3e3b"
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1647,
+            0.1608,
+            0.1529
+          ],
+          "hex": "#2a2927"
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.102,
+            0.102,
+            0.098
+          ],
+          "hex": "#1a1a19"
+        }
+      },
+      "950": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0667,
+            0.0627
+          ],
+          "hex": "#111110"
+        }
+      }
+    },
+    "red": {
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9922,
+            0.9412,
+            0.9373
+          ],
+          "hex": "#fdf0ef"
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.851,
+            0.1882,
+            0.1451
+          ],
+          "hex": "#d93025"
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.702,
+            0.149,
+            0.1176
+          ],
+          "hex": "#b3261e"
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.549,
+            0.1137,
+            0.0941
+          ],
+          "hex": "#8c1d18"
+        }
+      }
+    }
+  }
+}

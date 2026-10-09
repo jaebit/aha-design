@@ -1,0 +1,21 @@
+{
+  "name": "design-hub",
+  "private": true,
+  "description": "AHA 사내 디자인 시스템 모노레포 (토큰, UI 컴포넌트, Storybook 갤러리 + MCP)",
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run storybook",
+    "storybook": "turbo run storybook",
+    "build-storybook": "turbo run build-storybook",
+    "typecheck": "turbo run typecheck",
+    "check:tokens": "node scripts/check-tokens.mjs"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.0",
+    "typescript": "~6.0.3"
+  }
+}
