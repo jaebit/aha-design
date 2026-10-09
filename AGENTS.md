@@ -41,6 +41,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 아이콘만 있는 버튼에는 `aria-label`을 준다. Storybook a11y 검사가 오류로 처리한다.
 - 텍스트 입력은 한글 IME 조합 중의 Enter(`event.nativeEvent.isComposing`)를 제출로 처리하지 않는다.
 - 아이콘은 `lucide-react`를 쓴다.
+- 네이티브 요소 속성(`ComponentProps<'input'>` 등)만 받는 컴포넌트도 `XxxProps` 인터페이스를 만들고, 자주 쓰는 속성(`value`, `onChange`, `aria-label` 등)을 JSDoc과 함께 다시 선언한다. docgen은 react 타입에서 온 속성을 문서에서 빼기 때문에, 선언하지 않으면 MCP 문서의 props가 비어 보인다.
 - **스토리 import 규칙 (MCP 예제 코드용):** meta의 `component`만 같은 폴더에서 상대 경로로 import하고, 스토리에서 쓰는 다른 컴포넌트와 보조 컴포넌트는 모두 `@aha/ui`에서 import한다. Storybook은 args에 쓴 식별자의 import를 원래 경로 그대로 예제에 싣기 때문에, 상대 경로로 import하면 에이전트가 존재하지 않는 경로를 보게 된다. `templates/fixtures` 같은 스토리 전용 데이터도 컴포넌트 스토리에서 import하지 말고 예시 값을 직접 적는다. 스토리를 바꾼 뒤에는 Storybook을 띄운 상태에서 `pnpm check:mcp-docs`로 확인한다.
 - 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 

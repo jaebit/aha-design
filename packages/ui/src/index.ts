@@ -16,7 +16,7 @@ export {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './components/dropdown-menu/dropdown-menu';
-export { Input } from './components/input/input';
+export { Input, type InputProps } from './components/input/input';
 export {
   Tooltip,
   TooltipContent,
@@ -90,7 +90,7 @@ export {
 } from './components/data-table/data-table';
 export { FilterBar, type FilterBarProps, FilterField, type FilterFieldProps } from './components/filter-bar/filter-bar';
 export { List, ListRow, type ListRowProps } from './components/list-row/list-row';
-export { NativeSelect } from './components/native-select/native-select';
+export { NativeSelect, type NativeSelectProps } from './components/native-select/native-select';
 export { Pagination, type PaginationProps } from './components/pagination/pagination';
 export { SearchInput, type SearchInputProps } from './components/search-input/search-input';
 export { ServiceCard, type ServiceCardProps } from './components/service-card/service-card';

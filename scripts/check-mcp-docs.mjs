@@ -1,7 +1,7 @@
 // 실행 중인 Storybook MCP(기본 http://localhost:6006/mcp)에서 모든 문서를 받아, 에이전트가 보는 예제 코드를 검사한다.
 // - 예제 import가 @aha/ui 또는 허용된 외부 패키지만 가리키는지 (상대 경로·fixtures 금지)
 // - 같은 예제에 @aha/ui import가 두 번 나오지 않는지
-// - 컴포넌트 문서에 설명이 있는지
+// - 컴포넌트 문서에 설명과 props가 있는지
 // 사용: pnpm dev 로 Storybook을 띄운 상태에서 pnpm check:mcp-docs
 const endpoint = process.env.STORYBOOK_MCP_URL ?? 'http://localhost:6006/mcp';
 const allowedSources = /from '(@aha\/ui|react|storybook\/test|lucide-react)'/;
@@ -42,6 +42,7 @@ for (const id of ids) {
   }
   const description = doc.split('## Stories')[0].split('\n').slice(3).join('').trim();
   if (isComponent && !description) problems.push(`${id}: 컴포넌트 설명(JSDoc)이 없음`);
+  if (isComponent && !doc.includes('## Props')) problems.push(`${id}: props 문서가 비어 있음 (네이티브 속성만 받는 컴포넌트는 주요 속성을 직접 선언한다)`);
 }
 
 if (problems.length > 0) {
