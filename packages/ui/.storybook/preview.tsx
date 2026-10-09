@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react-vite';
 
+import { TooltipProvider } from '../src/components/tooltip/tooltip';
 import '../src/styles.css';
 
 const preview: Preview = {
@@ -8,6 +9,13 @@ const preview: Preview = {
     controls: { expanded: true },
     a11y: { test: 'error' },
   },
+  decorators: [
+    (Story) => (
+      <TooltipProvider>
+        <Story />
+      </TooltipProvider>
+    ),
+  ],
 };
 
 export default preview;

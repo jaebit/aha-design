@@ -1,0 +1,23 @@
+// 스토리 전용 예시 데이터. 와이어프레임 v0.2.0의 서비스 구성을 따른다.
+import { ChartColumn, FileSearch, History, Mail, MessageSquareText, Mic, ReceiptText, Wallet } from 'lucide-react';
+
+import type { NavRailItem } from '@/components/nav-rail/nav-rail';
+
+export const ahaServices: NavRailItem[] = [
+  { id: 'guide-chat', label: '사내 가이드 챗', icon: <MessageSquareText />, href: '#guide-chat' },
+  { id: 'meeting-minutes', label: '회의록 생성', icon: <Mic />, href: '#meeting-minutes' },
+  { id: 'document-review', label: '문서 검토', icon: <FileSearch />, href: '#document-review' },
+  { id: 'newsletter', label: '뉴스레터 구독', icon: <Mail />, href: '#newsletter' },
+  { id: 'ith', label: 'ITH', icon: <ChartColumn />, href: '#ith' },
+  { id: 'ip-royalty', label: 'IP 로열티 정산', icon: <ReceiptText />, href: '#ip-royalty' },
+  { id: 'daily-cash', label: '자금 일보', icon: <Wallet />, href: '#daily-cash' },
+];
+
+export const ahaBottomItems: NavRailItem[] = [{ id: 'history', label: '전체 기록', icon: <History />, href: '#history' }];
+
+export const ahaUser = {
+  name: '김하마',
+  team: '팀아하',
+  email: 'hama@actoz.com',
+  initials: '하마',
+};

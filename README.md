@@ -24,6 +24,7 @@ claude mcp add --transport http aha-storybook http://localhost:6006/mcp
 ## 현재 상태 (0.1.0)
 
 - 토큰: 와이어프레임 v0.2.0 기준 무채색 팔레트, 글자 크기, 모서리, 그림자. **브랜드 색·상태색·서체는 임시값**이다.
-- 컴포넌트: Button, Composer (P0 24개 중 2개)
+- 컴포넌트: P0 24개 완료 (범용 9 · AI 대화 9 · 앱 셸 6). 링크는 `Button variant="link"`, 담당 부서 연결은 `Callout` + `action`으로 쓴다.
+- 템플릿: `Templates/GuideChat` — 사내 가이드 챗 화면(3–9쪽)을 P0 컴포넌트만으로 조립한 예시
 
 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)를 본다.
