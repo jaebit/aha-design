@@ -1,0 +1,59 @@
+// 빌드된 manifest로 라이트·다크 테마의 글자/배경 대비를 검사한다 (WCAG AA 4.5:1).
+// 토큰 값을 바꾸면 pnpm build 후 이 검사를 돌린다. 새 글자색 토큰을 추가하면 아래 pairs에도 추가한다.
+import { readFile } from 'node:fs/promises';
+
+const manifest = JSON.parse(await readFile(new URL('./dist/tokens.manifest.json', import.meta.url), 'utf8'));
+const MIN = 4.5;
+
+const pairs = [
+  ['foreground', ['background', 'subtle', 'muted', 'card', 'popover']],
+  ['muted-foreground', ['background', 'subtle', 'muted', 'card', 'popover']],
+  ['primary-foreground', ['primary', 'primary-hover']],
+  ['secondary-foreground', ['secondary']],
+  ['accent-foreground', ['accent']],
+  ['destructive', ['background', 'popover', 'accent']],
+  ['tooltip-foreground', ['tooltip']],
+  ['card-foreground', ['card']],
+  ['popover-foreground', ['popover']],
+  ['status-good-foreground', ['background', 'muted']],
+  ['status-warning-foreground', ['background', 'muted']],
+  ['status-serious-foreground', ['background', 'muted']],
+  ['status-critical-foreground', ['background', 'muted']],
+];
+
+function color(name, mode) {
+  const token = manifest.tokens.find((t) => t.name === `color.${name}`);
+  if (!token) throw new Error(`토큰 없음: color.${name}`);
+  return mode === 'dark' && token.dark ? token.dark.value : token.value;
+}
+
+function luminance(hex) {
+  const [r, g, b] = [1, 3, 5]
+    .map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrast(a, b) {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+const failures = [];
+for (const mode of ['light', 'dark']) {
+  let min = Infinity;
+  for (const [fg, backgrounds] of pairs) {
+    for (const bg of backgrounds) {
+      const ratio = contrast(color(fg, mode), color(bg, mode));
+      min = Math.min(min, ratio);
+      if (ratio < MIN) failures.push(`[${mode}] ${fg} on ${bg}: ${ratio.toFixed(2)}:1`);
+    }
+  }
+  console.log(`[${mode}] 최소 대비 ${min.toFixed(2)}:1`);
+}
+
+if (failures.length > 0) {
+  console.error(`\n대비 부족 ${failures.length}건 (기준 ${MIN}:1)\n${failures.join('\n')}`);
+  process.exit(1);
+}
+console.log('대비 검사 통과');

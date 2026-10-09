@@ -41,6 +41,16 @@
   --color-chart-grid: var(--aha-color-chart-grid);
   --color-chart-axis: var(--aha-color-chart-axis);
 
+  /* 상태: status-*는 아이콘·마크용, status-*-foreground는 글자용. 상태는 항상 아이콘 + 라벨과 함께 쓴다. */
+  --color-status-good: var(--aha-color-status-good);
+  --color-status-warning: var(--aha-color-status-warning);
+  --color-status-serious: var(--aha-color-status-serious);
+  --color-status-critical: var(--aha-color-status-critical);
+  --color-status-good-foreground: var(--aha-color-status-good-foreground);
+  --color-status-warning-foreground: var(--aha-color-status-warning-foreground);
+  --color-status-serious-foreground: var(--aha-color-status-serious-foreground);
+  --color-status-critical-foreground: var(--aha-color-status-critical-foreground);
+
   --font-sans: var(--aha-font-family-sans);
   --font-mono: var(--aha-font-family-mono);
 

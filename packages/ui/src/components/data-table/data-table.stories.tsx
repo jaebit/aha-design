@@ -38,7 +38,7 @@ const columns: DataTableColumn<ErrorReport>[] = [
   },
   { key: 'mails', header: '처리 메일', cell: (row) => <CellText primary={`${row.mails}건`} strong /> },
   { key: 'groups', header: '그룹', cell: (row) => `${row.groups}개` },
-  { key: 'quality', header: '보고서 품질', cell: (row) => <Badge>{row.quality}</Badge> },
+  { key: 'quality', header: '보고서 품질', cell: (row) => <Badge tone="warning">{row.quality}</Badge> },
   {
     key: 'createdAt',
     header: '생성 시각',

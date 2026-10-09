@@ -13,7 +13,8 @@
     "build-storybook": "turbo run build-storybook",
     "typecheck": "turbo run typecheck",
     "check:tokens": "node scripts/check-tokens.mjs",
-    "check:mcp-docs": "node scripts/check-mcp-docs.mjs"
+    "check:mcp-docs": "node scripts/check-mcp-docs.mjs",
+    "check:contrast": "pnpm --filter @aha/tokens build && pnpm --filter @aha/tokens check:contrast"
   },
   "devDependencies": {
     "turbo": "^2.11.0",

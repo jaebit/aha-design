@@ -8,6 +8,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     severity: '높음',
+    tone: 'critical',
     title: '일방적 해지 시 위약금 없음',
     source: { name: '제12조 (해지)', href: '#clause-12' },
     children: '수급사가 30일 전 통보만으로 해지할 수 있어요. 상호 해지 조건과 위약금 조항 추가를 제안해요.',
