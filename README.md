@@ -26,6 +26,7 @@ claude mcp add --transport http aha-storybook http://localhost:6006/mcp
 - 토큰: 와이어프레임 v0.2.0 기준 무채색 팔레트, 글자 크기, 모서리, 그림자. **브랜드 색·상태색·서체는 임시값**이다.
 - 컴포넌트: P0 24개 완료 (범용 9 · AI 대화 9 · 앱 셸 6). 링크는 `Button variant="link"`, 담당 부서 연결은 `Callout` + `action`으로 쓴다.
 - 컴포넌트: P1 16개 완료 (Stepper, SidePanel, AttachmentCard, ChoiceCardGroup, Card, ResultCard, RiskItem, PreviewCard, RecipientInput, SearchInput, NativeSelect, ServiceCard, ListRow, FilterBar, DataTable, Pagination). 날짜 입력은 `Input type="date"`를 쓴다.
-- 템플릿: `GuideChat`(3–9쪽, `GuideChatScreen` export), `Home`(1쪽), `AllHistory`(2쪽), `TaskConversation`(회의록 10–11쪽 · 문서 검토 12–13쪽), `IthReport`(15–16쪽)
+- 컴포넌트: P2 6개 완료 (StatCard, BarList, StackedColumnChart, Switch, MonthStepper, InfoSummary) + SidebarNavItem. 차트 색 `chart-1~6`은 dataviz 기준 팔레트를 임시로 쓴다.
+- 템플릿: `GuideChat`(3–9쪽, `GuideChatScreen` export), `Home`(1쪽), `AllHistory`(2쪽), `TaskConversation`(회의록 10–11쪽 · 문서 검토 12–13쪽), `IthReport`(15–16쪽), `Newsletter`(14쪽), `AdminDashboard`(20쪽)
 
 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)를 본다.

@@ -56,6 +56,8 @@ export {
   type HistoryItemProps,
   ServiceSidebar,
   type ServiceSidebarProps,
+  SidebarNavItem,
+  type SidebarNavItemProps,
   SidebarSection,
   type SidebarSectionProps,
 } from './components/service-sidebar/service-sidebar';
@@ -92,3 +94,16 @@ export { NativeSelect } from './components/native-select/native-select';
 export { Pagination, type PaginationProps } from './components/pagination/pagination';
 export { SearchInput, type SearchInputProps } from './components/search-input/search-input';
 export { ServiceCard, type ServiceCardProps } from './components/service-card/service-card';
+
+// P2: 설정 · 대시보드
+export { BarList, type BarListItem, type BarListProps } from './components/bar-list/bar-list';
+export { InfoSummary, type InfoSummaryItem, type InfoSummaryProps } from './components/info-summary/info-summary';
+export { MonthStepper, type MonthStepperProps, type YearMonth } from './components/month-stepper/month-stepper';
+export {
+  type ChartSeries,
+  StackedColumnChart,
+  type StackedColumnChartProps,
+  type StackedColumnDatum,
+} from './components/stacked-column-chart/stacked-column-chart';
+export { StatCard, type StatCardProps, type StatDelta } from './components/stat-card/stat-card';
+export { Switch, type SwitchProps } from './components/switch/switch';

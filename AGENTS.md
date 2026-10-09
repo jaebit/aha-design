@@ -28,7 +28,8 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 2. **시맨틱 토큰만 쓴다.** 색상은 `bg-primary`, `text-muted-foreground`, `border-border` 같은 토큰 클래스만 쓴다. hex, `rgb()`, `bg-[#...]` 같은 임의값은 금지다 (`pnpm check:tokens`가 막는다). 원시 팔레트(`--aha-color-neutral-*`)를 컴포넌트에서 직접 참조하지 않는다.
 3. **글자 크기는 의미 이름을 쓴다.** `text-caption`, `text-body-sm`, `text-body`, `text-heading`, `text-title`, `text-display`. Tailwind 기본 크기(`text-sm`, `text-lg`)는 쓰지 않는다.
 4. **모서리는 토큰 스케일만 쓴다.** `rounded-sm|md|lg|xl|full`. 각 단계의 용도는 `packages/tokens/tokens/primitive/shape.json`의 `$description`에 있다.
-5. **새 토큰이 필요하면** 컴포넌트에 값을 넣지 말고 `packages/tokens/tokens/semantic/*.json`에 `$description`(용도)과 함께 추가한 뒤 `src/tailwind.css`에 매핑한다.
+5. **차트 색은 `chart-1`부터 순서대로 배정한다.** 시리즈는 6개까지, 넘으면 "기타"로 묶는다. 시리즈 색을 텍스트에 쓰지 않고, 차트에는 범례와 표 보기를 함께 둔다. 차트 팔레트를 바꾸면 dataviz 검증 스크립트(`validate_palette.js`)로 다시 검증한다.
+6. **새 토큰이 필요하면** 컴포넌트에 값을 넣지 말고 `packages/tokens/tokens/semantic/*.json`에 `$description`(용도)과 함께 추가한 뒤 `src/tailwind.css`에 매핑한다.
 
 ## 컴포넌트 작성 규칙
 

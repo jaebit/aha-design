@@ -31,6 +31,16 @@
   --color-tooltip: var(--aha-color-tooltip);
   --color-tooltip-foreground: var(--aha-color-tooltip-foreground);
 
+  /* 데이터 시각화: 범주형 chart-1~6은 순서대로 배정한다. 텍스트에는 쓰지 않는다 (마크 전용). */
+  --color-chart-1: var(--aha-color-chart-1);
+  --color-chart-2: var(--aha-color-chart-2);
+  --color-chart-3: var(--aha-color-chart-3);
+  --color-chart-4: var(--aha-color-chart-4);
+  --color-chart-5: var(--aha-color-chart-5);
+  --color-chart-6: var(--aha-color-chart-6);
+  --color-chart-grid: var(--aha-color-chart-grid);
+  --color-chart-axis: var(--aha-color-chart-axis);
+
   --font-sans: var(--aha-font-family-sans);
   --font-mono: var(--aha-font-family-mono);
 

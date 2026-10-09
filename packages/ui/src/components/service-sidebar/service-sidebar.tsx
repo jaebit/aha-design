@@ -1,4 +1,4 @@
-import { PanelLeftClose, Pin, Plus } from 'lucide-react';
+import { ExternalLink, PanelLeftClose, Pin, Plus } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 
 import { Button } from '@/components/button/button';
@@ -13,11 +13,13 @@ export interface ServiceSidebarProps {
   newAction?: { label: string; onClick: () => void };
   /** `SidebarSection` 목록. */
   children?: ReactNode;
+  /** 사이드바 맨 아래 고정 영역. 예: 외부 시스템 링크 (20쪽 "IAM 및 관리자"). */
+  footer?: ReactNode;
   className?: string;
 }
 
 /** 서비스별 사이드바: 제목, 새로 만들기, 고정됨·최근 기록 (3쪽). */
-export function ServiceSidebar({ title, onCollapse, newAction, children, className }: ServiceSidebarProps) {
+export function ServiceSidebar({ title, onCollapse, newAction, children, footer, className }: ServiceSidebarProps) {
   return (
     <aside
       data-slot="service-sidebar"
@@ -40,6 +42,7 @@ export function ServiceSidebar({ title, onCollapse, newAction, children, classNa
         ) : null}
         {children}
       </div>
+      {footer ? <ul className="shrink-0 border-t border-border px-4 py-3">{footer}</ul> : null}
     </aside>
   );
 }
@@ -113,6 +116,54 @@ export function HistoryItem({
         {metaPosition === 'top' ? metaLine : null}
         <span className="truncate text-body text-foreground">{title}</span>
         {metaPosition === 'bottom' ? metaLine : null}
+      </a>
+    </li>
+  );
+}
+
+export interface SidebarNavItemProps extends Omit<ComponentProps<'a'>, 'children'> {
+  href: string;
+  label: string;
+  /** lucide-react 아이콘 요소. */
+  icon?: ReactNode;
+  /** 지금 보고 있는 메뉴면 true. */
+  active?: boolean;
+  /** 처리할 건수. 0보다 크면 오른쪽에 검정 배지로 보여준다 (20쪽 "사내 가이드 챗 관리"). */
+  count?: number;
+  /** 다른 시스템으로 이동하는 링크면 true. 새 탭으로 열고 바깥 화살표를 붙인다 (20쪽 "IAM 및 관리자"). */
+  external?: boolean;
+}
+
+/** 아이콘이 있는 사이드바 메뉴 (20쪽 관리자 설정, 15쪽 ITH 보고서 목록). `SidebarSection` 안이나 사이드바 맨 아래에 둔다. */
+export function SidebarNavItem({ href, label, icon, active = false, count, external = false, className, ...props }: SidebarNavItemProps) {
+  return (
+    <li className="list-none">
+      <a
+        data-slot="sidebar-nav-item"
+        href={href}
+        aria-current={active ? 'page' : undefined}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noreferrer' : undefined}
+        className={cn(
+          'flex h-11 items-center gap-3 rounded-md px-3 text-body text-foreground transition-colors hover:bg-accent aria-[current=page]:bg-muted aria-[current=page]:font-semibold [&_svg]:size-4.5 [&_svg]:shrink-0',
+          className,
+        )}
+        {...props}
+      >
+        {icon}
+        <span className="min-w-0 flex-1 truncate">{label}</span>
+        {count != null && count > 0 ? (
+          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-primary px-1.5 text-caption font-semibold text-primary-foreground">
+            <span className="sr-only">처리할 건수 </span>
+            {count}
+          </span>
+        ) : null}
+        {external ? (
+          <>
+            <ExternalLink aria-hidden className="text-muted-foreground" />
+            <span className="sr-only">(새 탭)</span>
+          </>
+        ) : null}
       </a>
     </li>
   );
