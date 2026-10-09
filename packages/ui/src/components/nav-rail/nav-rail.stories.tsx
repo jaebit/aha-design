@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ChartColumn, FileSearch, History, Mail, MessageSquareText, Mic, ReceiptText, Wallet } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { ahaBottomItems, ahaServices, ahaUser } from '../../templates/fixtures';
-import { AccountMenu } from '../account-menu/account-menu';
+import { AccountMenu } from '@aha/ui';
+
 import { NavRail } from './nav-rail';
 
 const meta = {
@@ -10,7 +11,20 @@ const meta = {
   component: NavRail,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
-  args: { items: ahaServices, bottomItems: ahaBottomItems, onNavigate: fn() },
+  // 예시 데이터는 MCP 예제 코드에 그대로 보이도록 스토리 안에 직접 적는다 (fixtures를 import하지 않는다).
+  args: {
+    items: [
+      { id: 'guide-chat', label: '사내 가이드 챗', icon: <MessageSquareText />, href: '#guide-chat' },
+      { id: 'meeting-minutes', label: '회의록 생성', icon: <Mic />, href: '#meeting-minutes' },
+      { id: 'document-review', label: '문서 검토', icon: <FileSearch />, href: '#document-review' },
+      { id: 'newsletter', label: '뉴스레터 구독', icon: <Mail />, href: '#newsletter' },
+      { id: 'ith', label: 'ITH', icon: <ChartColumn />, href: '#ith' },
+      { id: 'ip-royalty', label: 'IP 로열티 정산', icon: <ReceiptText />, href: '#ip-royalty' },
+      { id: 'daily-cash', label: '자금 일보', icon: <Wallet />, href: '#daily-cash' },
+    ],
+    bottomItems: [{ id: 'history', label: '전체 기록', icon: <History />, href: '#history' }],
+    onNavigate: fn(),
+  },
   decorators: [
     (Story) => (
       <div className="flex h-[720px]">
@@ -27,7 +41,7 @@ type Story = StoryObj<typeof meta>;
 export const Expanded: Story = {
   args: {
     expanded: true,
-    account: <AccountMenu {...ahaUser} expanded onAdminSettings={fn()} onLogout={fn()} />,
+    account: <AccountMenu name="김하마" team="팀아하" email="hama@actoz.com" initials="하마" expanded onAdminSettings={fn()} onLogout={fn()} />,
   },
 };
 
@@ -35,6 +49,6 @@ export const Expanded: Story = {
 export const Collapsed: Story = {
   args: {
     activeId: 'guide-chat',
-    account: <AccountMenu {...ahaUser} onAdminSettings={fn()} onLogout={fn()} />,
+    account: <AccountMenu name="김하마" team="팀아하" email="hama@actoz.com" initials="하마" onAdminSettings={fn()} onLogout={fn()} />,
   },
 };

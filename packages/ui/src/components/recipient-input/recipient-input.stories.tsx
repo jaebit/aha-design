@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { Button } from '../button/button';
-import { Card } from '../card/card';
+import { Button, Card } from '@aha/ui';
+
 import { RecipientInput } from './recipient-input';
 
 const meta = {

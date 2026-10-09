@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ChartColumn, FileSearch, History, Mail, MessageSquareText, Mic, ReceiptText, Wallet } from 'lucide-react';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
-import { ahaBottomItems, ahaServices, ahaUser } from '../fixtures';
+
 import { withLinkActions } from '../link-actions';
 import { GuideChatScreen, type GuideAnswer, type GuideConversation, type GuideTurn } from './guide-chat-screen';
 
@@ -77,9 +78,18 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions(['#guide-chat/'])],
   args: {
-    user: ahaUser,
-    navItems: ahaServices,
-    navBottomItems: ahaBottomItems,
+    // 예시 데이터는 MCP 예제 코드에 그대로 보이도록 직접 적는다 (fixtures를 import하지 않는다).
+    user: { name: '김하마', team: '팀아하', email: 'hama@actoz.com', initials: '하마' },
+    navItems: [
+      { id: 'guide-chat', label: '사내 가이드 챗', icon: <MessageSquareText />, href: '#guide-chat' },
+      { id: 'meeting-minutes', label: '회의록 생성', icon: <Mic />, href: '#meeting-minutes' },
+      { id: 'document-review', label: '문서 검토', icon: <FileSearch />, href: '#document-review' },
+      { id: 'newsletter', label: '뉴스레터 구독', icon: <Mail />, href: '#newsletter' },
+      { id: 'ith', label: 'ITH', icon: <ChartColumn />, href: '#ith' },
+      { id: 'ip-royalty', label: 'IP 로열티 정산', icon: <ReceiptText />, href: '#ip-royalty' },
+      { id: 'daily-cash', label: '자금 일보', icon: <Wallet />, href: '#daily-cash' },
+    ],
+    navBottomItems: [{ id: 'history', label: '전체 기록', icon: <History />, href: '#history' }],
     answer: demoAnswer(),
     historyHref: '#history',
     onAttach: fn(),

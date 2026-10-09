@@ -3,7 +3,8 @@ import { PanelLeftOpen, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { Button } from '../button/button';
+import { Button } from '@aha/ui';
+
 import { ConversationHeader } from './conversation-header';
 
 const meta = {

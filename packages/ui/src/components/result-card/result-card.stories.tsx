@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Copy, Download, RotateCcw } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { Button } from '../button/button';
-import { RiskItem } from '../risk-item/risk-item';
-import { ResultCard, ResultSection } from './result-card';
+import { Button, ResultSection, RiskItem } from '@aha/ui';
+
+import { ResultCard } from './result-card';
 
 const meta = {
   title: 'AI/ResultCard',

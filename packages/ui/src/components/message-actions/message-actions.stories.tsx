@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { type MessageFeedback, MessageActions } from './message-actions';
+import type { MessageFeedback } from '@aha/ui';
+
+import { MessageActions } from './message-actions';
 
 const meta = {
   title: 'AI/MessageActions',

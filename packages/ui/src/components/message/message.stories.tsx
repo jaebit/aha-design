@@ -2,13 +2,18 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { Button } from '../button/button';
-import { Callout } from '../callout/callout';
-import { Citation } from '../citation/citation';
-import { type MessageFeedback, MessageActions } from '../message-actions/message-actions';
-import { Suggestions } from '../suggestions/suggestions';
-import { ThinkingIndicator } from '../thinking-indicator/thinking-indicator';
-import { Message, MessageContent } from './message';
+import {
+  Button,
+  Callout,
+  Citation,
+  MessageActions,
+  MessageContent,
+  type MessageFeedback,
+  Suggestions,
+  ThinkingIndicator,
+} from '@aha/ui';
+
+import { Message } from './message';
 
 const meta = {
   title: 'AI/Message',

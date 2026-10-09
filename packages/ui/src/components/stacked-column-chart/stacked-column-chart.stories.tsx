@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Card } from '../card/card';
+import { Card } from '@aha/ui';
+
 import { StackedColumnChart } from './stacked-column-chart';
 
 const services = [

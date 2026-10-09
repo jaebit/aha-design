@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Callout } from '../callout/callout';
-import { Composer } from '../composer/composer';
-import { Suggestions } from '../suggestions/suggestions';
-import { TooltipTerm } from '../tooltip/tooltip';
+import { Callout, Composer, Suggestions, TooltipTerm } from '@aha/ui';
+
 import { ConversationEmptyState } from './conversation-empty-state';
 
 const meta = {

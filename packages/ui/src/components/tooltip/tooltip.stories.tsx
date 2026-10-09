@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Copy } from 'lucide-react';
 
-import { Button } from '../button/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTerm, TooltipTrigger } from './tooltip';
+import { Button, Tooltip, TooltipProvider, TooltipTerm, TooltipTrigger } from '@aha/ui';
+
+import { TooltipContent } from './tooltip';
 
 const meta = {
   title: 'Components/Tooltip',

@@ -20,6 +20,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm dev` — 토큰을 빌드하고 Storybook을 http://localhost:6006 에 띄운다. MCP 엔드포인트는 http://localhost:6006/mcp
 - `pnpm typecheck`
 - `pnpm check:tokens` — 컴포넌트에 하드코딩된 색상이 없는지 검사
+- `pnpm check:mcp-docs` — Storybook을 띄운 상태에서, MCP가 내보내는 예제 코드의 import와 설명을 검사
 - `pnpm build-storybook` — 정적 갤러리 빌드
 
 ## UI 작업 규칙
@@ -40,6 +41,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 아이콘만 있는 버튼에는 `aria-label`을 준다. Storybook a11y 검사가 오류로 처리한다.
 - 텍스트 입력은 한글 IME 조합 중의 Enter(`event.nativeEvent.isComposing`)를 제출로 처리하지 않는다.
 - 아이콘은 `lucide-react`를 쓴다.
+- **스토리 import 규칙 (MCP 예제 코드용):** meta의 `component`만 같은 폴더에서 상대 경로로 import하고, 스토리에서 쓰는 다른 컴포넌트와 보조 컴포넌트는 모두 `@aha/ui`에서 import한다. Storybook은 args에 쓴 식별자의 import를 원래 경로 그대로 예제에 싣기 때문에, 상대 경로로 import하면 에이전트가 존재하지 않는 경로를 보게 된다. `templates/fixtures` 같은 스토리 전용 데이터도 컴포넌트 스토리에서 import하지 말고 예시 값을 직접 적는다. 스토리를 바꾼 뒤에는 Storybook을 띄운 상태에서 `pnpm check:mcp-docs`로 확인한다.
 - 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 
 ## 버전 메모

@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Button } from '../button/button';
-import { HistoryItem, ServiceSidebar, SidebarSection } from './service-sidebar';
+import { Button, HistoryItem, SidebarSection } from '@aha/ui';
+
+import { ServiceSidebar } from './service-sidebar';
 
 const meta = {
   title: 'Shell/ServiceSidebar',

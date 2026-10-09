@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChevronRight } from 'lucide-react';
 
-import { Badge } from '../badge/badge';
-import { List, ListRow } from './list-row';
+import { Badge, List } from '@aha/ui';
+
+import { ListRow } from './list-row';
 
 const meta = {
   title: 'Components/ListRow',

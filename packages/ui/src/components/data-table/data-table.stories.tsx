@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Badge } from '../badge/badge';
-import { Card } from '../card/card';
-import { Pagination } from '../pagination/pagination';
-import { CellText, DataTable, type DataTableColumn } from './data-table';
+import { Badge, Card, CellText, type DataTableColumn, Pagination } from '@aha/ui';
+
+import { DataTable } from './data-table';
 
 interface ErrorReport {
   date: string;

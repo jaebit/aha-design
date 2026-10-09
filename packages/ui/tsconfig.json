@@ -3,7 +3,8 @@
   "compilerOptions": {
     "types": ["node", "vite/client"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@aha/ui": ["./src/index.ts"]
     }
   },
   "include": ["src", ".storybook", "vite.config.ts"]

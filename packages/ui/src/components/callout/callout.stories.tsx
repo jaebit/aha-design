@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '../button/button';
+import { Button } from '@aha/ui';
+
 import { Callout } from './callout';
 
 const meta = {

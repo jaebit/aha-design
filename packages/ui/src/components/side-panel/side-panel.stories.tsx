@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Badge } from '../badge/badge';
-import { Citation } from '../citation/citation';
-import { Composer } from '../composer/composer';
-import { Message, MessageContent } from '../message/message';
+import { Badge, Citation, Composer, Message, MessageContent } from '@aha/ui';
+
 import { SidePanel } from './side-panel';
 
 const meta = {

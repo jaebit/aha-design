@@ -2,14 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Ellipsis, Pencil, Pin, Trash2 } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { Button } from '../button/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from './dropdown-menu';
+import { Button, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@aha/ui';
+
+import { DropdownMenuContent } from './dropdown-menu';
 
 const meta = {
   title: 'Components/DropdownMenu',
