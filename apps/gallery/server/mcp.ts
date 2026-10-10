@@ -216,7 +216,9 @@ function kitsDoc(catalog: Catalog) {
       ? `모든 프로젝트는 공통(core, ${catalog.packages.ui.name})을 쓰고, 화면 종류에 맞는 키트를 하나 더 설치한다. 프로젝트의 package.json에 설치된 ${site.scope}/kit-*가 그 프로젝트의 키트다.`
       : `아직 도메인 키트가 없다. 모든 프로젝트는 공통(core, ${catalog.packages.ui.name})만 설치한다.`,
     ...rows,
-    'list_components, search, list_templates에 kit id를 넘기면 공통 + 그 키트만 본다. 설치 방법은 get_setup_guide(kit).',
+    domainKitsOf(catalog).length > 0
+      ? 'list_components, search, list_templates에 kit id를 넘기면 공통 + 그 키트만 본다. 설치 방법은 get_setup_guide(kit).'
+      : '설치 방법은 get_setup_guide.',
   ].join('\n\n');
 }
 
