@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FileSearch, MessageSquareText, Mic } from 'lucide-react';
 
-import { AppShell } from '@/components/app-shell/app-shell';
-import { Badge } from '@/components/badge/badge';
-import { Button } from '@/components/button/button';
-import { List, ListRow } from '@/components/list-row/list-row';
-import { ServiceCard } from '@/components/service-card/service-card';
+import { AppShell, Badge, Button, List, ListRow, ServiceCard } from '@aha/ui';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

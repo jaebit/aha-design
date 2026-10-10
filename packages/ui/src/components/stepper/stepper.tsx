@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 export interface StepperProps {
   /** 단계 이름. 예: ["음성 원문", "회의록", "메일 발송"] (11쪽), ["문서 읽기", "검토 결과"] (13쪽). */

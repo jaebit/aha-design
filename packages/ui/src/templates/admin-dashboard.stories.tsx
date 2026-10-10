@@ -2,17 +2,23 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChartColumn, ChevronRight, LayoutGrid, Mail, MessageSquareText, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
-import { AppShell } from '@/components/app-shell/app-shell';
-import { Badge } from '@/components/badge/badge';
-import { BarList } from '@/components/bar-list/bar-list';
-import { Button } from '@/components/button/button';
-import { Card } from '@/components/card/card';
-import { List, ListRow } from '@/components/list-row/list-row';
-import { MonthStepper, type YearMonth } from '@/components/month-stepper/month-stepper';
-import { PageHeader } from '@/components/page-header/page-header';
-import { ServiceSidebar, SidebarNavItem, SidebarSection } from '@/components/service-sidebar/service-sidebar';
-import { StackedColumnChart } from '@/components/stacked-column-chart/stacked-column-chart';
-import { StatCard } from '@/components/stat-card/stat-card';
+import {
+  AppShell,
+  Badge,
+  BarList,
+  Button,
+  Card,
+  List,
+  ListRow,
+  MonthStepper,
+  PageHeader,
+  ServiceSidebar,
+  SidebarNavItem,
+  SidebarSection,
+  StackedColumnChart,
+  StatCard,
+  type YearMonth,
+} from '@aha/ui';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

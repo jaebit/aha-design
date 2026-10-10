@@ -1,16 +1,16 @@
 import { ChevronRight, Ellipsis, Pencil, Pin, PinOff, Trash2 } from 'lucide-react';
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
 
-import { Button } from '@/components/button/button';
+import { Button } from '../button/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/dropdown-menu/dropdown-menu';
-import { Input } from '@/components/input/input';
-import { cn } from '@/lib/cn';
+} from '../dropdown-menu/dropdown-menu';
+import { Input } from '../input/input';
+import { cn } from '../../lib/cn';
 
 export interface ConversationHeaderProps {
   /** 대화 제목. */

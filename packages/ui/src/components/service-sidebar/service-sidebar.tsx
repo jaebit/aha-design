@@ -1,8 +1,8 @@
 import { ExternalLink, PanelLeftClose, Pin, Plus } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface ServiceSidebarProps {
   /** 서비스 이름. 예: "사내 가이드 챗". */

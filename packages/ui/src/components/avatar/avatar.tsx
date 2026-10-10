@@ -1,7 +1,7 @@
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 const avatarVariants = cva(
   'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border-strong bg-background font-semibold text-foreground',

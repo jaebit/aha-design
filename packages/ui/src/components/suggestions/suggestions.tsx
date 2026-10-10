@@ -1,5 +1,5 @@
-import { Chip } from '@/components/chip/chip';
-import { cn } from '@/lib/cn';
+import { Chip } from '../chip/chip';
+import { cn } from '../../lib/cn';
 
 export interface SuggestionsProps {
   /** 추천 질문 문장. 2~3개를 권장한다. */

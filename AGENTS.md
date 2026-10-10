@@ -1,6 +1,6 @@
 # AGENTS.md
 
-AHA 사내 디자인 시스템 모노레포. 사람은 Storybook 갤러리를 보고, 에이전트는 같은 정보를 Storybook MCP로 조회한다.
+AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps/gallery`)를 보고, 에이전트는 같은 정보를 aha-design MCP로 조회한다. 디자인 시스템을 개발할 때는 Storybook과 Storybook MCP를 쓴다.
 
 ## 구조
 
@@ -8,7 +8,9 @@ AHA 사내 디자인 시스템 모노레포. 사람은 Storybook 갤러리를 �
 | --- | --- |
 | `packages/tokens` | W3C DTCG 2025.10 토큰(`tokens/**/*.json`) → Style Dictionary 빌드 → `dist/tokens.css`, `dist/tokens.js`, `dist/tokens.manifest.json` |
 | `packages/tokens/src/tailwind.css` | 토큰 → Tailwind v4 `@theme` 매핑. 색상 이름은 shadcn/ui 규약을 따른다 |
-| `packages/ui` | React 컴포넌트 + Storybook 10 (`@storybook/addon-mcp`) |
+| `packages/ui` | React 컴포넌트 + Storybook 10 (`@storybook/addon-mcp`). `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
+| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다 |
+| `Dockerfile`, `compose.yaml` | 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 띄운다 (포트 4100) |
 | `scripts/check-tokens.mjs` | 하드코딩 색상 검사 |
 | `docs/` | 와이어프레임 원본 (aha.actoz.com v0.2.0) |
 
@@ -22,7 +24,10 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm check:tokens` — 컴포넌트에 하드코딩된 색상이 없는지 검사
 - `pnpm check:mcp-docs` — Storybook을 띄운 상태에서, MCP가 내보내는 예제 코드의 import와 설명을 검사
 - `pnpm check:contrast` — 토큰을 빌드하고 라이트·다크의 글자/배경 대비(4.5:1)를 검사. 토큰 값을 바꾸면 반드시 돌린다
-- `pnpm build-storybook` — 정적 갤러리 빌드
+- `pnpm build-storybook` — Storybook 정적 빌드 (갤러리 카탈로그의 원본)
+- `pnpm gallery` — Storybook 정적 빌드 후 갤러리 개발 서버 http://localhost:5180
+- `pnpm docker:up` — 갤러리 + MCP를 Docker로 http://localhost:4100 에 띄운다. MCP는 `/mcp`
+- `pnpm publish:packages` — `@aha/tokens`, `@aha/ui`를 Forgejo npm 레지스트리(`aha` 조직)에 배포
 
 ## 테마와 기본 결정 (2026-10-09 확정)
 
@@ -52,6 +57,9 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 아이콘은 `lucide-react`를 쓴다.
 - 네이티브 요소 속성(`ComponentProps<'input'>` 등)만 받는 컴포넌트도 `XxxProps` 인터페이스를 만들고, 자주 쓰는 속성(`value`, `onChange`, `aria-label` 등)을 JSDoc과 함께 다시 선언한다. docgen은 react 타입에서 온 속성을 문서에서 빼기 때문에, 선언하지 않으면 MCP 문서의 props가 비어 보인다.
 - **스토리 import 규칙 (MCP 예제 코드용):** meta의 `component`만 같은 폴더에서 상대 경로로 import하고, 스토리에서 쓰는 다른 컴포넌트와 보조 컴포넌트는 모두 `@aha/ui`에서 import한다. Storybook은 args에 쓴 식별자의 import를 원래 경로 그대로 예제에 싣기 때문에, 상대 경로로 import하면 에이전트가 존재하지 않는 경로를 보게 된다. `templates/fixtures` 같은 스토리 전용 데이터도 컴포넌트 스토리에서 import하지 말고 예시 값을 직접 적는다. 스토리를 바꾼 뒤에는 Storybook을 띄운 상태에서 `pnpm check:mcp-docs`로 확인한다.
+- 컴포넌트 소스는 상대 경로로 import한다 (`../../lib/cn`). 배포용 타입 선언(`.d.ts`)이 경로 별칭을 풀지 못하기 때문이다.
+- 템플릿 스토리(`src/templates/*.stories.tsx`)도 컴포넌트를 `@aha/ui`에서 import한다. MCP `get_template`이 이 파일을 그대로 에이전트에 준다.
+- 갤러리는 스토리를 직접 렌더링한다. `layout: 'fullscreen'` 스토리와 `defaultOpen`처럼 화면 위에 뜨는 요소가 있는 스토리는 Storybook iframe으로 보여준다. 스토리에서 `storybook/test`의 `fn`·`expect` 외의 Storybook 런타임 API를 쓰면 `apps/gallery/src/shims/`에 대체 구현을 추가한다.
 - 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 
 ## 버전 메모

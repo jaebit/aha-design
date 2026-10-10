@@ -1,0 +1,14 @@
+# 파일럿: 이 PC에서 갤러리 + MCP를 띄운다. 사내 서버로 옮길 때는 PUBLIC_URL과 NPM_REGISTRY만 바꾼다.
+services:
+  aha-design:
+    build:
+      context: .
+      args:
+        VITE_NPM_REGISTRY: http://localhost:3000/api/packages/aha/npm/
+    image: aha-design:latest
+    ports:
+      - "4100:4100"
+    environment:
+      PUBLIC_URL: http://localhost:4100
+      NPM_REGISTRY: http://localhost:3000/api/packages/aha/npm/
+    restart: unless-stopped

@@ -1,8 +1,8 @@
 import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface SidePanelProps {
   /** 패널 제목. 예: "10/03 처리 메일 급증 원인". */

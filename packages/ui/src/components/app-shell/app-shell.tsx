@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { TooltipProvider } from '@/components/tooltip/tooltip';
-import { cn } from '@/lib/cn';
+import { TooltipProvider } from '../tooltip/tooltip';
+import { cn } from '../../lib/cn';
 
 export interface AppShellProps {
   /** 왼쪽 글로벌 내비게이션. `NavRail`. */

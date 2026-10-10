@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/tooltip/tooltip';
-import { cn } from '@/lib/cn';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/tooltip';
+import { cn } from '../../lib/cn';
 
 export interface NavRailItem {
   id: string;

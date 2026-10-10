@@ -3,6 +3,10 @@
     "aha-storybook": {
       "type": "http",
       "url": "http://localhost:6006/mcp"
+    },
+    "aha-design": {
+      "type": "http",
+      "url": "http://localhost:4100/mcp"
     }
   }
 }

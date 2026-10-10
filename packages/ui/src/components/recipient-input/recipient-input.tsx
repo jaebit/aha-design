@@ -1,7 +1,7 @@
 import { Plus, X } from 'lucide-react';
 import { type KeyboardEvent, useId, useRef, useState } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 export interface RecipientInputProps {
   /** 화면에 보이는 라벨. 예: "받는 사람". */

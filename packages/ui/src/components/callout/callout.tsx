@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 export interface CalloutProps extends Omit<ComponentProps<'div'>, 'title'> {
   /** 굵은 제목 한 줄. 생략 가능. */

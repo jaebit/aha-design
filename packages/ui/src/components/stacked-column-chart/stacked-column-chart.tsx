@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface ChartSeries {
   /** `data[].values`의 키. */

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Badge } from '@/components/badge/badge';
-import { cn } from '@/lib/cn';
+import { Badge } from '../badge/badge';
+import { cn } from '../../lib/cn';
 
 export interface ConversationEmptyStateProps {
   /** 무엇을 할 수 있는지 한 문장. 예: "사내 가이드에서 찾아드려요" (3쪽). */

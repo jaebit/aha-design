@@ -1,5 +1,5 @@
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface PaginationProps {
   /** 현재 페이지 (1부터). */
