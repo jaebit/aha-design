@@ -49,7 +49,7 @@ pnpm version-packages  # 모인 변경 기록으로 버전과 CHANGELOG를 올�
 pnpm release           # 패키지를 빌드하고 레지스트리에 없는 버전만 Forgejo npm 레지스트리에 배포
 ```
 
-배포하는 쪽의 `~/.npmrc`에 `//localhost:3000/api/packages/aha/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 사용하는 프로젝트는 `.npmrc`에 `@aha:registry=http://localhost:3000/api/packages/aha/npm/`를 두고 `@import "@aha/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@aha/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
+CI와 배포는 로컬 Jenkins가 한다 (main 푸시마다 검사, 배포는 tag를 넣어 수동 실행). 준비와 사용법은 [ci/jenkins/README.md](ci/jenkins/README.md). 직접 배포할 때는 배포하는 쪽의 `~/.npmrc`에 `//localhost:3000/api/packages/aha/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 사용하는 프로젝트는 `.npmrc`에 `@aha:registry=http://localhost:3000/api/packages/aha/npm/`를 두고 `@import "@aha/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@aha/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
 
 ## 현재 상태 (@aha/tokens 0.2.1 · @aha/ui 0.3.1 · @aha/kit-admin 0.1.0 · @aha/kit-ai 0.1.1)
 
