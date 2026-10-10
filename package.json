@@ -16,10 +16,13 @@
     "check:mcp-docs": "node scripts/check-mcp-docs.mjs",
     "check:contrast": "pnpm --filter @aha/tokens build && pnpm --filter @aha/tokens check:contrast",
     "gallery": "pnpm build-storybook && pnpm --filter @aha/gallery dev",
-    "publish:packages": "pnpm --filter @aha/tokens --filter @aha/ui --filter './packages/kit-*' build && pnpm --filter @aha/tokens --filter @aha/ui --filter './packages/kit-*' publish --no-git-checks",
-    "docker:up": "docker compose up -d --build"
+    "docker:up": "docker compose up -d --build",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=./packages/* && changeset publish --no-git-tag"
   },
   "devDependencies": {
+    "@changesets/cli": "^3.0.3",
     "turbo": "^2.11.0",
     "typescript": "~6.0.3"
   }

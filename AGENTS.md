@@ -29,7 +29,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm build-storybook` — Storybook 정적 빌드 (갤러리 카탈로그의 원본)
 - `pnpm gallery` — Storybook 정적 빌드 후 갤러리 개발 서버 http://localhost:5180
 - `pnpm docker:up` — 갤러리 + MCP를 Docker로 http://localhost:4100 에 띄운다. MCP는 `/mcp`
-- `pnpm publish:packages` — `@aha/tokens`, `@aha/ui`, `@aha/kit-*`를 Forgejo npm 레지스트리(`aha` 조직)에 배포. 이미 배포한 버전은 다시 올릴 수 없으므로 바뀐 패키지만 버전을 올리고 `pnpm --filter`로 골라 배포한다. 1.0 전에는 `^0.3.0`이 0.3.x만 허용하므로, `@aha/ui`의 minor를 올리면 모든 키트의 patch도 올려 peer 범위(`workspace:^`)를 새 버전으로 맞춰 다시 배포한다
+- `pnpm version-packages` / `pnpm release` — Changesets로 버전을 올리고, 레지스트리(`aha` 조직)에 없는 버전만 배포한다. `packages/*`를 바꾸는 PR에는 `.changeset/<이름>.md` 변경 기록을 넣는다 (형식과 흐름은 `.changeset/README.md`). `package.json`의 `version`을 손으로 올리지 않는다. `@aha/ui`가 minor로 오르면 키트는 Changesets가 patch로 올려 peer 범위를 맞춘다
 
 ## 테마와 기본 결정 (2026-10-09 확정)
 

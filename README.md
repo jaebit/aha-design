@@ -41,11 +41,15 @@ claude mcp add --transport http aha-design http://localhost:4100/mcp
 
 ## 패키지 배포
 
+버전과 변경 기록은 Changesets로 관리한다. 자세한 흐름은 [.changeset/README.md](.changeset/README.md).
+
 ```sh
-pnpm publish:packages  # @aha/tokens, @aha/ui, @aha/kit-* 빌드 후 Forgejo npm 레지스트리에 배포
+# PR: 패키지를 바꾸면 .changeset/<이름>.md에 변경 기록을 넣는다 (pnpm changeset)
+pnpm version-packages  # 모인 변경 기록으로 버전과 CHANGELOG를 올린다 → PR로 머지
+pnpm release           # 패키지를 빌드하고 레지스트리에 없는 버전만 Forgejo npm 레지스트리에 배포
 ```
 
-`~/.npmrc`에 `//localhost:3000/api/packages/aha/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 버전은 각 `package.json`의 `version`을 올린다. 사용하는 프로젝트는 `.npmrc`에 `@aha:registry=http://localhost:3000/api/packages/aha/npm/`를 두고 `@import "@aha/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@aha/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
+배포하는 쪽의 `~/.npmrc`에 `//localhost:3000/api/packages/aha/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 사용하는 프로젝트는 `.npmrc`에 `@aha:registry=http://localhost:3000/api/packages/aha/npm/`를 두고 `@import "@aha/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@aha/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
 
 ## 현재 상태 (@aha/tokens 0.2.1 · @aha/ui 0.3.1 · @aha/kit-admin 0.1.0 · @aha/kit-ai 0.1.1)
 
