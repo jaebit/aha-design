@@ -2,7 +2,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
-import { type Catalog, type CatalogComponent, type CatalogTemplate, type CatalogToken, kitOf, tokenClass } from '../src/catalog-types.ts';
+import { type Catalog, type CatalogComponent, type CatalogTemplate, type CatalogToken, inKit, kitOf, tokenClass } from '../src/catalog-types.ts';
 
 export interface McpContext {
   catalog: Catalog;
@@ -12,8 +12,10 @@ export interface McpContext {
   registry: string;
 }
 
-const instructions = `AHA 사내 디자인 시스템. 공통 부품은 @aha/ui, 도메인 부품은 키트 패키지(@aha/kit-ai 등), 토큰은 @aha/tokens.
-- 컴포넌트는 get_component가 알려 주는 import 문 그대로 가져온다. 그 패키지가 프로젝트에 없으면 get_setup_guide를 보고 설치한다.
+const instructions = `AHA 사내 디자인 시스템. 공통 부품은 @aha/ui, 도메인 부품은 키트 패키지(@aha/kit-admin, @aha/kit-ai 등), 토큰은 @aha/tokens.
+- 먼저 프로젝트를 정한다: 프로젝트의 package.json에 설치된 @aha/kit-* 가 그 프로젝트의 키트다 (@aha/kit-admin → kit "admin"). 없으면 list_kits로 고르거나 사용자에게 묻는다.
+- list_components, search, list_templates에 kit을 넘기면 공통 + 그 키트만 나온다. 다른 키트 부품을 가져다 쓰지 않는다. 꼭 필요하면 사용자에게 그 키트 설치를 먼저 묻는다.
+- 컴포넌트는 get_component가 알려 주는 import 문 그대로 가져온다. 그 패키지가 프로젝트에 없으면 get_setup_guide(kit)를 보고 설치한다.
 - 화면을 만들기 전에 list_components 또는 search로 이미 있는 컴포넌트를 찾고, get_component로 props와 예제를 읽은 뒤 그대로 쓴다. 있는 것을 새로 만들지 않는다.
 - 화면 전체가 필요하면 list_templates와 get_template으로 비슷한 화면부터 가져온다.
 - 새 프로젝트에 설치하거나 규칙이 궁금하면 get_setup_guide를 읽는다.
@@ -119,9 +121,9 @@ function tokensDoc(catalog: Catalog, group: keyof typeof tokenGroups | 'all') {
   ].join('\n\n');
 }
 
-function setupGuide(ctx: McpContext) {
+function setupGuide(ctx: McpContext, kit?: string) {
   const { ui, tokens } = ctx.catalog.packages;
-  const kits = ctx.catalog.kits.filter((k) => k.id !== 'core');
+  const kits = ctx.catalog.kits.filter((k) => k.id !== 'core' && (!kit || k.id === kit));
   const kitList = kits
     .map((k) => `   - **${k.label}** — ${k.description}\n     설치 \`pnpm add ${k.package.name}@^${k.package.version}\`, CSS \`@import "${k.package.name}/styles.css";\``)
     .join('\n');
@@ -168,20 +170,42 @@ ${kitList}
 갤러리: ${ctx.publicUrl}`;
 }
 
-function search(catalog: Catalog, query: string) {
+function kitsDoc(catalog: Catalog) {
+  const rows = catalog.kits.map((kit) => {
+    const components = catalog.components.filter((c) => c.kit === kit.id).length;
+    const templates = catalog.templates.filter((t) => t.kit === kit.id).length;
+    return [
+      `## ${kit.label} (\`${kit.id}\`)`,
+      kit.description,
+      `- 패키지: \`${kit.package.name}@${kit.package.version}\`${kit.id === 'core' ? ' (모든 프로젝트에 설치)' : ''}`,
+      `- 컴포넌트 ${components}개${templates > 0 ? `, 화면 템플릿 ${templates}개` : ''}`,
+      kit.density === 'compact' ? '- 기본 밀도: 촘촘함 (`<html data-density="compact">`)' : '',
+    ]
+      .filter(Boolean)
+      .join('\n');
+  });
+  return [
+    '# AHA 키트',
+    '모든 프로젝트는 공통(core, @aha/ui)을 쓰고, 화면 종류에 맞는 키트를 하나 더 설치한다. 프로젝트의 package.json에 설치된 @aha/kit-*가 그 프로젝트의 키트다.',
+    ...rows,
+    'list_components, search, list_templates에 kit id를 넘기면 공통 + 그 키트만 본다. 설치 방법은 get_setup_guide(kit).',
+  ].join('\n\n');
+}
+
+function search(catalog: Catalog, query: string, kit?: string) {
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   const score = (fields: string[]) => {
     const haystack = fields.join('\n').toLowerCase();
     return terms.reduce((sum, term) => sum + (haystack.includes(term) ? 1 : 0), 0);
   };
   const results = [
-    ...catalog.components.map((c) => ({
+    ...catalog.components.filter((c) => inKit(c, kit)).map((c) => ({
       kind: '컴포넌트',
       name: c.name,
       summary: c.summary,
       score: score([c.name, c.description, ...c.props.map((p) => `${p.name} ${p.description}`), ...c.stories.map((s) => `${s.name} ${s.description}`)]) + (terms.some((t) => c.name.toLowerCase().includes(t)) ? 2 : 0),
     })),
-    ...catalog.templates.map((t) => ({
+    ...catalog.templates.filter((t) => inKit(t, kit)).map((t) => ({
       kind: '템플릿',
       name: t.label,
       summary: t.summary,
@@ -202,20 +226,39 @@ export function createMcpServer(ctx: McpContext) {
     { instructions },
   );
   const readOnly = { readOnlyHint: true, openWorldHint: false };
+  const kitIds = catalog.kits.filter((k) => k.id !== 'core').map((k) => k.id) as [string, ...string[]];
+  const kitArg = z
+    .enum(kitIds)
+    .optional()
+    .describe('키트 id. 주면 공통 + 그 키트만 본다. 프로젝트 package.json의 @aha/kit-*로 정한다. 생략하면 전체');
+
+  server.registerTool(
+    'list_kits',
+    {
+      title: '키트 목록',
+      description: '공통(core)과 도메인 키트(관리자, AI 서비스 등)의 패키지, 설명, 부품 수, 기본 밀도. 어떤 키트로 만들지 정할 때 먼저 본다.',
+      annotations: readOnly,
+    },
+    () => text(kitsDoc(catalog)),
+  );
 
   server.registerTool(
     'list_components',
     {
       title: '컴포넌트 목록',
       description: 'AHA 디자인 시스템의 컴포넌트를 분류별로 나열한다. 화면을 만들기 전에 먼저 호출한다.',
-      inputSchema: { category: z.enum(catalog.categories.map((c) => c.id) as [string, ...string[]]).optional().describe('분류 id. 생략하면 전체') },
+      inputSchema: {
+        category: z.enum(catalog.categories.map((c) => c.id) as [string, ...string[]]).optional().describe('분류 id. 생략하면 전체'),
+        kit: kitArg,
+      },
       annotations: readOnly,
     },
-    ({ category }) => {
+    ({ category, kit }) => {
       const sections = catalog.categories
         .filter((c) => !category || c.id === category)
-        .map((c) => {
-          const items = catalog.components.filter((comp) => comp.category === c.id);
+        .map((c) => ({ c, items: catalog.components.filter((comp) => comp.category === c.id && inKit(comp, kit)) }))
+        .filter(({ items }) => items.length > 0)
+        .map(({ c, items }) => {
           const pkg = items[0] ? kitOf(catalog, items[0])?.package.name : undefined;
           return [`## ${c.label} (${c.id})${pkg ? ` · ${pkg}` : ''}`, c.description, ...items.map((comp) => `- **${comp.name}** — ${comp.summary}`)].join('\n');
         });
@@ -243,10 +286,10 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '검색',
       description: '하고 싶은 일이나 화면 요소로 컴포넌트와 템플릿을 찾는다. 예: "파일 업로드", "상태 표시", "표 페이지 이동".',
-      inputSchema: { query: z.string().describe('찾을 내용 (한국어 또는 영어)') },
+      inputSchema: { query: z.string().describe('찾을 내용 (한국어 또는 영어)'), kit: kitArg },
       annotations: readOnly,
     },
-    ({ query }) => text(search(catalog, query)),
+    ({ query, kit }) => text(search(catalog, query, kit)),
   );
 
   server.registerTool(
@@ -254,11 +297,15 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '화면 템플릿 목록',
       description: '컴포넌트를 조합한 완성 화면 예시를 나열한다. 새 화면을 만들 때 가장 비슷한 것부터 고른다.',
+      inputSchema: { kit: kitArg },
       annotations: readOnly,
     },
-    () =>
+    ({ kit }) =>
       text(
-        catalog.templates.map((t) => `- **${t.label}** (\`${t.name}\`, ${t.group}) — ${t.summary}`).join('\n') +
+        catalog.templates
+          .filter((t) => inKit(t, kit))
+          .map((t) => `- **${t.label}** (\`${t.name}\`, ${kitOf(catalog, t)?.label ?? t.group}) — ${t.summary}`)
+          .join('\n') +
           '\n\n전체 소스는 get_template(name)으로 본다.',
       ),
   );
@@ -293,10 +340,11 @@ export function createMcpServer(ctx: McpContext) {
     'get_setup_guide',
     {
       title: '설치와 규칙',
-      description: '새 React 프로젝트에 AHA 디자인 시스템을 설치하는 방법과 UI 작성 규칙.',
+      description: '새 React 프로젝트에 AHA 디자인 시스템을 설치하는 방법과 UI 작성 규칙. kit을 주면 그 키트 설치만 안내한다.',
+      inputSchema: { kit: kitArg },
       annotations: readOnly,
     },
-    () => text(setupGuide(ctx)),
+    ({ kit }) => text(setupGuide(ctx, kit)),
   );
 
   return server;

@@ -6,17 +6,20 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@aha/ui';
-import { BookOpen, Menu, Monitor, Moon, Sun } from 'lucide-react';
+import { BookOpen, Boxes, ChevronDown, Menu, Monitor, Moon, Sun } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { catalog } from '../lib/catalog';
+import { domainKits, kitById, useKit } from '../lib/kit';
 import { Link, navigate, useLocation } from '../lib/router';
 import { type ThemeChoice, useTheme } from '../lib/theme';
 
 const nav = [
   { href: '/start', label: '시작하기' },
+  { href: '/kits', label: '키트' },
   { href: '/components', label: '컴포넌트' },
   { href: '/templates', label: '화면 템플릿' },
   { href: '/foundations', label: '디자인 기초' },
@@ -46,6 +49,42 @@ function ThemeMenu() {
             {choice === option.value ? <span className="ml-auto text-caption text-muted-foreground">사용 중</span> : null}
           </DropdownMenuItem>
         ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+/** 키트 고르기. 컴포넌트·템플릿 목록을 "공통 + 고른 키트"로 좁힌다. */
+function KitMenu() {
+  const { kit, setKit } = useKit();
+  const current = kitById(kit);
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary" size="sm" aria-label={`키트 고르기. 지금 ${current ? current.label : '전체'}`}>
+          <Boxes aria-hidden />
+          <span className="max-w-28 truncate">{current ? current.label : '전체 키트'}</span>
+          <ChevronDown aria-hidden />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-64">
+        <DropdownMenuLabel>
+          <span className="block text-body-sm font-semibold">어떤 화면을 만드나요?</span>
+          <span className="block text-caption text-muted-foreground">공통 부품과 고른 키트만 보여줘요.</span>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => setKit(null)} aria-current={!current}>
+          전체 키트
+          {!current ? <span className="ml-auto text-caption text-muted-foreground">보는 중</span> : null}
+        </DropdownMenuItem>
+        {domainKits.map((k) => (
+          <DropdownMenuItem key={k.id} onSelect={() => setKit(k.id)} aria-current={kit === k.id}>
+            {k.label}
+            {kit === k.id ? <span className="ml-auto text-caption text-muted-foreground">보는 중</span> : null}
+          </DropdownMenuItem>
+        ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => navigate('/kits')}>키트 소개 보기</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -106,6 +145,7 @@ function SiteHeader() {
               Storybook
             </a>
           </Button>
+          <KitMenu />
           <ThemeMenu />
           <MobileMenu />
           <Button size="sm" asChild className="hidden sm:inline-flex">

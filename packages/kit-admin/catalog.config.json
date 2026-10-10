@@ -1,7 +1,7 @@
 {
   "$comment": "관리자 키트의 갤러리·MCP 카탈로그 메타데이터. 형식은 packages/ui/catalog.config.json과 같다. templateFixtures는 템플릿 스토리가 쓰는 예시 데이터 파일이다.",
   "kits": [
-    { "id": "admin", "label": "관리자", "description": "사내 시스템의 관리 화면(목록 · 상세 · 편집 · 권한) 부품과 템플릿. 촘촘한 밀도(data-density=\"compact\")와 함께 쓴다." }
+    { "id": "admin", "label": "관리자", "description": "사내 시스템의 관리 화면(목록 · 상세 · 편집 · 권한) 부품과 템플릿. 촘촘한 밀도(data-density=\"compact\")와 함께 쓴다.", "density": "compact" }
   ],
   "categories": [
     { "id": "admin", "storybook": "Admin", "label": "관리", "description": "편집 폼, 상세 정보, 일괄 작업, 확인 대화상자, 권한 표" }

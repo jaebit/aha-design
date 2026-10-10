@@ -1,5 +1,6 @@
 // "에이전트에게 붙여넣기" 프롬프트. MCP가 연결되어 있으면 도구로 확인하게 하고, 없어도 바로 쓸 수 있게 예제를 함께 싣는다.
-import type { CatalogComponent, CatalogStory, CatalogTemplate } from '../catalog-types';
+import { type CatalogComponent, type CatalogStory, type CatalogTemplate, kitOf } from '../catalog-types';
+import { catalog } from './catalog';
 
 const rules = `규칙:
 - AHA 컴포넌트(@aha/ui, 키트 패키지 @aha/kit-*)를 그대로 쓰고, 같은 역할의 컴포넌트를 새로 만들지 않는다.
@@ -27,6 +28,13 @@ ${example.snippet}
 ${rules}`;
 }
 
+function templatePackages(template: CatalogTemplate) {
+  const kit = kitOf(catalog, template);
+  if (!kit || kit.id === 'core') return '- 필요한 패키지: @aha/ui';
+  const density = kit.density === 'compact' ? ' 이 키트 화면은 <html data-density="compact">(촘촘한 밀도)로 쓴다.' : '';
+  return `- 필요한 패키지: @aha/ui + ${kit.package.name} (${kit.label} 키트).${density}`;
+}
+
 export function templatePrompt(template: CatalogTemplate) {
   return `AHA 디자인 시스템의 "${template.label}" 템플릿(${template.name})을 바탕으로 화면을 만들어 줘.
 
@@ -35,6 +43,7 @@ export function templatePrompt(template: CatalogTemplate) {
 참고:
 - aha-design MCP의 get_template("${template.name}")으로 전체 소스와 예시 데이터를 가져와서 시작해.
 - Storybook 전용 코드(Meta, StoryObj, withLinkActions)는 빼고 페이지 컴포넌트만 옮겨.
+${templatePackages(template)}
 - 화면에 쓰인 컴포넌트: ${template.import.replace(/\s+/g, ' ')}
 
 ${rules}`;

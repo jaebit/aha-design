@@ -1,6 +1,6 @@
 {
   "name": "@aha/ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "AHA React 컴포넌트 (shadcn/ui 규약, Tailwind v4, Storybook 갤러리 + MCP)",
   "type": "module",
   "sideEffects": [
@@ -30,7 +30,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@aha/tokens": "workspace:*",
+    "@aha/tokens": "workspace:^",
     "@radix-ui/react-avatar": "^1.2.7",
     "@radix-ui/react-dropdown-menu": "^2.1.25",
     "@radix-ui/react-slot": "^1.4.0",

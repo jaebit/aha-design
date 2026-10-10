@@ -65,12 +65,13 @@ const examplePrompts = [
 ];
 
 const tools = [
-  ['list_components', '분류별 컴포넌트 목록'],
+  ['list_kits', '키트 목록 (공통, 관리자, AI 서비스 …)'],
+  ['list_components', '분류별 컴포넌트 목록 (키트로 좁히기 가능)'],
   ['search', '하고 싶은 일로 컴포넌트·템플릿 찾기'],
   ['get_component', '컴포넌트 설명, props, 예제 코드'],
   ['list_templates / get_template', '완성 화면 목록과 전체 소스'],
   ['get_tokens', '색·글자·모서리 토큰과 클래스'],
-  ['get_setup_guide', '설치 방법과 UI 규칙'],
+  ['get_setup_guide', '설치 방법과 UI 규칙 (키트별)'],
 ];
 
 export function StartPage() {

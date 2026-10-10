@@ -92,11 +92,13 @@ interface StoryPreviewProps {
    * iframe 안에 가둔다.
    */
   isolate?: boolean;
+  /** iframe으로 그릴 때의 밀도. 바로 그릴 때는 감싸는 요소의 data-density를 따른다. */
+  density?: 'default' | 'compact';
   title: string;
 }
 
 /** 스토리 하나를 그린다. 카드 썸네일과 상세 페이지 예제가 함께 쓴다. */
-export function StoryPreview({ storyFile, exportName, storyId, frameHeight = 420, title, isolate = false }: StoryPreviewProps) {
+export function StoryPreview({ storyFile, exportName, storyId, frameHeight = 420, title, isolate = false, density }: StoryPreviewProps) {
   const { resolved } = useTheme();
   const module = useStoryModule(storyFile);
   const Story = useMemo(() => {
@@ -110,7 +112,7 @@ export function StoryPreview({ storyFile, exportName, storyId, frameHeight = 420
     return (
       <iframe
         title={`${title} 미리보기`}
-        src={storyFrameUrl(storyId, resolved)}
+        src={storyFrameUrl(storyId, resolved, density)}
         loading="lazy"
         className="block w-full rounded-md border border-border bg-background"
         style={{ height: frameHeight }}

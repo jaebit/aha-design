@@ -29,7 +29,11 @@ const dirs = (await readdir(packagesDir, { withFileTypes: true }))
 const configs = [];
 for (const dir of dirs) {
   const base = new URL(`${dir}/`, packagesDir);
-  const config = await readJson(new URL('catalog.config.json', base)).catch(() => null);
+  // 파일이 없는 패키지만 건너뛴다. JSON이 잘못됐으면 조용히 빠지지 않도록 빌드를 실패시킨다.
+  const config = await readJson(new URL('catalog.config.json', base)).catch((error) => {
+    if (error.code === 'ENOENT') return null;
+    throw new Error(`packages/${dir}/catalog.config.json: ${error.message}`);
+  });
   if (config) configs.push({ ...config, dir: base, pkg: await readJson(new URL('package.json', base)) });
 }
 // 키트마다 설치할 패키지를 붙인다 (core → @aha/ui, ai → @aha/kit-ai).

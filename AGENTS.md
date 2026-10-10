@@ -11,7 +11,7 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 | `packages/ui` | 공통 React 컴포넌트(`@aha/ui`) + Storybook 10 (`@storybook/addon-mcp`). Storybook은 여기 하나만 두고 키트 스토리까지 함께 싣는다. `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
 | `packages/kit-*` | 도메인 키트 패키지. `kit-ai`(`@aha/kit-ai`): AI 대화 부품과 화면 템플릿. `kit-admin`(`@aha/kit-admin`): 관리 화면의 폼·상세·일괄 작업·권한 부품과 템플릿. 빌드 방식은 `packages/ui`와 같고, `@aha/ui`를 peer 의존성으로 둔다 |
 | `packages/*/catalog.config.json` | 갤러리·MCP 카탈로그 메타데이터: 키트 목록, 분류(Storybook 제목 첫 단계 → 갤러리 분류), 템플릿 이름·설명 |
-| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다 |
+| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). 상단 키트 메뉴로 목록을 "공통 + 고른 키트"로 좁히고, `/kits/<id>`에 키트 소개가 있다. MCP의 `list_kits`와 `kit` 인자도 같은 카탈로그의 키트 정보를 쓴다. Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다 |
 | `Dockerfile`, `compose.yaml` | 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 띄운다 (포트 4100) |
 | `scripts/check-tokens.mjs` | 하드코딩 색상 검사 |
 | `docs/` | 와이어프레임 원본 (aha.actoz.com v0.2.0) |
@@ -37,7 +37,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - **서체:** Pretendard. `@aha/ui/styles.css`가 `pretendard` 패키지의 dynamic subset 웹폰트를 불러온다. 외부 CDN을 쓰지 않는다.
 - **다크 모드:** 시스템 설정을 따르고, `<html data-theme="light|dark">`로 고정할 수 있다. 다크 값은 `packages/tokens/tokens/themes/dark.json`에 있으며 시맨틱 토큰만 덮어쓴다. 컴포넌트에서 테마별 분기를 쓰지 않는다 (시맨틱 토큰이 알아서 바뀐다).
 - **테마 추가:** `tokens/themes/<이름>.json`을 만들고 `$extensions["aha.theme"]`에 적용 조건(`attribute`, `value`, 선택: `colorScheme`, `media`, `mediaUnless`, `label`)을 적는다. 빌드가 파일을 자동으로 찾아 CSS 블록과 manifest의 `<이름>` 값을 만들고, `check:contrast`도 색을 바꾸는 모든 테마를 검사한다. 다른 축의 테마는 다른 attribute를 쓴다 (예: 밀도는 `data-density`).
-- **밀도:** 기본 밀도와 촘촘한 밀도(`<html data-density="compact">`, `tokens/themes/compact.json`) 두 가지. 간격 단위 토큰 `space.unit`(Tailwind `--spacing`)만 4px → 3.5px로 줄여 모든 간격·크기 클래스가 함께 줄어든다. 글자 크기와 색은 그대로다. 관리자 화면은 compact로 쓴다. 컴포넌트에 밀도별 분기나 작은 크기 클래스를 따로 넣지 않는다.
+- **밀도:** 기본 밀도와 촘촘한 밀도(`<html data-density="compact">`, `tokens/themes/compact.json`) 두 가지. 테마 속성은 `<html>`이 아닌 요소에 달아도 그 안쪽에만 적용된다 (갤러리 미리보기가 쓴다). 키트의 기본 밀도는 `catalog.config.json`의 `kits[].density`, 스토리의 기본 밀도는 `parameters.density`에 적는다. 간격 단위 토큰 `space.unit`(Tailwind `--spacing`)만 4px → 3.5px로 줄여 모든 간격·크기 클래스가 함께 줄어든다. 글자 크기와 색은 그대로다. 관리자 화면은 compact로 쓴다. 컴포넌트에 밀도별 분기나 작은 크기 클래스를 따로 넣지 않는다.
 - **키트:** 공통 부품(core) 위에 도메인 키트(AI 서비스, 관리자, CMS 등)를 얹는다. 키트는 core만 참조하고 키트끼리는 참조하지 않는다. 두 키트 이상에서 쓰는 부품만 core에 둔다. 확장 계획은 「AHA 디자인 시스템 다중 디자인 확장 검토」 문서를 따른다.
 - **상태색:** `status-good|warning|serious|critical`은 아이콘·마크용, `status-*-foreground`는 글자용이다. 상태는 색만으로 전달하지 않고 아이콘 + 라벨과 함께 쓴다 (`<Badge tone="warning">일부 품질 저하</Badge>`). 라이트 모드의 warning·serious 아이콘은 배경 대비가 3:1 미만이므로, 라벨 글자가 반드시 상태를 말해야 한다.
 
