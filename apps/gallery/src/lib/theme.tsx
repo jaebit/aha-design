@@ -1,9 +1,11 @@
 // 갤러리 테마. <html data-theme>를 바꾸면 토큰이 알아서 바뀐다 (AGENTS.md 다크 모드 규칙).
 import { createContext, type ReactNode, useContext, useEffect, useState, useSyncExternalStore } from 'react';
 
+import { site } from '../../site.config';
+
 export type ThemeChoice = 'system' | 'light' | 'dark';
 
-const STORAGE_KEY = 'aha-gallery-theme';
+const STORAGE_KEY = `${site.id}-gallery-theme`;
 const media = () => window.matchMedia('(prefers-color-scheme: dark)');
 
 function readChoice(): ThemeChoice {

@@ -1,6 +1,7 @@
 import { Card, Chip, cn, SearchInput } from '@aha/ui';
 
 import { type CatalogComponent, inKit } from '../catalog-types';
+import { site } from '../../site.config';
 import { catalog } from '../lib/catalog';
 import { useKit } from '../lib/kit';
 import { Link, navigate, useLocation } from '../lib/router';
@@ -91,7 +92,7 @@ export function ComponentsIndexPage() {
         <header className="flex flex-col gap-4">
           <h1 className="text-display font-bold tracking-tight">컴포넌트</h1>
           <p className="max-w-2xl text-body text-muted-foreground">
-            AHA 사내 시스템 화면을 이루는 부품입니다. 카드를 누르면 쓰임새, 변형별 예제, 에이전트용 프롬프트를 볼 수 있습니다.
+            {site.componentsIntro}
           </p>
           <KitScopeNotice hidden={catalog.components.length - scoped.length} />
           <div className="flex flex-col gap-3 pt-2">

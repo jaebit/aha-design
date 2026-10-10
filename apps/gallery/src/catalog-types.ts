@@ -49,7 +49,7 @@ export interface CatalogKit {
   id: string;
   label: string;
   description: string;
-  /** 이 키트를 쓰려면 설치하는 패키지. core는 @aha/ui. */
+  /** 이 키트를 쓰려면 설치하는 패키지. core는 공통 ui 패키지. */
   package: { name: string; version: string };
   /** 이 키트 화면의 기본 밀도. 관리자 키트는 compact. 없으면 기본 밀도. */
   density?: Density;

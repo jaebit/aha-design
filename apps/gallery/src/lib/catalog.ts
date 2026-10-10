@@ -1,4 +1,5 @@
 import catalogJson from '../../generated/catalog.json';
+import { site } from '../../site.config';
 import type { Catalog } from '../catalog-types';
 
 export const catalog = catalogJson as unknown as Catalog;
@@ -10,8 +11,8 @@ export const categoryLabel = (id: string) => catalog.categories.find((c) => c.id
 /** MCP 엔드포인트. 갤러리와 같은 서버에서 제공한다. */
 export const mcpUrl = () => `${window.location.origin}/mcp`;
 
-/** @aha 패키지 npm 레지스트리. 빌드할 때 VITE_NPM_REGISTRY로 바꾼다. */
-export const registryUrl: string = import.meta.env.VITE_NPM_REGISTRY ?? 'http://localhost:3000/api/packages/aha/npm/';
+/** 패키지 npm 레지스트리. 빌드할 때 VITE_NPM_REGISTRY로 바꾼다. */
+export const registryUrl: string = import.meta.env.VITE_NPM_REGISTRY ?? site.registry;
 
 /**
  * Storybook iframe 주소. 전체 화면 미리보기에 쓴다.

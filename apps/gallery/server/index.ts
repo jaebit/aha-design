@@ -10,12 +10,13 @@ import { fileURLToPath } from 'node:url';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import sirv from 'sirv';
 
+import { site } from '../site.config.ts';
 import type { Catalog } from '../src/catalog-types.ts';
 import { createMcpServer } from './mcp.ts';
 
-const port = Number(process.env.PORT ?? 4100);
+const port = Number(process.env.PORT ?? site.port);
 const publicUrl = (process.env.PUBLIC_URL ?? `http://localhost:${port}`).replace(/\/$/, '');
-const registry = process.env.NPM_REGISTRY ?? 'http://localhost:3000/api/packages/aha/npm/';
+const registry = process.env.NPM_REGISTRY ?? site.registry;
 const path = (env: string | undefined, fallback: string) => env ?? fileURLToPath(new URL(fallback, import.meta.url));
 
 const catalogPath = path(process.env.CATALOG_PATH, '../generated/catalog.json');
@@ -84,6 +85,6 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(`AHA 디자인 갤러리: ${publicUrl}`);
+  console.log(`${site.title} 갤러리: ${publicUrl}`);
   console.log(`MCP: ${publicUrl}/mcp`);
 });

@@ -14,6 +14,7 @@ import { StartPage } from './pages/start';
 import { TemplateDetailPage, TemplatesIndexPage } from './pages/templates';
 import { SiteLayout } from './site/layout';
 import { catalog } from './lib/catalog';
+import { site } from '../site.config';
 
 function route(pathname: string) {
   const path = pathname.replace(/\/$/, '') || '/';
@@ -43,7 +44,7 @@ export function App() {
   const { pathname } = useLocation();
   const { page, title } = route(pathname);
   useEffect(() => {
-    document.title = title ? `${title} · AHA 디자인` : 'AHA 디자인';
+    document.title = title ? `${title} · ${site.title}` : site.title;
   }, [title]);
 
   return (
