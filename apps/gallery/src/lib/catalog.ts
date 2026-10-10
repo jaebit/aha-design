@@ -16,6 +16,7 @@ export const registryUrl: string = import.meta.env.VITE_NPM_REGISTRY ?? 'http://
 /**
  * Storybook iframe 주소. 전체 화면 미리보기에 쓴다.
  * density를 생략하면 스토리의 기본 밀도(parameters.density)를 따른다.
+ * embed=gallery: iframe 안의 스크립트가 갤러리 페이지의 포커스를 빼앗지 못하게 한다 (.storybook/preview.tsx).
  */
 export const storyFrameUrl = (storyId: string, theme: 'light' | 'dark', density?: 'default' | 'compact') =>
-  `/storybook/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story&globals=theme:${theme}${density ? `;density:${density}` : ''}`;
+  `/storybook/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story&embed=gallery&globals=theme:${theme}${density ? `;density:${density}` : ''}`;
