@@ -39,7 +39,7 @@ export function ChoiceCardGroup({ label, options, value, onValueChange, classNam
           <label
             key={option.value}
             className={cn(
-              'flex cursor-pointer flex-col gap-1 rounded-lg border px-4 py-3 transition-colors has-focus-visible:outline-2 has-focus-visible:outline-ring',
+              'relative flex cursor-pointer flex-col gap-1 rounded-lg border px-4 py-3 transition-colors has-focus-visible:outline-2 has-focus-visible:outline-ring',
               checked ? 'border-border-strong bg-muted' : 'border-border bg-background hover:bg-accent',
             )}
           >

@@ -93,7 +93,7 @@ export function LineChart({
   const activeDatum = active === null ? undefined : data[active];
 
   return (
-    <figure data-slot="line-chart" aria-labelledby={titleId} className={cn('flex flex-col gap-4', className)}>
+    <figure data-slot="line-chart" aria-labelledby={titleId} className={cn('relative flex flex-col gap-4', className)}>
       <figcaption id={titleId} className="sr-only">
         {title}
       </figcaption>

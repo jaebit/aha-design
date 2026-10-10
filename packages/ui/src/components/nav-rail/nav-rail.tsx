@@ -55,7 +55,7 @@ export function NavRail({
         className,
       )}
     >
-      <div className={cn('flex h-24 items-center', expanded ? 'px-3' : 'justify-center')}>
+      <div className={cn('relative flex h-24 items-center', expanded ? 'px-3' : 'justify-center')}>
         {logo ?? (
           <span className="text-title font-bold tracking-wide">
             {expanded ? 'AHA ' : null}

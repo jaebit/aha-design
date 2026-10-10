@@ -57,7 +57,7 @@ export function PermissionMatrix({
   };
 
   return (
-    <div data-slot="permission-matrix" className={cn('overflow-x-auto rounded-lg border border-border', className)}>
+    <div data-slot="permission-matrix" className={cn('relative overflow-x-auto rounded-lg border border-border', className)}>
       <table className="w-full border-collapse text-left">
         <caption className="sr-only">{caption}</caption>
         <thead>

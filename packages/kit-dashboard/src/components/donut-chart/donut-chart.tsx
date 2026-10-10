@@ -64,7 +64,7 @@ export function DonutChart({ title, items, centerLabel, formatValue = defaultFor
   const activeItem = grouped.find((item) => item.key === active);
 
   return (
-    <figure data-slot="donut-chart" aria-labelledby={titleId} className={cn('flex flex-col gap-4', className)}>
+    <figure data-slot="donut-chart" aria-labelledby={titleId} className={cn('relative flex flex-col gap-4', className)}>
       <figcaption id={titleId} className="sr-only">
         {title}
       </figcaption>
