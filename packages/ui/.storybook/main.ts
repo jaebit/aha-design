@@ -2,7 +2,8 @@ import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
-  stories: ['../src/**/*.stories.@(ts|tsx)'],
+  // Storybook은 하나만 둔다. 공통 부품(@aha/ui)과 모든 키트 패키지(packages/kit-*)의 스토리를 함께 싣는다.
+  stories: ['../src/**/*.stories.@(ts|tsx)', '../../kit-*/src/**/*.stories.@(ts|tsx)'],
   addons: [
     '@storybook/addon-docs',
     '@storybook/addon-a11y',

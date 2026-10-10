@@ -1,0 +1,19 @@
+{
+  "$comment": "AI 서비스 키트의 갤러리·MCP 카탈로그 메타데이터. 형식은 packages/ui/catalog.config.json과 같다. templateFixtures는 템플릿 스토리가 쓰는 예시 데이터 파일이다.",
+  "kits": [
+    { "id": "ai", "label": "AI 서비스", "description": "AHA AI 서비스(가이드 챗, 회의록, 문서 검토, ITH) 화면의 부품과 템플릿." }
+  ],
+  "categories": [
+    { "id": "ai", "storybook": "AI", "label": "AI 대화", "description": "질문 입력, 답변, 근거, 결과 카드 등 AI 서비스 화면 부품" }
+  ],
+  "templateFixtures": "src/templates/fixtures.tsx",
+  "templates": {
+    "templates-home": { "label": "홈", "group": "공통", "description": "로그인 후 첫 화면. 서비스 카드와 이어서 하기 목록." },
+    "templates-allhistory": { "label": "전체 기록", "group": "공통", "description": "모든 서비스의 대화 기록을 검색하고 거르는 목록 화면." },
+    "templates-guidechat": { "label": "사내 가이드 챗", "group": "AI 대화", "description": "질문하고 근거와 함께 답을 받는 대화형 서비스 화면." },
+    "templates-taskconversation": { "label": "작업형 대화 (회의록·문서 검토)", "group": "AI 대화", "description": "파일을 올리고 단계별로 결과를 받는 작업형 AI 화면." },
+    "templates-ithreport": { "label": "ITH 보고서", "group": "업무", "description": "보고서 목록과 상세, 표와 상태 배지를 쓰는 업무 화면." },
+    "templates-newsletter": { "label": "뉴스레터 구독", "group": "업무", "description": "구독 설정과 요약 정보를 보여주는 설정 화면." },
+    "templates-admindashboard": { "label": "관리자 대시보드", "group": "관리", "description": "통계 카드, 차트, 대기 목록이 있는 관리 화면." }
+  }
+}

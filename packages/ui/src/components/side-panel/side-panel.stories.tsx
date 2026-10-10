@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Badge, Citation, Composer, Message, MessageContent } from '@aha/ui';
+import { Badge, Button } from '@aha/ui';
 
 import { SidePanel } from './side-panel';
 
@@ -22,25 +22,35 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** ITH 보고서 옆 대화 패널 (16쪽). */
-export const ReportConversation: Story = {
+/** 목록에서 고른 항목의 상세 (16쪽 ITH 보고서의 오류 그룹). */
+export const ItemDetail: Story = {
   args: {
-    title: '10/03 처리 메일 급증 원인',
-    badge: <Badge>ITH</Badge>,
+    title: '결제 서비스 오류 그룹',
+    badge: <Badge tone="serious">보통</Badge>,
     onClose: fn(),
-    footer: <Composer variant="compact" placeholder="메시지를 입력하세요" onSubmit={fn()} helper="대화는 전체 기록에 저장돼요" />,
-    children: (
-      <div className="flex flex-col gap-6">
-        <Message from="user">
-          <MessageContent>10월 3일 처리 메일이 왜 이렇게 많아?</MessageContent>
-        </Message>
-        <Message from="assistant">
-          <MessageContent>
-            <p>10월 3일은 결제 서비스 오류 그룹이 평소보다 3배 늘어 처리 메일이 132건이었어요.</p>
-          </MessageContent>
-          <Citation source="2026-10-03 일일 오류 보고서" />
-        </Message>
+    footer: (
+      <div className="flex justify-end gap-2">
+        <Button variant="secondary" onClick={fn()}>
+          담당자 지정
+        </Button>
+        <Button onClick={fn()}>처리 완료</Button>
       </div>
+    ),
+    children: (
+      <dl className="flex flex-col gap-5">
+        <div className="flex flex-col gap-1">
+          <dt className="text-body-sm text-muted-foreground">발생 기간</dt>
+          <dd className="text-body">2026-10-01 ~ 2026-10-03</dd>
+        </div>
+        <div className="flex flex-col gap-1">
+          <dt className="text-body-sm text-muted-foreground">처리 메일</dt>
+          <dd className="text-body">132건 (평소의 3배)</dd>
+        </div>
+        <div className="flex flex-col gap-1">
+          <dt className="text-body-sm text-muted-foreground">내용</dt>
+          <dd className="text-body">결제 승인 응답이 늦어 같은 오류 메일이 반복해서 발송됐습니다.</dd>
+        </div>
+      </dl>
     ),
   },
 };

@@ -2,7 +2,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
-import { type Catalog, type CatalogComponent, type CatalogTemplate, type CatalogToken, tokenClass } from '../src/catalog-types.ts';
+import { type Catalog, type CatalogComponent, type CatalogTemplate, type CatalogToken, kitOf, tokenClass } from '../src/catalog-types.ts';
 
 export interface McpContext {
   catalog: Catalog;
@@ -12,7 +12,8 @@ export interface McpContext {
   registry: string;
 }
 
-const instructions = `AHA 사내 디자인 시스템(@aha/ui, @aha/tokens).
+const instructions = `AHA 사내 디자인 시스템. 공통 부품은 @aha/ui, 도메인 부품은 키트 패키지(@aha/kit-ai 등), 토큰은 @aha/tokens.
+- 컴포넌트는 get_component가 알려 주는 import 문 그대로 가져온다. 그 패키지가 프로젝트에 없으면 get_setup_guide를 보고 설치한다.
 - 화면을 만들기 전에 list_components 또는 search로 이미 있는 컴포넌트를 찾고, get_component로 props와 예제를 읽은 뒤 그대로 쓴다. 있는 것을 새로 만들지 않는다.
 - 화면 전체가 필요하면 list_templates와 get_template으로 비슷한 화면부터 가져온다.
 - 새 프로젝트에 설치하거나 규칙이 궁금하면 get_setup_guide를 읽는다.
@@ -48,6 +49,14 @@ function propsTable(component: CatalogComponent | CatalogTemplate) {
   return ['## Props', '', '| 이름 | 타입 | 기본값 | 설명 |', '| --- | --- | --- | --- |', ...rows].join('\n');
 }
 
+function packageLine(catalog: Catalog, item: CatalogComponent | CatalogTemplate) {
+  const kit = kitOf(catalog, item);
+  if (!kit) return '';
+  return kit.id === 'core'
+    ? `패키지: \`${kit.package.name}\` (공통)`
+    : `패키지: \`${kit.package.name}\` (${kit.label} 키트). 공통 부품은 \`@aha/ui\`에서 가져온다.`;
+}
+
 function componentDoc(component: CatalogComponent, ctx: McpContext) {
   const examples = component.stories.map((story) =>
     [`### ${story.name}`, story.description, story.snippet ? `\`\`\`tsx\n${story.snippet}\n\`\`\`` : '']
@@ -58,6 +67,7 @@ function componentDoc(component: CatalogComponent, ctx: McpContext) {
     `# ${component.name}`,
     component.description,
     `갤러리: ${ctx.publicUrl}/components/${component.slug}`,
+    packageLine(ctx.catalog, component),
     '## Import',
     `\`\`\`tsx\n${component.import}\n\`\`\``,
     propsTable(component),
@@ -73,6 +83,7 @@ function templateDoc(template: CatalogTemplate, ctx: McpContext) {
     `# ${template.label} (${template.name})`,
     template.summary,
     `갤러리: ${ctx.publicUrl}/templates/${template.slug}`,
+    packageLine(ctx.catalog, template),
     '## 전체 소스',
     'Storybook 스토리 파일이다. 옮겨 쓸 때 `Meta`/`StoryObj`/`withLinkActions` 같은 Storybook 전용 코드는 빼고, 페이지 함수만 가져간다. `./fixtures`의 예시 데이터는 아래에 있다.',
     `\`\`\`tsx\n${template.source}\n\`\`\``,
@@ -110,6 +121,8 @@ function tokensDoc(catalog: Catalog, group: keyof typeof tokenGroups | 'all') {
 
 function setupGuide(ctx: McpContext) {
   const { ui, tokens } = ctx.catalog.packages;
+  const kits = ctx.catalog.kits.filter((k) => k.id !== 'core');
+  const kitList = kits.map((k) => `   - \`${k.package.name}\` — ${k.label}: ${k.description}`).join('\n');
   return `# AHA 디자인 시스템 설치와 규칙
 
 ## 새 React 프로젝트에 설치 (Vite + Tailwind v4)
@@ -123,10 +136,19 @@ function setupGuide(ctx: McpContext) {
    pnpm add ${ui.name}@^${ui.version} ${tokens.name}@^${tokens.version} lucide-react
    pnpm add -D tailwindcss @tailwindcss/vite
    \`\`\`
+   화면에 도메인 키트 부품이 필요하면 해당 키트도 설치한다. get_component 결과의 "패키지" 줄로 어느 키트인지 안다.
+${kitList}
+   \`\`\`sh
+   pnpm add ${kits.map((k) => `${k.package.name}@^${k.package.version}`).join(' ')}
+   \`\`\`
 3. \`vite.config.ts\`의 plugins에 \`tailwindcss()\` (from \`@tailwindcss/vite\`)를 추가한다.
 4. 앱의 메인 CSS(예: \`src/index.css\`)를 아래 한 줄로 시작한다. Tailwind, 토큰, Pretendard 서체가 함께 들어온다. \`@import "tailwindcss"\`를 따로 쓰지 않는다.
    \`\`\`css
    @import "@aha/ui/styles.css";
+   \`\`\`
+   키트를 설치했다면 바로 다음 줄에 키트 CSS를 추가한다 (키트 컴포넌트의 클래스를 생성 대상에 넣는다).
+   \`\`\`css
+${kits.map((k) => `   @import "${k.package.name}/styles.css";`).join('\n')}
    \`\`\`
 5. Tooltip을 쓰는 화면은 앱 루트를 \`<TooltipProvider>\`로 감싼다 (AppShell은 이미 포함).
 6. 다크 모드는 OS 설정을 자동으로 따른다. 고정하려면 \`<html data-theme="light">\` 또는 \`"dark"\`.
@@ -193,7 +215,8 @@ export function createMcpServer(ctx: McpContext) {
         .filter((c) => !category || c.id === category)
         .map((c) => {
           const items = catalog.components.filter((comp) => comp.category === c.id);
-          return [`## ${c.label} (${c.id})`, c.description, ...items.map((comp) => `- **${comp.name}** — ${comp.summary}`)].join('\n');
+          const pkg = items[0] ? kitOf(catalog, items[0])?.package.name : undefined;
+          return [`## ${c.label} (${c.id})${pkg ? ` · ${pkg}` : ''}`, c.description, ...items.map((comp) => `- **${comp.name}** — ${comp.summary}`)].join('\n');
         });
       return text(`${sections.join('\n\n')}\n\n자세한 props와 예제는 get_component(name)으로 본다.`);
     },

@@ -75,6 +75,7 @@ const tools = [
 
 export function StartPage() {
   const { ui, tokens } = catalog.packages;
+  const kits = catalog.kits.filter((k) => k.id !== 'core');
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-16 px-4 py-12 sm:px-6">
       <header className="flex flex-col gap-4">
@@ -153,6 +154,15 @@ export function StartPage() {
               code={`pnpm add ${ui.name}@^${ui.version} ${tokens.name}@^${tokens.version} lucide-react\npnpm add -D tailwindcss @tailwindcss/vite`}
               label="터미널"
             />
+            {kits.length > 0 ? (
+              <>
+                <p className="text-body text-muted-foreground">
+                  AI 서비스처럼 특정 업무 화면의 부품은 키트 패키지에 있습니다. 컴포넌트 페이지 제목 옆에 키트 이름이 보이면 그 키트를
+                  함께 설치하세요.
+                </p>
+                <CodeBlock code={`pnpm add ${kits.map((k) => `${k.package.name}@^${k.package.version}`).join(' ')}`} label="터미널 (키트)" />
+              </>
+            ) : null}
           </Step>
           <Step n={3} title="Vite와 CSS 설정">
             <CodeBlock
@@ -162,7 +172,11 @@ export function StartPage() {
             <CodeBlock code={`@import "@aha/ui/styles.css";`} label="src/index.css" />
             <p className="text-body-sm text-muted-foreground">
               이 한 줄에 Tailwind, 디자인 토큰, Pretendard 서체, 다크 모드가 모두 들어 있습니다. <code className="font-mono">@import "tailwindcss"</code>를 따로 쓰지 않습니다.
+              키트를 설치했다면 바로 다음 줄에 키트 CSS를 추가합니다.
             </p>
+            {kits.length > 0 ? (
+              <CodeBlock code={kits.map((k) => `@import "${k.package.name}/styles.css";`).join('\n')} label="src/index.css (키트)" />
+            ) : null}
           </Step>
           <Step n={4} title="사용">
             <CodeBlock

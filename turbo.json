@@ -14,6 +14,15 @@
         "^build"
       ]
     },
+    "@aha/ui#typecheck": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/kit-*/src/**"
+      ]
+    },
     "storybook": {
       "dependsOn": [
         "^build"
@@ -24,6 +33,19 @@
     "build-storybook": {
       "dependsOn": [
         "^build"
+      ],
+      "outputs": [
+        "storybook-static/**"
+      ]
+    },
+    "@aha/ui#build-storybook": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/kit-*/src/**",
+        "$TURBO_ROOT$/packages/kit-*/package.json"
       ],
       "outputs": [
         "storybook-static/**"

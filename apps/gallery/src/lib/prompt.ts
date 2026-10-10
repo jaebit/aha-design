@@ -2,9 +2,9 @@
 import type { CatalogComponent, CatalogStory, CatalogTemplate } from '../catalog-types';
 
 const rules = `규칙:
-- @aha/ui 컴포넌트를 그대로 쓰고, 같은 역할의 컴포넌트를 새로 만들지 않는다.
+- AHA 컴포넌트(@aha/ui, 키트 패키지 @aha/kit-*)를 그대로 쓰고, 같은 역할의 컴포넌트를 새로 만들지 않는다.
 - 색·글자 크기·모서리는 시맨틱 토큰 클래스만 쓴다 (bg-primary, text-muted-foreground, text-body, rounded-lg 등). hex나 임의값은 쓰지 않는다.
-- 프로젝트에 @aha/ui가 없으면 aha-design MCP의 get_setup_guide를 보고 먼저 설치한다.`;
+- import에 나온 @aha 패키지가 프로젝트에 없으면 aha-design MCP의 get_setup_guide를 보고 먼저 설치한다.`;
 
 export function componentPrompt(component: CatalogComponent, story?: CatalogStory) {
   const example = story ?? component.stories[0];

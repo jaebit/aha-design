@@ -1,10 +1,17 @@
 // 컴포넌트 소스에 하드코딩된 색상과 임의값 색상 클래스가 없는지 검사한다.
 // 에이전트가 만든 코드도 이 검사를 통과해야 한다. 스토리 파일은 검사하지 않는다.
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
-const targets = ['packages/ui/src/components'];
+// 공통 부품과 모든 키트 패키지(packages/kit-*)의 컴포넌트·화면 소스.
+const targets = [
+  'packages/ui/src/components',
+  ...readdirSync(join(root, 'packages'))
+    .filter((name) => name.startsWith('kit-'))
+    .flatMap((name) => [`packages/${name}/src/components`, `packages/${name}/src/templates`])
+    .filter((dir) => existsSync(join(root, dir))),
+];
 
 const rules = [
   { pattern: /#[0-9a-fA-F]{3,8}\b/, message: 'hex 색상 대신 시맨틱 토큰 클래스(bg-primary 등)를 쓴다' },

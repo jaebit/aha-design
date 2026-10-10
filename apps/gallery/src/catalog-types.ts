@@ -49,6 +49,8 @@ export interface CatalogKit {
   id: string;
   label: string;
   description: string;
+  /** 이 키트를 쓰려면 설치하는 패키지. core는 @aha/ui. */
+  package: { name: string; version: string };
 }
 
 export interface CatalogCategory {
@@ -77,6 +79,11 @@ export interface Catalog {
   templates: CatalogTemplate[];
   templateFixtures: string;
   tokens: CatalogToken[];
+}
+
+/** 컴포넌트·템플릿이 속한 키트 (설치할 패키지 포함). */
+export function kitOf(catalog: Catalog, item: { kit: string }): CatalogKit | undefined {
+  return catalog.kits.find((k) => k.id === item.kit);
 }
 
 /** 토큰 이름 → 컴포넌트에서 쓰는 Tailwind 클래스 예시. 해당 없으면 null. */
