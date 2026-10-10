@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface PreviewCardProps {
   /** 미리보기 제목. 예: "음성 원문 미리보기". */

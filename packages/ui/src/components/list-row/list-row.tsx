@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 /** ListRow를 담는 목록. 행 사이에 구분선이 들어간다. */
 export function List({ className, ...props }: ComponentProps<'ul'>) {

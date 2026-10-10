@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react';
 import type { ComponentProps } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 export interface SearchInputProps extends Omit<ComponentProps<'input'>, 'type'> {
   /** 스크린리더용 이름. 화면에 라벨이 없으므로 필수다. 예: "대화 검색". */

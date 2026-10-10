@@ -1,6 +1,6 @@
 import { LogOut, Settings } from 'lucide-react';
 
-import { Avatar } from '@/components/avatar/avatar';
+import { Avatar } from '../avatar/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +8,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/dropdown-menu/dropdown-menu';
-import { cn } from '@/lib/cn';
+} from '../dropdown-menu/dropdown-menu';
+import { cn } from '../../lib/cn';
 
 export interface AccountMenuProps {
   name: string;

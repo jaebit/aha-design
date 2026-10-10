@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { Badge } from '@/components/badge/badge';
-import { cn } from '@/lib/cn';
+import { Badge } from '../badge/badge';
+import { cn } from '../../lib/cn';
 
 export interface MessageProps extends ComponentProps<'div'> {
   /** 보낸 쪽. `user`는 오른쪽 회색 말풍선, `assistant`는 왼쪽 정렬 본문. */

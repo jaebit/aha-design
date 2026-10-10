@@ -3,22 +3,28 @@ import { Copy, Download, RotateCcw } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { AppShell } from '@/components/app-shell/app-shell';
-import { AttachmentCard } from '@/components/attachment-card/attachment-card';
-import { Button } from '@/components/button/button';
-import { Card } from '@/components/card/card';
-import { Chip } from '@/components/chip/chip';
-import { ChoiceCardGroup } from '@/components/choice-card/choice-card';
-import { Composer } from '@/components/composer/composer';
-import { ConversationHeader } from '@/components/conversation-header/conversation-header';
-import { Message, MessageContent } from '@/components/message/message';
-import { PreviewCard } from '@/components/preview-card/preview-card';
-import { RecipientInput } from '@/components/recipient-input/recipient-input';
-import { ResultCard, ResultSection } from '@/components/result-card/result-card';
-import { RiskItem } from '@/components/risk-item/risk-item';
-import { HistoryItem, ServiceSidebar, SidebarSection } from '@/components/service-sidebar/service-sidebar';
-import { Stepper } from '@/components/stepper/stepper';
-import { Suggestions } from '@/components/suggestions/suggestions';
+import {
+  AppShell,
+  AttachmentCard,
+  Button,
+  Card,
+  Chip,
+  ChoiceCardGroup,
+  Composer,
+  ConversationHeader,
+  HistoryItem,
+  Message,
+  MessageContent,
+  PreviewCard,
+  RecipientInput,
+  ResultCard,
+  ResultSection,
+  RiskItem,
+  ServiceSidebar,
+  SidebarSection,
+  Stepper,
+  Suggestions,
+} from '@aha/ui';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

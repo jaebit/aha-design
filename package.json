@@ -14,7 +14,10 @@
     "typecheck": "turbo run typecheck",
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:mcp-docs": "node scripts/check-mcp-docs.mjs",
-    "check:contrast": "pnpm --filter @aha/tokens build && pnpm --filter @aha/tokens check:contrast"
+    "check:contrast": "pnpm --filter @aha/tokens build && pnpm --filter @aha/tokens check:contrast",
+    "gallery": "pnpm build-storybook && pnpm --filter @aha/gallery dev",
+    "publish:packages": "pnpm --filter @aha/tokens --filter @aha/ui build && pnpm --filter @aha/tokens --filter @aha/ui publish --no-git-checks",
+    "docker:up": "docker compose up -d --build"
   },
   "devDependencies": {
     "turbo": "^2.11.0",

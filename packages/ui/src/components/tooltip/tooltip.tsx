@@ -1,7 +1,7 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { ComponentProps, ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 /** 앱 루트(또는 AppShell)에 한 번 둔다. 툴팁이 뜨기까지의 지연을 공유한다. */
 export function TooltipProvider({ delayDuration = 200, ...props }: ComponentProps<typeof TooltipPrimitive.Provider>) {

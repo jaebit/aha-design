@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useMemo, useState } from 'react';
 
-import { AppShell } from '@/components/app-shell/app-shell';
-import { Badge } from '@/components/badge/badge';
-import { Chip } from '@/components/chip/chip';
-import { List, ListRow } from '@/components/list-row/list-row';
-import { PageHeader } from '@/components/page-header/page-header';
-import { SearchInput } from '@/components/search-input/search-input';
+import { AppShell, Badge, Chip, List, ListRow, PageHeader, SearchInput } from '@aha/ui';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

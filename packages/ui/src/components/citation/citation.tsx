@@ -1,7 +1,7 @@
 import { FileText } from 'lucide-react';
 import type { ComponentProps } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 export interface CitationProps extends Omit<ComponentProps<'a'>, 'children'> {
   /** 근거 문서 이름. 예: "인사 규정 · 연차휴가 조항". 앞에 "근거:"가 자동으로 붙는다. */

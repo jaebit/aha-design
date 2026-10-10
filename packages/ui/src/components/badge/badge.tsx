@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { CircleCheck, CircleX, OctagonAlert, TriangleAlert } from 'lucide-react';
 import type { ComponentProps } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '../../lib/cn';
 
 const badgeVariants = cva(
   'inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full font-medium [&_svg]:size-3.5 [&_svg]:shrink-0',

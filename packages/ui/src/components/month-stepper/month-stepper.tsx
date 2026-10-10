@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface YearMonth {
   year: number;

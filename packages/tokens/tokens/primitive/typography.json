@@ -19,8 +19,14 @@
           "JetBrains Mono",
           "D2Coding",
           "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Consolas",
+          "DejaVu Sans Mono",
+          "Pretendard Variable",
           "monospace"
-        ]
+        ],
+        "$description": "코드 서체. 영문은 시스템 고정폭 서체로, 고정폭 서체에 없는 한글은 Pretendard로 그린다"
       }
     },
     "size": {

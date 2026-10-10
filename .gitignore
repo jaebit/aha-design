@@ -4,3 +4,4 @@ storybook-static/
 .turbo/
 *.log
 .DS_Store
+apps/gallery/generated/

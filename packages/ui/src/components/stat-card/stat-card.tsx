@@ -1,8 +1,8 @@
 import { ArrowDownRight, ArrowRight, ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Card } from '@/components/card/card';
-import { cn } from '@/lib/cn';
+import { Card } from '../card/card';
+import { cn } from '../../lib/cn';
 
 export interface StatDelta {
   /** 부호가 붙은 변화량. 예: "+12%", "−3명". */

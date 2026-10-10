@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { Card } from '@/components/card/card';
-import { cn } from '@/lib/cn';
+import { Card } from '../card/card';
+import { cn } from '../../lib/cn';
 
 export interface ResultCardProps extends Omit<ComponentProps<'div'>, 'title'> {
   /** 결과 제목. 예: "[주간 회의] 회의록". 생략 가능. */

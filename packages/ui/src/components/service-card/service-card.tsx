@@ -1,8 +1,8 @@
 import { ArrowRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Badge } from '@/components/badge/badge';
-import { cn } from '@/lib/cn';
+import { Badge } from '../badge/badge';
+import { cn } from '../../lib/cn';
 
 export interface ServiceCardProps {
   /** lucide-react 아이콘 요소. NavRail과 같은 아이콘을 쓴다. */

@@ -1,8 +1,8 @@
 import { FileText, Mic, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface AttachmentCardProps {
   /** 파일 이름. 예: "용역계약서.pdf". */

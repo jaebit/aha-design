@@ -1,8 +1,8 @@
 import { Search } from 'lucide-react';
 import { type FormEvent, type ReactNode, useId } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 export interface FilterBarProps {
   /** `FilterField` 목록. 접힌 상태에서는 그리지 않는다. */

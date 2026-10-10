@@ -1,9 +1,9 @@
 import { Check, Copy, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 
-import { Button } from '@/components/button/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/tooltip/tooltip';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/tooltip';
+import { cn } from '../../lib/cn';
 
 export type MessageFeedback = 'up' | 'down' | null;
 

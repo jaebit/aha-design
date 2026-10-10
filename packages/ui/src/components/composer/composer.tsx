@@ -2,8 +2,8 @@ import { cva } from 'class-variance-authority';
 import { ArrowUp, Paperclip, Plus } from 'lucide-react';
 import { type FormEvent, type KeyboardEvent, type ReactNode, useId, useState } from 'react';
 
-import { Button } from '@/components/button/button';
-import { cn } from '@/lib/cn';
+import { Button } from '../button/button';
+import { cn } from '../../lib/cn';
 
 const composerVariants = cva('w-full rounded-xl border border-border-strong bg-background', {
   variants: {

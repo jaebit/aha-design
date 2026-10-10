@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { AppShell } from '@/components/app-shell/app-shell';
-import { Badge } from '@/components/badge/badge';
-import { Card } from '@/components/card/card';
-import { InfoSummary } from '@/components/info-summary/info-summary';
-import { PageHeader } from '@/components/page-header/page-header';
-import { Switch } from '@/components/switch/switch';
+import { AppShell, Badge, Card, InfoSummary, PageHeader, Switch } from '@aha/ui';
 
 import { ahaRail, ahaUser } from './fixtures';
 import { withLinkActions } from './link-actions';

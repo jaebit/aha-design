@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { Badge, type BadgeTone } from '@/components/badge/badge';
-import { Citation } from '@/components/citation/citation';
-import { cn } from '@/lib/cn';
+import { Badge, type BadgeTone } from '../badge/badge';
+import { Citation } from '../citation/citation';
+import { cn } from '../../lib/cn';
 
 export interface RiskItemProps {
   /** 심각도 라벨. 예: "높음", "보통", "낮음". 화면에 글자로 보인다. */
