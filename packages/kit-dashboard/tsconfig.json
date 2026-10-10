@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@aha/kit-dashboard": ["./src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.lib.config.ts"]
+}
