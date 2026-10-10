@@ -5,7 +5,7 @@ import { Citation } from './citation';
 const meta = {
   title: 'AI/Citation',
   component: Citation,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: { source: '인사 규정 · 연차휴가 조항', href: '#guide' },
 } satisfies Meta<typeof Citation>;
 

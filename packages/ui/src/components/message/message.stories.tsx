@@ -18,7 +18,7 @@ import { Message } from './message';
 const meta = {
   title: 'AI/Message',
   component: Message,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   decorators: [
     (Story) => (
       <div className="mx-auto flex max-w-3xl flex-col gap-8">

@@ -6,7 +6,7 @@ import { AttachmentCard } from './attachment-card';
 const meta = {
   title: 'AI/AttachmentCard',
   component: AttachmentCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
 } satisfies Meta<typeof AttachmentCard>;
 
 export default meta;

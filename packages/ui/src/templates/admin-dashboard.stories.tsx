@@ -134,6 +134,7 @@ function AdminDashboardPage() {
 
 const meta = {
   title: 'Templates/AdminDashboard',
+  tags: ['kit:ai'],
   component: AdminDashboardPage,
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions()],

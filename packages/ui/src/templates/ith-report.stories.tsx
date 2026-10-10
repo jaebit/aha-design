@@ -183,6 +183,7 @@ function IthReportPage({ initialPanelOpen }: { initialPanelOpen: boolean }) {
 
 const meta = {
   title: 'Templates/IthReport',
+  tags: ['kit:ai'],
   component: IthReportPage,
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions()],

@@ -53,6 +53,7 @@ function NewsletterPage() {
 
 const meta = {
   title: 'Templates/Newsletter',
+  tags: ['kit:ai'],
   component: NewsletterPage,
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions()],

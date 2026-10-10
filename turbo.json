@@ -6,8 +6,7 @@
         "^build"
       ],
       "outputs": [
-        "dist/**",
-        "storybook-static/**"
+        "dist/**"
       ]
     },
     "typecheck": {

@@ -5,7 +5,7 @@ import { ThinkingIndicator } from './thinking-indicator';
 const meta = {
   title: 'AI/ThinkingIndicator',
   component: ThinkingIndicator,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
 } satisfies Meta<typeof ThinkingIndicator>;
 
 export default meta;

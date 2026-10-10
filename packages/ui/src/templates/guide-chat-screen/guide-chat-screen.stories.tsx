@@ -74,6 +74,7 @@ const history = [leaveConversation, suppliesConversation];
 
 const meta = {
   title: 'Templates/GuideChat',
+  tags: ['kit:ai'],
   component: GuideChatScreen,
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions(['#guide-chat/'])],

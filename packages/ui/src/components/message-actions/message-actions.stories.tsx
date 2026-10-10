@@ -9,7 +9,7 @@ import { MessageActions } from './message-actions';
 const meta = {
   title: 'AI/MessageActions',
   component: MessageActions,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: { onCopy: fn(), onFeedbackChange: fn() },
 } satisfies Meta<typeof MessageActions>;
 

@@ -71,6 +71,7 @@ function AllHistoryPage() {
 
 const meta = {
   title: 'Templates/AllHistory',
+  tags: ['kit:ai'],
   component: AllHistoryPage,
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions()],

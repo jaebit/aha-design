@@ -26,6 +26,8 @@ export interface CatalogComponent {
   component: string;
   slug: string;
   title: string;
+  /** 키트 id. 스토리 meta의 tags('kit:<id>')에서 오고, 없으면 core. */
+  kit: string;
   category: string;
   description: string;
   summary: string;
@@ -40,6 +42,13 @@ export interface CatalogTemplate extends Omit<CatalogComponent, 'category'> {
   group: string;
   /** 템플릿 스토리 파일 전체 소스. */
   source: string;
+}
+
+/** 공통(core) 또는 도메인 키트. 각 패키지의 catalog.config.json에 정의한다. */
+export interface CatalogKit {
+  id: string;
+  label: string;
+  description: string;
 }
 
 export interface CatalogCategory {
@@ -62,6 +71,7 @@ export interface CatalogToken {
 export interface Catalog {
   generatedAt: string;
   packages: Record<'ui' | 'tokens', { name: string; version: string }>;
+  kits: CatalogKit[];
   categories: CatalogCategory[];
   components: CatalogComponent[];
   templates: CatalogTemplate[];

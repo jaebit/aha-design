@@ -13,7 +13,7 @@ const options = [
 const meta = {
   title: 'AI/ChoiceCardGroup',
   component: ChoiceCardGroup,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: { label: '검토 기준', options, onValueChange: fn() },
   decorators: [
     (Story) => (
