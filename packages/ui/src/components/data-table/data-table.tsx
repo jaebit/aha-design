@@ -73,7 +73,7 @@ export function DataTable<Row>({
     onSelectedIdsChange?.(checked ? [...(selectedIds ?? []), id] : (selectedIds ?? []).filter((v) => v !== id));
   const colSpan = visible.length + (selectable ? 1 : 0);
   return (
-    <div data-slot="data-table" className={cn('flex flex-col', className)}>
+    <div data-slot="data-table" className={cn('relative flex flex-col', className)}>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left">
           <caption className="sr-only">{caption}</caption>

@@ -111,7 +111,7 @@ export function StackedColumnChart({
   const activeDatum = active ? data[active.index] : undefined;
 
   return (
-    <figure data-slot="stacked-column-chart" aria-labelledby={titleId} className={cn('flex flex-col gap-4', className)}>
+    <figure data-slot="stacked-column-chart" aria-labelledby={titleId} className={cn('relative flex flex-col gap-4', className)}>
       <figcaption id={titleId} className="sr-only">
         {title}
       </figcaption>

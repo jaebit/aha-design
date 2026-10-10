@@ -145,7 +145,7 @@ export function SidebarNavItem({ href, label, icon, active = false, count, exter
         target={external ? '_blank' : undefined}
         rel={external ? 'noreferrer' : undefined}
         className={cn(
-          'flex h-11 items-center gap-3 rounded-md px-3 text-body text-foreground transition-colors hover:bg-accent aria-[current=page]:bg-muted aria-[current=page]:font-semibold [&_svg]:size-4.5 [&_svg]:shrink-0',
+          'relative flex h-11 items-center gap-3 rounded-md px-3 text-body text-foreground transition-colors hover:bg-accent aria-[current=page]:bg-muted aria-[current=page]:font-semibold [&_svg]:size-4.5 [&_svg]:shrink-0',
           className,
         )}
         {...props}

@@ -52,7 +52,7 @@ export function Heatmap({
   const activeValue = active ? values[active.row]?.[active.column] ?? 0 : 0;
 
   return (
-    <figure data-slot="heatmap" aria-labelledby={titleId} className={cn('flex flex-col gap-4', className)}>
+    <figure data-slot="heatmap" aria-labelledby={titleId} className={cn('relative flex flex-col gap-4', className)}>
       <figcaption id={titleId} className="sr-only">
         {title}
       </figcaption>
