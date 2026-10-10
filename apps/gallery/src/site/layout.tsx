@@ -12,16 +12,19 @@ import {
 import { BookOpen, Boxes, ChevronDown, Menu, Monitor, Moon, Sun } from 'lucide-react';
 import type { ReactNode } from 'react';
 
+import { site } from '../../site.config';
 import { catalog } from '../lib/catalog';
 import { domainKits, kitById, useKit } from '../lib/kit';
 import { Link, navigate, useLocation } from '../lib/router';
 import { type ThemeChoice, useTheme } from '../lib/theme';
+import { SiteLogo } from './logo';
 
+// 도메인 키트나 템플릿이 없는 디자인 시스템이면 그 메뉴를 감춘다.
 const nav = [
   { href: '/start', label: '시작하기' },
-  { href: '/kits', label: '키트' },
+  ...(domainKits.length > 0 ? [{ href: '/kits', label: '키트' }] : []),
   { href: '/components', label: '컴포넌트' },
-  { href: '/templates', label: '화면 템플릿' },
+  ...(catalog.templates.length > 0 ? [{ href: '/templates', label: '화면 템플릿' }] : []),
   { href: '/foundations', label: '디자인 기초' },
 ];
 
@@ -116,8 +119,8 @@ function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2 font-semibold text-body">
-          <span aria-hidden>💡</span>
-          AHA 디자인
+          <SiteLogo />
+          {site.title}
           <Badge variant="soft">v{catalog.packages.ui.version}</Badge>
         </Link>
         <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
@@ -145,7 +148,7 @@ function SiteHeader() {
               Storybook
             </a>
           </Button>
-          <KitMenu />
+          {domainKits.length > 0 ? <KitMenu /> : null}
           <ThemeMenu />
           <MobileMenu />
           <Button size="sm" asChild className="hidden sm:inline-flex">
@@ -162,7 +165,8 @@ function SiteFooter() {
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 text-body-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
-          <span aria-hidden>💡 </span>AHA 사내 디자인 시스템 · {catalog.packages.ui.name} v{catalog.packages.ui.version}
+          <SiteLogo className="mr-1 inline align-[-0.2em]" />
+          {site.fullName} · {catalog.packages.ui.name} v{catalog.packages.ui.version}
         </p>
         <nav aria-label="바닥글" className="flex flex-wrap gap-4">
           {nav.map((item) => (
@@ -173,7 +177,7 @@ function SiteFooter() {
           <a href="/storybook/" className="hover:text-foreground">
             Storybook
           </a>
-          <a href="http://localhost:3000/jay/design-hub" className="hover:text-foreground">
+          <a href={site.repoUrl} className="hover:text-foreground">
             저장소
           </a>
         </nav>

@@ -87,7 +87,8 @@ export function TemplateDetailPage({ slug }: { slug: string }) {
   const [storyIndex, setStoryIndex] = useState(0);
   const [viewport, setViewport] = useState<(typeof viewports)[number]['id']>('desktop');
   const [showSource, setShowSource] = useState(false);
-  const recommended: Density = kitById(template?.kit)?.density ?? 'default';
+  // 템플릿에 적힌 밀도가 먼저, 없으면 키트의 밀도. 공통 템플릿은 화면마다 다를 수 있다 (예: 로그인은 기본, 관리 콘솔은 촘촘하게).
+  const recommended: Density = template?.density ?? kitById(template?.kit)?.density ?? 'default';
   const [density, setDensity] = useState<Density>(recommended);
   if (!template) return <NotFoundPage />;
 

@@ -2,9 +2,10 @@
 // 보는 사람마다의 편의 설정이라 브라우저 저장소에만 둔다 (없거나 막혀 있으면 "전체").
 import { createContext, type ReactNode, useContext, useState } from 'react';
 
+import { site } from '../../site.config';
 import { catalog } from './catalog';
 
-const STORAGE_KEY = 'aha-gallery-kit';
+const STORAGE_KEY = `${site.id}-gallery-kit`;
 const domainKits = catalog.kits.filter((k) => k.id !== 'core');
 
 function readKit(): string | null {

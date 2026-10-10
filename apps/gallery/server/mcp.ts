@@ -2,24 +2,41 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
+import { site } from '../site.config.ts';
 import { type Catalog, type CatalogComponent, type CatalogTemplate, type CatalogToken, inKit, kitOf, tokenClass } from '../src/catalog-types.ts';
 
 export interface McpContext {
   catalog: Catalog;
   /** 갤러리 주소. 결과에 사람이 볼 링크를 붙인다. */
   publicUrl: string;
-  /** @aha 패키지를 받는 npm 레지스트리 주소. */
+  /** 디자인 시스템 패키지를 받는 npm 레지스트리 주소. */
   registry: string;
 }
 
-const instructions = `AHA 사내 디자인 시스템. 공통 부품은 @aha/ui, 도메인 부품은 키트 패키지(@aha/kit-admin, @aha/kit-ai 등), 토큰은 @aha/tokens.
-- 먼저 프로젝트를 정한다: 프로젝트의 package.json에 설치된 @aha/kit-* 가 그 프로젝트의 키트다 (@aha/kit-admin → kit "admin"). 없으면 list_kits로 고르거나 사용자에게 묻는다.
-- list_components, search, list_templates에 kit을 넘기면 공통 + 그 키트만 나온다. 다른 키트 부품을 가져다 쓰지 않는다. 꼭 필요하면 사용자에게 그 키트 설치를 먼저 묻는다.
-- 컴포넌트는 get_component가 알려 주는 import 문 그대로 가져온다. 그 패키지가 프로젝트에 없으면 get_setup_guide(kit)를 보고 설치한다.
-- 화면을 만들기 전에 list_components 또는 search로 이미 있는 컴포넌트를 찾고, get_component로 props와 예제를 읽은 뒤 그대로 쓴다. 있는 것을 새로 만들지 않는다.
-- 화면 전체가 필요하면 list_templates와 get_template으로 비슷한 화면부터 가져온다.
-- 새 프로젝트에 설치하거나 규칙이 궁금하면 get_setup_guide를 읽는다.
-- 색·글자 크기·모서리는 get_tokens의 시맨틱 토큰 클래스만 쓴다 (hex, rgb(), 임의값 금지).`;
+/** 도메인 키트(공통 제외). 없으면 MCP 안내와 도구에서 키트 이야기를 뺀다. */
+const domainKitsOf = (catalog: Catalog) => catalog.kits.filter((k) => k.id !== 'core');
+
+function instructions(catalog: Catalog) {
+  const { ui, tokens } = catalog.packages;
+  const kits = domainKitsOf(catalog);
+  const example = kits[0];
+  const kitLines = example
+    ? [
+        `- 먼저 프로젝트를 정한다: 프로젝트의 package.json에 설치된 ${site.scope}/kit-* 가 그 프로젝트의 키트다 (${example.package.name} → kit "${example.id}"). 없으면 list_kits로 고르거나 사용자에게 묻는다.`,
+        '- list_components, search, list_templates에 kit을 넘기면 공통 + 그 키트만 나온다. 다른 키트 부품을 가져다 쓰지 않는다. 꼭 필요하면 사용자에게 그 키트 설치를 먼저 묻는다.',
+      ]
+    : [];
+  return [
+    `${site.fullName}. 공통 부품은 ${ui.name}${kits.length > 0 ? `, 도메인 부품은 키트 패키지(${kits.map((k) => k.package.name).join(', ')})` : ''}, 토큰은 ${tokens.name}.`,
+    `- 다른 디자인 시스템의 부품(이름이 ${site.scope}/로 시작하지 않는 디자인 패키지)과 섞지 않는다.`,
+    ...kitLines,
+    `- 컴포넌트는 get_component가 알려 주는 import 문 그대로 가져온다. 그 패키지가 프로젝트에 없으면 get_setup_guide${kits.length > 0 ? '(kit)' : ''}를 보고 설치한다.`,
+    '- 화면을 만들기 전에 list_components 또는 search로 이미 있는 컴포넌트를 찾고, get_component로 props와 예제를 읽은 뒤 그대로 쓴다. 있는 것을 새로 만들지 않는다.',
+    ...(catalog.templates.length > 0 ? ['- 화면 전체가 필요하면 list_templates와 get_template으로 비슷한 화면부터 가져온다.'] : []),
+    '- 새 프로젝트에 설치하거나 규칙이 궁금하면 get_setup_guide를 읽는다.',
+    '- 색·글자 크기·모서리는 get_tokens의 시맨틱 토큰 클래스만 쓴다 (hex, rgb(), 임의값 금지).',
+  ].join('\n');
+}
 
 const text = (value: string) => ({ content: [{ type: 'text' as const, text: value }] });
 
@@ -56,7 +73,7 @@ function packageLine(catalog: Catalog, item: CatalogComponent | CatalogTemplate)
   if (!kit) return '';
   return kit.id === 'core'
     ? `패키지: \`${kit.package.name}\` (공통)`
-    : `패키지: \`${kit.package.name}\` (${kit.label} 키트). 공통 부품은 \`@aha/ui\`에서 가져온다.`;
+    : `패키지: \`${kit.package.name}\` (${kit.label} 키트). 공통 부품은 \`${catalog.packages.ui.name}\`에서 가져온다.`;
 }
 
 function componentDoc(component: CatalogComponent, ctx: McpContext) {
@@ -86,12 +103,17 @@ function templateDoc(template: CatalogTemplate, ctx: McpContext) {
     template.summary,
     `갤러리: ${ctx.publicUrl}/templates/${template.slug}`,
     packageLine(ctx.catalog, template),
+    (template.density ?? kitOf(ctx.catalog, template)?.density) === 'compact'
+      ? '이 화면은 촘촘한 밀도로 쓴다: `<html data-density="compact">`.'
+      : '',
     '## 전체 소스',
     'Storybook 스토리 파일이다. 옮겨 쓸 때 `Meta`/`StoryObj`/`withLinkActions` 같은 Storybook 전용 코드는 빼고, 페이지 함수만 가져간다. `./fixtures`의 예시 데이터는 아래에 있다.',
     `\`\`\`tsx\n${template.source}\n\`\`\``,
     '## fixtures.tsx (예시 데이터)',
     `\`\`\`tsx\n${ctx.catalog.templateFixtures[template.kit] ?? ''}\n\`\`\``,
-  ].join('\n\n');
+  ]
+    .filter(Boolean)
+    .join('\n\n');
 }
 
 const tokenGroups = {
@@ -115,7 +137,7 @@ function tokensDoc(catalog: Catalog, group: keyof typeof tokenGroups | 'all') {
     return [`## ${g}`, '', '| 토큰 | 클래스 | 라이트 | 다크 | 용도 |', '| --- | --- | --- | --- | --- |', ...rows].join('\n');
   });
   return [
-    '# AHA 디자인 토큰',
+    `# ${site.name} 디자인 토큰`,
     '컴포넌트와 화면에서는 클래스 열의 Tailwind 클래스만 쓴다. 다크 값은 테마가 자동으로 바꾸므로 분기하지 않는다.',
     ...sections,
   ].join('\n\n');
@@ -127,34 +149,43 @@ function setupGuide(ctx: McpContext, kit?: string) {
   const kitList = kits
     .map((k) => `   - **${k.label}** — ${k.description}\n     설치 \`pnpm add ${k.package.name}@^${k.package.version}\`, CSS \`@import "${k.package.name}/styles.css";\``)
     .join('\n');
-  return `# AHA 디자인 시스템 설치와 규칙
+  const extra = site.extraRules
+    .map((rule) => [`## ${rule.title}`, '', ...rule.items.map((item, i) => `${i + 1}. ${item}`)].join('\n'))
+    .join('\n\n');
+  return `# ${site.name} 디자인 시스템 설치와 규칙
 
 ## 새 React 프로젝트에 설치 (Vite + Tailwind v4)
 
 1. 프로젝트 루트에 \`.npmrc\`를 만든다.
    \`\`\`
-   @aha:registry=${ctx.registry}
+   ${site.scope}:registry=${ctx.registry}
    \`\`\`
 2. 패키지를 설치한다.
    \`\`\`sh
    pnpm add ${ui.name}@^${ui.version} ${tokens.name}@^${tokens.version} lucide-react
    pnpm add -D tailwindcss @tailwindcss/vite
    \`\`\`
-   화면에 도메인 키트 부품이 필요하면 그 키트만 설치한다. get_component 결과의 "패키지" 줄로 어느 키트인지 안다.
-${kitList}
-3. \`vite.config.ts\`의 plugins에 \`tailwindcss()\` (from \`@tailwindcss/vite\`)를 추가한다.
+${
+  kits.length > 0
+    ? `   화면에 도메인 키트 부품이 필요하면 그 키트만 설치한다. get_component 결과의 "패키지" 줄로 어느 키트인지 안다.\n${kitList}\n`
+    : ''
+}3. \`vite.config.ts\`의 plugins에 \`tailwindcss()\` (from \`@tailwindcss/vite\`)를 추가한다.
 4. 앱의 메인 CSS(예: \`src/index.css\`)를 아래 한 줄로 시작한다. Tailwind, 토큰, Pretendard 서체가 함께 들어온다. \`@import "tailwindcss"\`를 따로 쓰지 않는다.
    \`\`\`css
-   @import "@aha/ui/styles.css";
+   @import "${ui.name}/styles.css";
    \`\`\`
-   설치한 키트마다 바로 다음 줄에 키트 CSS를 추가한다 (키트 컴포넌트의 클래스를 생성 대상에 넣는다). 예:
+${
+  kits.length > 0
+    ? `   설치한 키트마다 바로 다음 줄에 키트 CSS를 추가한다 (키트 컴포넌트의 클래스를 생성 대상에 넣는다). 예:
    \`\`\`css
-   @import "@aha/ui/styles.css";
-   @import "${kits[0]?.package.name ?? '@aha/kit-이름'}/styles.css";
+   @import "${ui.name}/styles.css";
+   @import "${kits[0]?.package.name}/styles.css";
    \`\`\`
-5. Tooltip을 쓰는 화면은 앱 루트를 \`<TooltipProvider>\`로 감싼다 (AppShell은 이미 포함).
+`
+    : ''
+}5. Tooltip을 쓰는 화면은 앱 루트를 \`<TooltipProvider>\`로 감싼다 (AppShell은 이미 포함).
 6. 다크 모드는 OS 설정을 자동으로 따른다. 고정하려면 \`<html data-theme="light">\` 또는 \`"dark"\`.
-7. 관리자 화면처럼 한 화면에 많은 행과 입력을 보여야 하면 \`<html data-density="compact">\`로 촘촘한 밀도를 켠다. 간격만 줄고 글자 크기와 색은 그대로다. 관리자 키트(@aha/kit-admin) 템플릿은 이 밀도 기준이다. 컴포넌트에 간격을 따로 줄이는 클래스를 넣지 않는다.
+7. ${site.densityGuide}
 
 ## UI 규칙
 
@@ -162,12 +193,12 @@ ${kitList}
 2. 색은 시맨틱 토큰 클래스만 쓴다 (\`bg-primary\`, \`text-muted-foreground\`, \`border-border\`). hex, \`rgb()\`, \`bg-[#...]\` 금지.
 3. 글자 크기는 \`text-caption | text-body-sm | text-body | text-heading | text-title | text-display\`. \`text-sm\`, \`text-lg\` 같은 Tailwind 기본 크기는 쓰지 않는다.
 4. 모서리는 \`rounded-sm | md | lg | xl | full\`만 쓴다.
-5. 상태는 \`tone\`으로 표시한다 (\`<Badge tone="warning">일부 품질 저하</Badge>\`, StatCard \`delta.tone\`). 상태를 색만으로 전달하지 않는다.
+5. 상태는 \`tone\`으로 표시한다 (${site.statusExample}). 상태를 색만으로 전달하지 않는다.
 6. 차트 색은 \`chart-1\`부터 순서대로, 6개까지. 범례와 표 보기를 함께 둔다.
 7. 아이콘은 \`lucide-react\`. 아이콘만 있는 버튼에는 \`aria-label\`을 준다.
 8. 텍스트 입력에서 한글 조합 중 Enter(\`event.nativeEvent.isComposing\`)를 제출로 처리하지 않는다.
 
-갤러리: ${ctx.publicUrl}`;
+${extra ? `${extra}\n\n` : ''}갤러리: ${ctx.publicUrl}`;
 }
 
 function kitsDoc(catalog: Catalog) {
@@ -185,10 +216,14 @@ function kitsDoc(catalog: Catalog) {
       .join('\n');
   });
   return [
-    '# AHA 키트',
-    '모든 프로젝트는 공통(core, @aha/ui)을 쓰고, 화면 종류에 맞는 키트를 하나 더 설치한다. 프로젝트의 package.json에 설치된 @aha/kit-*가 그 프로젝트의 키트다.',
+    `# ${site.name} 키트`,
+    domainKitsOf(catalog).length > 0
+      ? `모든 프로젝트는 공통(core, ${catalog.packages.ui.name})을 쓰고, 화면 종류에 맞는 키트를 하나 더 설치한다. 프로젝트의 package.json에 설치된 ${site.scope}/kit-*가 그 프로젝트의 키트다.`
+      : `아직 도메인 키트가 없다. 모든 프로젝트는 공통(core, ${catalog.packages.ui.name})만 설치한다.`,
     ...rows,
-    'list_components, search, list_templates에 kit id를 넘기면 공통 + 그 키트만 본다. 설치 방법은 get_setup_guide(kit).',
+    domainKitsOf(catalog).length > 0
+      ? 'list_components, search, list_templates에 kit id를 넘기면 공통 + 그 키트만 본다. 설치 방법은 get_setup_guide(kit).'
+      : '설치 방법은 get_setup_guide.',
   ].join('\n\n');
 }
 
@@ -222,21 +257,30 @@ function search(catalog: Catalog, query: string, kit?: string) {
 export function createMcpServer(ctx: McpContext) {
   const { catalog } = ctx;
   const server = new McpServer(
-    { name: 'aha-design', title: 'AHA 디자인 시스템', version: catalog.packages.ui.version },
-    { instructions },
+    { name: site.mcpName, title: `${site.name} 디자인 시스템`, version: catalog.packages.ui.version },
+    { instructions: instructions(catalog) },
   );
   const readOnly = { readOnlyHint: true, openWorldHint: false };
-  const kitIds = catalog.kits.filter((k) => k.id !== 'core').map((k) => k.id) as [string, ...string[]];
+  // 도구 설명의 예시 이름. site.config의 대표 컴포넌트·템플릿에서 고른다.
+  const featured = site.featuredComponents
+    .map((f) => catalog.components.find((c) => c.slug === f.slug))
+    .filter((c) => c !== undefined);
+  const componentExamples = [...featured.slice(0, 2).map((c) => c.name), featured[0]?.slug].filter(Boolean).join(', ');
+  const templateExample =
+    catalog.templates.find((t) => t.slug === site.featuredTemplates[0]) ?? catalog.templates[0];
+  const kitIds = domainKitsOf(catalog).map((k) => k.id);
   const kitArg = z
-    .enum(kitIds)
+    .enum((kitIds.length > 0 ? kitIds : ['core']) as [string, ...string[]])
     .optional()
-    .describe('키트 id. 주면 공통 + 그 키트만 본다. 프로젝트 package.json의 @aha/kit-*로 정한다. 생략하면 전체');
+    .describe(`키트 id. 주면 공통 + 그 키트만 본다. 프로젝트 package.json의 ${site.scope}/kit-*로 정한다. 생략하면 전체`);
+  // 도메인 키트가 없으면 도구가 kit 인자를 받지 않는다. 타입은 같게 두고 실행 시에만 뺀다 (값은 늘 undefined).
+  const kitShape = (kitIds.length > 0 ? { kit: kitArg } : {}) as { kit: typeof kitArg };
 
   server.registerTool(
     'list_kits',
     {
       title: '키트 목록',
-      description: '공통(core)과 도메인 키트(관리자, AI 서비스 등)의 패키지, 설명, 부품 수, 기본 밀도. 어떤 키트로 만들지 정할 때 먼저 본다.',
+      description: `공통(core)${kitIds.length > 0 ? `과 도메인 키트(${domainKitsOf(catalog).map((k) => k.label).join(', ')})` : ''}의 패키지, 설명, 부품 수, 기본 밀도. 어떤 키트로 만들지 정할 때 먼저 본다.`,
       annotations: readOnly,
     },
     () => text(kitsDoc(catalog)),
@@ -246,10 +290,10 @@ export function createMcpServer(ctx: McpContext) {
     'list_components',
     {
       title: '컴포넌트 목록',
-      description: 'AHA 디자인 시스템의 컴포넌트를 분류별로 나열한다. 화면을 만들기 전에 먼저 호출한다.',
+      description: `${site.name} 디자인 시스템의 컴포넌트를 분류별로 나열한다. 화면을 만들기 전에 먼저 호출한다.`,
       inputSchema: {
         category: z.enum(catalog.categories.map((c) => c.id) as [string, ...string[]]).optional().describe('분류 id. 생략하면 전체'),
-        kit: kitArg,
+        ...kitShape,
       },
       annotations: readOnly,
     },
@@ -271,7 +315,7 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '컴포넌트 상세',
       description: '컴포넌트 하나의 설명, import 문, props 표, 사용 예제 코드를 돌려준다.',
-      inputSchema: { name: z.string().describe('컴포넌트 이름. 예: Badge, ResultCard, data-table') },
+      inputSchema: { name: z.string().describe(`컴포넌트 이름 또는 slug. 예: ${componentExamples}`) },
       annotations: readOnly,
     },
     ({ name }) => {
@@ -286,7 +330,7 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '검색',
       description: '하고 싶은 일이나 화면 요소로 컴포넌트와 템플릿을 찾는다. 예: "파일 업로드", "상태 표시", "표 페이지 이동".',
-      inputSchema: { query: z.string().describe('찾을 내용 (한국어 또는 영어)'), kit: kitArg },
+      inputSchema: { query: z.string().describe('찾을 내용 (한국어 또는 영어)'), ...kitShape },
       annotations: readOnly,
     },
     ({ query, kit }) => text(search(catalog, query, kit)),
@@ -297,11 +341,13 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '화면 템플릿 목록',
       description: '컴포넌트를 조합한 완성 화면 예시를 나열한다. 새 화면을 만들 때 가장 비슷한 것부터 고른다.',
-      inputSchema: { kit: kitArg },
+      inputSchema: { ...kitShape },
       annotations: readOnly,
     },
     ({ kit }) =>
-      text(
+      catalog.templates.length === 0
+        ? text('아직 화면 템플릿이 없습니다. list_components와 get_component의 예제로 화면을 만든다.')
+        : text(
         catalog.templates
           .filter((t) => inKit(t, kit))
           .map((t) => `- **${t.label}** (\`${t.name}\`, ${kitOf(catalog, t)?.label ?? t.group}) — ${t.summary}`)
@@ -315,7 +361,7 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '화면 템플릿 소스',
       description: '템플릿 화면의 전체 소스 코드와 예시 데이터를 돌려준다.',
-      inputSchema: { name: z.string().describe('템플릿 이름 또는 라벨. 예: AdminDashboardPage, 관리자 대시보드') },
+      inputSchema: { name: z.string().describe(`템플릿 이름 또는 라벨.${templateExample ? ` 예: ${templateExample.name}, ${templateExample.label}` : ''}`) },
       annotations: readOnly,
     },
     ({ name }) => {
@@ -340,8 +386,8 @@ export function createMcpServer(ctx: McpContext) {
     'get_setup_guide',
     {
       title: '설치와 규칙',
-      description: '새 React 프로젝트에 AHA 디자인 시스템을 설치하는 방법과 UI 작성 규칙. kit을 주면 그 키트 설치만 안내한다.',
-      inputSchema: { kit: kitArg },
+      description: `새 React 프로젝트에 ${site.name} 디자인 시스템을 설치하는 방법과 UI 작성 규칙.${kitIds.length > 0 ? ' kit을 주면 그 키트 설치만 안내한다.' : ''}`,
+      inputSchema: { ...kitShape },
       annotations: readOnly,
     },
     ({ kit }) => text(setupGuide(ctx, kit)),

@@ -3,6 +3,7 @@ import { ChevronRight, Code, ExternalLink, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 import { type CatalogComponent, type CatalogStory, type Density, kitOf } from '../catalog-types';
+import { site } from '../../site.config';
 import { catalog, categoryLabel } from '../lib/catalog';
 import { componentPrompt } from '../lib/prompt';
 import { Link } from '../lib/router';
@@ -140,7 +141,7 @@ export function ComponentDetailPage({ slug }: { slug: string }) {
             <CopyButton value={component.import} label="import 복사" size="md" />
           </div>
           <Callout title="에이전트에게 이렇게 맡기세요">
-            프롬프트를 복사해 Claude Code나 Cursor에 붙여넣고, 대괄호 안에 만들고 싶은 화면을 적으세요. 에이전트가 aha-design MCP로 이
+            프롬프트를 복사해 Claude Code나 Cursor에 붙여넣고, 대괄호 안에 만들고 싶은 화면을 적으세요. 에이전트가 {site.mcpName} MCP로 이
             컴포넌트의 사용법을 확인하고 같은 디자인으로 만듭니다. <Link href="/start" className="font-semibold underline underline-offset-4">연결 방법</Link>
           </Callout>
         </header>

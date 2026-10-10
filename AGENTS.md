@@ -11,7 +11,7 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 | `packages/ui` | 공통 React 컴포넌트(`@aha/ui`) + Storybook 10 (`@storybook/addon-mcp`). Storybook은 여기 하나만 두고 키트 스토리까지 함께 싣는다. `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
 | `packages/kit-*` | 도메인 키트 패키지. `kit-ai`(`@aha/kit-ai`): AI 대화 부품과 화면 템플릿. `kit-admin`(`@aha/kit-admin`): 관리 화면의 폼·상세·일괄 작업·권한 부품과 템플릿. `kit-dashboard`(`@aha/kit-dashboard`): 선·도넛·히트맵 차트, 기간 선택, 위젯 그리드와 대시보드 템플릿. 키트 차트도 공통 차트 규칙(chart-1부터, 범례, 표로 보기)을 따른다 빌드 방식은 `packages/ui`와 같고, `@aha/ui`를 peer 의존성으로 둔다 |
 | `packages/*/catalog.config.json` | 갤러리·MCP 카탈로그 메타데이터: 키트 목록, 분류(Storybook 제목 첫 단계 → 갤러리 분류), 템플릿 이름·설명 |
-| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). 상단 키트 메뉴로 목록을 "공통 + 고른 키트"로 좁히고, `/kits/<id>`에 키트 소개가 있다. MCP의 `list_kits`와 `kit` 인자도 같은 카탈로그의 키트 정보를 쓴다. Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다 |
+| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). 상단 키트 메뉴로 목록을 "공통 + 고른 키트"로 좁히고, `/kits/<id>`에 키트 소개가 있다. MCP의 `list_kits`와 `kit` 인자도 같은 카탈로그의 키트 정보를 쓴다. Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다. 디자인 시스템 이름·로고·npm 범위·MCP 이름·레지스트리·포트·화면 문구는 `apps/gallery/site.config.ts` 한 곳에 둔다. 다른 디자인 시스템(iam-design)은 이 갤러리 코드를 가져가 이 파일만 바꿔 쓰므로, 갤러리·MCP 코드에 AHA 문구를 직접 쓰지 않는다 |
 | `ci/jenkins/` | 로컬 Jenkins 파이프라인 원본(`Jenkinsfile.ci` 검사, `Jenkinsfile.release` 수동 배포). job에는 인라인으로 들어가므로 바꾸면 forgejo-platform의 `setup-design-hub.py --update-jobs`로 반영한다 |
 | `Dockerfile`, `compose.yaml` | 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 띄운다 (포트 4100) |
 | `scripts/check-tokens.mjs` | 하드코딩 색상 검사 |
@@ -70,7 +70,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 템플릿은 키트 패키지의 `src/templates/`에 둔다. 템플릿 스토리도 컴포넌트를 `@aha/ui`·`@aha/kit-<id>`에서 import한다. MCP `get_template`이 이 파일을 그대로 에이전트에 준다.
 - 키트에 속한 컴포넌트와 템플릿은 스토리 meta에 `tags: ['autodocs', 'kit:<id>']`를 단다 (지금은 `packages/kit-ai`의 부품과 템플릿이 `kit:ai`). 태그가 없으면 core다. 키트 id는 그 키트 패키지의 `catalog.config.json`의 `kits`에 있어야 하며, 없으면 카탈로그 빌드가 실패한다.
 - 새 키트 패키지를 만들 때: `packages/kit-ai`를 본떠 `package.json`(peer `@aha/ui`), `vite.lib.config.ts`, `tsconfig*.json`, `src/styles.css`(`@source "./";`), `catalog.config.json`(키트·분류·템플릿)을 두고, 갤러리(`apps/gallery`)의 devDependencies와 `src/styles.css`에 키트를 추가한다. Storybook, 카탈로그, `check:tokens`, 배포 스크립트는 `packages/kit-*`를 자동으로 찾는다.
-- 새 템플릿을 만들면 그 키트의 `catalog.config.json`의 `templates`에 이름(`label`), 묶음(`group`), 한 줄 설명을 추가한다.
+- 새 템플릿을 만들면 그 키트의 `catalog.config.json`의 `templates`에 이름(`label`), 묶음(`group`), 한 줄 설명을 추가한다. 키트 밀도와 다른 화면이면 `density`(`compact` 등)를 함께 적는다 (갤러리 권장 밀도·프롬프트·MCP 안내에 쓰인다).
 - 갤러리는 스토리를 직접 렌더링한다. `layout: 'fullscreen'` 스토리와 `defaultOpen`처럼 화면 위에 뜨는 요소가 있는 스토리는 Storybook iframe으로 보여준다. 스토리에서 `storybook/test`의 `fn`·`expect` 외의 Storybook 런타임 API를 쓰면 `apps/gallery/src/shims/`에 대체 구현을 추가한다.
 - 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 

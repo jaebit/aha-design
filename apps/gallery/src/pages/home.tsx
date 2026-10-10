@@ -2,6 +2,7 @@ import { Badge, Button, Card } from '@aha/ui';
 import { ArrowRight, Bot, ClipboardCopy, LayoutTemplate, MousePointerClick } from 'lucide-react';
 
 import { catalog, storyFrameUrl } from '../lib/catalog';
+import { site } from '../../site.config';
 import { Link } from '../lib/router';
 import { StoryPreview } from '../lib/story-preview';
 import { inKit } from '../catalog-types';
@@ -28,16 +29,9 @@ const steps = [
   },
 ];
 
-/** 홈에 보여줄 컴포넌트 미리보기. 분류마다 대표 하나씩. */
-const featured = [
-  { slug: 'badge', story: 'StatusTones' },
-  { slug: 'composer', story: undefined },
-  { slug: 'stat-card', story: undefined },
-  { slug: 'result-card', story: undefined },
-];
-
-/** 키트를 고르지 않았을 때 보여줄 대표 템플릿. */
-const defaultShots = ['guide-chat', 'service-usage', 'user-management'];
+/** 홈에 보여줄 컴포넌트 미리보기와, 키트를 고르지 않았을 때 보여줄 대표 템플릿 (site.config). */
+const featured = site.featuredComponents;
+const defaultShots = site.featuredTemplates;
 
 function Showcase() {
   const { resolved } = useTheme();
@@ -100,17 +94,18 @@ export function HomePage() {
               에이전트에게 맡기세요
             </h1>
             <p className="text-heading text-muted-foreground">
-              AHA의 사내 시스템은 같은 버튼, 같은 입력창, 같은 색을 씁니다. 마음에 드는 화면을 고르면 에이전트가 똑같은
-              디자인으로 만들어 줍니다.
+              {site.homeIntro}
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button size="lg" asChild>
-                <Link href="/templates">
-                  <LayoutTemplate aria-hidden />
-                  화면 템플릿 보기
-                </Link>
-              </Button>
-              <Button size="lg" variant="secondary" asChild>
+              {catalog.templates.length > 0 ? (
+                <Button size="lg" asChild>
+                  <Link href="/templates">
+                    <LayoutTemplate aria-hidden />
+                    화면 템플릿 보기
+                  </Link>
+                </Button>
+              ) : null}
+              <Button size="lg" variant={catalog.templates.length > 0 ? 'secondary' : 'primary'} asChild>
                 <Link href="/components">
                   컴포넌트 둘러보기
                   <ArrowRight aria-hidden />
@@ -157,6 +152,7 @@ export function HomePage() {
         </div>
       </section>
 
+      {domainKits.length > 0 ? (
       <section className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 sm:px-6" aria-labelledby="kits">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="flex flex-col gap-3">
@@ -180,6 +176,7 @@ export function HomePage() {
           ))}
         </div>
       </section>
+      ) : null}
 
       <section className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 sm:px-6" aria-labelledby="components">
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -187,7 +184,9 @@ export function HomePage() {
             <h2 id="components" className="text-title font-bold">
               {current ? `공통 + ${current.label} 컴포넌트 ${componentCount}개` : `컴포넌트 ${componentCount}개`}
             </h2>
-            <p className="text-body text-muted-foreground">실제로 동작하는 미리보기로 확인하세요. 화면 템플릿 {templateCount}개도 같은 부품으로 만들었습니다.</p>
+            <p className="text-body text-muted-foreground">
+              실제로 동작하는 미리보기로 확인하세요.{templateCount > 0 ? ` 화면 템플릿 ${templateCount}개도 같은 부품으로 만들었습니다.` : ''}
+            </p>
           </div>
           <Button variant="ghost" asChild>
             <Link href="/components">
@@ -226,7 +225,7 @@ export function HomePage() {
           <div className="flex flex-col gap-2">
             <h2 className="text-title font-bold">색, 글자, 다크 모드까지 정해져 있습니다</h2>
             <p className="text-body text-muted-foreground">
-              Pretendard 서체, 검정 기본색, 접근성 대비 4.5:1 이상. 다크 모드는 자동으로 따라옵니다.
+              {site.foundationsSummary}
             </p>
           </div>
           <Button variant="secondary" asChild>

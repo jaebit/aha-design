@@ -13,7 +13,7 @@ export function DensityToggle({ value, onChange, recommended }: { value: Density
       {options.map((option) => (
         <Chip key={option.value} selected={value === option.value} onClick={() => onChange(option.value)}>
           {option.label}
-          {recommended === option.value ? <span className="text-caption opacity-70"> · 권장</span> : null}
+          {recommended === option.value ? <span className="text-caption"> · 권장</span> : null}
         </Chip>
       ))}
     </div>

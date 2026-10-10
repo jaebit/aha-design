@@ -2,6 +2,7 @@ import { Badge, Button, Card } from '@aha/ui';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 
 import type { CatalogKit } from '../catalog-types';
+import { site } from '../../site.config';
 import { catalog, registryUrl } from '../lib/catalog';
 import { kitById, useKit } from '../lib/kit';
 import { Link, navigate } from '../lib/router';
@@ -65,7 +66,8 @@ function installCode(kit: CatalogKit) {
 }
 
 function cssCode(kit: CatalogKit) {
-  return kit.id === 'core' ? `@import "@aha/ui/styles.css";` : `@import "@aha/ui/styles.css";\n@import "${kit.package.name}/styles.css";`;
+  const base = `@import "${catalog.packages.ui.name}/styles.css";`;
+  return kit.id === 'core' ? base : `${base}\n@import "${kit.package.name}/styles.css";`;
 }
 
 export function KitDetailPage({ id }: { id: string }) {
@@ -111,8 +113,8 @@ export function KitDetailPage({ id }: { id: string }) {
           설치
         </h2>
         <p className="text-body text-muted-foreground">
-          프로젝트 루트의 <code className="font-mono">.npmrc</code>에 <code className="font-mono">@aha:registry={registryUrl}</code>를
-          두고 설치합니다. 에이전트에게 맡기면 aha-design MCP의 설치 안내를 보고 대신 합니다.
+          프로젝트 루트의 <code className="font-mono">.npmrc</code>에 <code className="font-mono">{site.scope}:registry={registryUrl}</code>를
+          두고 설치합니다. 에이전트에게 맡기면 {site.mcpName} MCP의 설치 안내를 보고 대신 합니다.
         </p>
         <div className="grid gap-4 lg:grid-cols-2">
           <CodeBlock code={installCode(kit)} label="터미널" />
