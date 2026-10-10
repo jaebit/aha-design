@@ -50,8 +50,8 @@
       "$description": "accent 배경 위 텍스트"
     },
     "destructive": {
-      "$value": "{color.red.600}",
-      "$description": "삭제처럼 되돌릴 수 없는 액션의 텍스트와 아이콘"
+      "$value": "{color.signal.critical-text}",
+      "$description": "삭제처럼 되돌릴 수 없는 액션의 텍스트와 아이콘. 상태 critical 글자색과 같다"
     },
     "destructive-foreground": {
       "$value": "{color.neutral.0}",

@@ -21,7 +21,15 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm typecheck`
 - `pnpm check:tokens` — 컴포넌트에 하드코딩된 색상이 없는지 검사
 - `pnpm check:mcp-docs` — Storybook을 띄운 상태에서, MCP가 내보내는 예제 코드의 import와 설명을 검사
+- `pnpm check:contrast` — 토큰을 빌드하고 라이트·다크의 글자/배경 대비(4.5:1)를 검사. 토큰 값을 바꾸면 반드시 돌린다
 - `pnpm build-storybook` — 정적 갤러리 빌드
+
+## 테마와 기본 결정 (2026-10-09 확정)
+
+- **브랜드:** 검정 primary를 유지하고 별도 브랜드 강조색은 두지 않는다. 브랜드는 로고(💡)로만 드러낸다.
+- **서체:** Pretendard. `@aha/ui/styles.css`가 `pretendard` 패키지의 dynamic subset 웹폰트를 불러온다. 외부 CDN을 쓰지 않는다.
+- **다크 모드:** 시스템 설정을 따르고, `<html data-theme="light|dark">`로 고정할 수 있다. 다크 값은 `packages/tokens/tokens/themes/dark.json`에 있으며 시맨틱 토큰만 덮어쓴다. 컴포넌트에서 테마별 분기를 쓰지 않는다 (시맨틱 토큰이 알아서 바뀐다).
+- **상태색:** `status-good|warning|serious|critical`은 아이콘·마크용, `status-*-foreground`는 글자용이다. 상태는 색만으로 전달하지 않고 아이콘 + 라벨과 함께 쓴다 (`<Badge tone="warning">일부 품질 저하</Badge>`). 라이트 모드의 warning·serious 아이콘은 배경 대비가 3:1 미만이므로, 라벨 글자가 반드시 상태를 말해야 한다.
 
 ## UI 작업 규칙
 
@@ -29,8 +37,9 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 2. **시맨틱 토큰만 쓴다.** 색상은 `bg-primary`, `text-muted-foreground`, `border-border` 같은 토큰 클래스만 쓴다. hex, `rgb()`, `bg-[#...]` 같은 임의값은 금지다 (`pnpm check:tokens`가 막는다). 원시 팔레트(`--aha-color-neutral-*`)를 컴포넌트에서 직접 참조하지 않는다.
 3. **글자 크기는 의미 이름을 쓴다.** `text-caption`, `text-body-sm`, `text-body`, `text-heading`, `text-title`, `text-display`. Tailwind 기본 크기(`text-sm`, `text-lg`)는 쓰지 않는다.
 4. **모서리는 토큰 스케일만 쓴다.** `rounded-sm|md|lg|xl|full`. 각 단계의 용도는 `packages/tokens/tokens/primitive/shape.json`의 `$description`에 있다.
-5. **차트 색은 `chart-1`부터 순서대로 배정한다.** 시리즈는 6개까지, 넘으면 "기타"로 묶는다. 시리즈 색을 텍스트에 쓰지 않고, 차트에는 범례와 표 보기를 함께 둔다. 차트 팔레트를 바꾸면 dataviz 검증 스크립트(`validate_palette.js`)로 다시 검증한다.
-6. **새 토큰이 필요하면** 컴포넌트에 값을 넣지 말고 `packages/tokens/tokens/semantic/*.json`에 `$description`(용도)과 함께 추가한 뒤 `src/tailwind.css`에 매핑한다.
+5. **상태는 `tone`으로 표시한다.** Badge·RiskItem은 `tone`, StatCard 변화량은 `delta.tone`을 쓴다. 상태색 클래스를 직접 조합하지 않는다.
+6. **차트 색은 `chart-1`부터 순서대로 배정한다.** 시리즈는 6개까지, 넘으면 "기타"로 묶는다. 시리즈 색을 텍스트에 쓰지 않고, 차트에는 범례와 표 보기를 함께 둔다. 차트 팔레트를 바꾸면 dataviz 검증 스크립트(`validate_palette.js`)로 라이트(#ffffff)·다크(#1a1a19) 배경 모두 다시 검증한다.
+7. **새 토큰이 필요하면** 컴포넌트에 값을 넣지 말고 `packages/tokens/tokens/semantic/*.json`에 `$description`(용도)과 함께 추가하고, 다크 값이 다르면 `tokens/themes/dark.json`에도 넣은 뒤 `src/tailwind.css`에 매핑한다. 원시 토큰과 시맨틱 토큰의 CSS 변수 이름이 겹치면 빌드가 실패한다. 글자색 토큰을 추가하면 `packages/tokens/check-contrast.mjs`의 검사 목록에도 넣는다.
 
 ## 컴포넌트 작성 규칙
 

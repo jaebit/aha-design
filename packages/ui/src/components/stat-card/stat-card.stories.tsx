@@ -6,7 +6,7 @@ const meta = {
   title: 'Data/StatCard',
   component: StatCard,
   tags: ['autodocs'],
-  args: { label: '요청 수', value: '1,284', delta: { value: '+12%', direction: 'up', period: '지난달 대비' } },
+  args: { label: '요청 수', value: '1,284', delta: { value: '+12%', direction: 'up', period: '지난달 대비', tone: 'good' } },
   decorators: [
     (Story) => (
       <div className="max-w-64">
@@ -36,8 +36,8 @@ export const KpiRow: Story = {
   ],
   render: () => (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      <StatCard label="요청 수" value="1,284" delta={{ value: '+12%', direction: 'up', period: '지난달 대비' }} />
-      <StatCard label="이용자 수" value="86명" delta={{ value: '−3%', direction: 'down', period: '지난달 대비' }} />
+      <StatCard label="요청 수" value="1,284" delta={{ value: '+12%', direction: 'up', period: '지난달 대비', tone: 'good' }} />
+      <StatCard label="이용자 수" value="86명" delta={{ value: '−3%', direction: 'down', period: '지난달 대비', tone: 'bad' }} />
       <StatCard label="성공률" value="98.2%" hint="실패 23건" />
       <StatCard label="예상 비용" value="약 $42.10" hint="토큰 3,512,000" />
     </div>

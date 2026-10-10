@@ -1,0 +1,54 @@
+{
+  "$description": "다크 테마. semantic 토큰 중 다크에서 값이 달라지는 것만 덮어쓴다. 시스템 설정(prefers-color-scheme: dark) 또는 <html data-theme=\"dark\">에서 적용된다.",
+  "color": {
+    "$type": "color",
+    "background": { "$value": "{color.neutral.900}" },
+    "foreground": { "$value": "{color.neutral.50}" },
+    "subtle": { "$value": "{color.neutral.950}" },
+    "muted": { "$value": "{color.neutral.800}" },
+    "muted-foreground": { "$value": "{color.neutral.400}" },
+    "primary": { "$value": "{color.neutral.50}", "$description": "다크에서는 주요 버튼이 밝은색으로 반전된다" },
+    "primary-foreground": { "$value": "{color.neutral.950}" },
+    "primary-hover": { "$value": "{color.neutral.300}" },
+    "secondary": { "$value": "{color.neutral.900}" },
+    "secondary-foreground": { "$value": "{color.neutral.50}" },
+    "accent": { "$value": "{color.neutral.800}" },
+    "accent-foreground": { "$value": "{color.neutral.50}" },
+    "destructive": { "$value": "{color.signal.critical-text-dark}" },
+    "destructive-foreground": { "$value": "{color.neutral.950}" },
+    "border": { "$value": "{color.neutral.800}" },
+    "border-strong": { "$value": "{color.neutral.100}" },
+    "input": { "$value": "{color.neutral.700}" },
+    "ring": { "$value": "{color.neutral.500}" },
+    "card": { "$value": "{color.neutral.900}" },
+    "card-foreground": { "$value": "{color.neutral.50}" },
+    "popover": { "$value": "{color.neutral.900}" },
+    "popover-foreground": { "$value": "{color.neutral.50}" },
+    "tooltip": { "$value": "{color.neutral.50}" },
+    "tooltip-foreground": { "$value": "{color.neutral.950}" },
+    "chart-1": { "$value": "{color.data-dark.blue}" },
+    "chart-2": { "$value": "{color.data-dark.orange}" },
+    "chart-3": { "$value": "{color.data-dark.aqua}" },
+    "chart-4": { "$value": "{color.data-dark.yellow}" },
+    "chart-5": { "$value": "{color.data-dark.magenta}" },
+    "chart-6": { "$value": "{color.data-dark.green}" },
+    "chart-grid": { "$value": "{color.neutral.800}" },
+    "chart-axis": { "$value": "{color.neutral.700}" },
+    "status-good-foreground": { "$value": "{color.signal.good-text-dark}" },
+    "status-warning-foreground": { "$value": "{color.signal.warning}" },
+    "status-serious-foreground": { "$value": "{color.signal.serious}" },
+    "status-critical-foreground": { "$value": "{color.signal.critical-text-dark}" }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "popover": {
+      "$value": {
+        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.5, "hex": "#000000" },
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 8, "unit": "px" },
+        "blur": { "value": 24, "unit": "px" },
+        "spread": { "value": 0, "unit": "px" }
+      }
+    }
+  }
+}

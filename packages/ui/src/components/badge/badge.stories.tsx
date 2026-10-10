@@ -43,3 +43,15 @@ export const Gallery: Story = {
     </div>
   ),
 };
+
+/** 상태 배지: 라벨 앞에 상태색 아이콘. 글자는 기본색 그대로 두고, 라벨이 상태를 말한다. */
+export const StatusTones: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge tone="good">완료</Badge>
+      <Badge tone="warning">일부 품질 저하</Badge>
+      <Badge tone="serious">보통</Badge>
+      <Badge tone="critical">높음</Badge>
+    </div>
+  ),
+};

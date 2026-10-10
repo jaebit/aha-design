@@ -2,7 +2,7 @@ export { cn } from './lib/cn';
 
 // 범용
 export { Avatar, type AvatarProps } from './components/avatar/avatar';
-export { Badge, badgeVariants, type BadgeProps } from './components/badge/badge';
+export { Badge, type BadgeProps, type BadgeTone, badgeVariants } from './components/badge/badge';
 export { Button, buttonVariants, type ButtonProps } from './components/button/button';
 export { Callout, type CalloutProps } from './components/callout/callout';
 export { Chip, type ChipProps } from './components/chip/chip';

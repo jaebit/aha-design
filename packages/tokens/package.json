@@ -13,9 +13,14 @@
     "./tailwind.css": "./src/tailwind.css",
     "./manifest.json": "./dist/tokens.manifest.json"
   },
-  "files": ["dist", "src", "tokens"],
+  "files": [
+    "dist",
+    "src",
+    "tokens"
+  ],
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "check:contrast": "node check-contrast.mjs"
   },
   "devDependencies": {
     "style-dictionary": "^5.6.0"

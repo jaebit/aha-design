@@ -8,6 +8,7 @@ interface TokenEntry {
   reference?: string;
   description?: string;
   layer: 'primitive' | 'semantic';
+  dark?: { value: unknown; reference?: string };
 }
 
 const tokens = manifest.tokens as TokenEntry[];
@@ -20,7 +21,8 @@ function TokenTable({ type, layer }: { type: string; layer: TokenEntry['layer'] 
         <tr className="border-b border-border text-left text-muted-foreground">
           <th className="py-2 pr-4 font-medium">미리보기</th>
           <th className="py-2 pr-4 font-medium">토큰</th>
-          <th className="py-2 pr-4 font-medium">참조</th>
+          <th className="py-2 pr-4 font-medium">참조 (라이트)</th>
+          <th className="py-2 pr-4 font-medium">참조 (다크)</th>
           <th className="py-2 font-medium">용도</th>
         </tr>
       </thead>
@@ -44,6 +46,7 @@ function TokenTable({ type, layer }: { type: string; layer: TokenEntry['layer'] 
             </td>
             <td className="py-2 pr-4 font-mono text-caption">{token.cssVar}</td>
             <td className="py-2 pr-4 font-mono text-caption text-muted-foreground">{token.reference ?? ''}</td>
+            <td className="py-2 pr-4 font-mono text-caption text-muted-foreground">{token.dark?.reference ?? ''}</td>
             <td className="py-2">{token.description ?? ''}</td>
           </tr>
         ))}
@@ -60,7 +63,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** 컴포넌트는 시맨틱 색상만 쓴다. Tailwind 클래스 이름은 토큰 이름과 같다 (예: `bg-primary`, `text-muted-foreground`). */
+/**
+ * 컴포넌트는 시맨틱 색상만 쓴다. Tailwind 클래스 이름은 토큰 이름과 같다 (예: `bg-primary`, `text-muted-foreground`).
+ * 툴바의 "테마"로 라이트·다크를 바꾸면 미리보기가 그 테마의 값으로 바뀐다.
+ */
 export const SemanticColors: Story = {
   render: () => <TokenTable type="color" layer="semantic" />,
 };

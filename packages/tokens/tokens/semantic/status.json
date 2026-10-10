@@ -1,0 +1,37 @@
+{
+  "color": {
+    "$type": "color",
+    "status-good": {
+      "$value": "{color.signal.good}",
+      "$description": "성공·정상 상태의 아이콘과 마크. 색만으로 상태를 전달하지 않고 아이콘 + 라벨과 함께 쓴다"
+    },
+    "status-warning": {
+      "$value": "{color.signal.warning}",
+      "$description": "주의 상태의 아이콘과 마크 (예: 일부 품질 저하). 흰 배경 대비가 낮아 글자에는 쓰지 않는다"
+    },
+    "status-serious": {
+      "$value": "{color.signal.serious}",
+      "$description": "심각 상태의 아이콘과 마크 (예: 리스크 보통). 글자에는 쓰지 않는다"
+    },
+    "status-critical": {
+      "$value": "{color.signal.critical}",
+      "$description": "위험·오류 상태의 아이콘과 마크 (예: 리스크 높음, 실패)"
+    },
+    "status-good-foreground": {
+      "$value": "{color.signal.good-text}",
+      "$description": "성공 상태 글자 (예: 지난달 대비 좋아진 변화량)"
+    },
+    "status-warning-foreground": {
+      "$value": "{color.signal.warning-text}",
+      "$description": "주의 상태 글자"
+    },
+    "status-serious-foreground": {
+      "$value": "{color.signal.serious-text}",
+      "$description": "심각 상태 글자"
+    },
+    "status-critical-foreground": {
+      "$value": "{color.signal.critical-text}",
+      "$description": "위험·오류 상태 글자 (예: 지난달 대비 나빠진 변화량, 오류 문구)"
+    }
+  }
+}

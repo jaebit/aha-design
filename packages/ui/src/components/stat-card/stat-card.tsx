@@ -10,6 +10,11 @@ export interface StatDelta {
   direction: 'up' | 'down' | 'flat';
   /** 비교 기간. 예: "지난달 대비". */
   period: string;
+  /**
+   * 변화가 좋은지 나쁜지. 방향(up/down)과 별개다 — 이용자 수 증가는 `good`, 실패 건수 증가는 `bad`.
+   * `good`/`bad`면 변화량 글자에 상태색을 입힌다. 생략하면 중립.
+   */
+  tone?: 'good' | 'bad' | 'neutral';
 }
 
 export interface StatCardProps {
@@ -28,7 +33,7 @@ const deltaIcon = { up: ArrowUpRight, down: ArrowDownRight, flat: ArrowRight };
 
 /**
  * KPI 카드 (20쪽 요청 수 · 이용자 수 · 성공률 · 예상 비용). 4개를 한 줄로 놓는다.
- * 변화 방향은 화살표 아이콘과 부호로 표시한다. 좋음/나쁨 상태색은 아직 정해지지 않아 색으로 구분하지 않는다.
+ * 변화 방향은 화살표 아이콘과 부호로, 좋고 나쁨은 `delta.tone`의 상태색으로 표시한다 (색만으로 전달하지 않도록 부호와 아이콘을 함께 둔다).
  */
 export function StatCard({ label, value, delta, hint, className }: StatCardProps) {
   const Icon = delta ? deltaIcon[delta.direction] : null;
@@ -37,9 +42,18 @@ export function StatCard({ label, value, delta, hint, className }: StatCardProps
       <span className="text-body-sm text-muted-foreground">{label}</span>
       <span className="text-title font-bold text-foreground">{value}</span>
       {delta && Icon ? (
-        <span className="flex items-center gap-1 text-body-sm text-muted-foreground">
+        <span
+          className={cn(
+            'flex items-center gap-1 text-body-sm text-muted-foreground',
+            delta.tone === 'good' && 'text-status-good-foreground',
+            delta.tone === 'bad' && 'text-status-critical-foreground',
+          )}
+        >
           <Icon aria-hidden className="size-4" />
-          {delta.period} <span className="font-semibold text-foreground">{delta.value}</span>
+          <span className="text-muted-foreground">{delta.period}</span>
+          <span className={cn('font-semibold', (!delta.tone || delta.tone === 'neutral') && 'text-foreground')}>
+            {delta.value}
+          </span>
         </span>
       ) : hint ? (
         <span className="text-body-sm text-muted-foreground">{hint}</span>
