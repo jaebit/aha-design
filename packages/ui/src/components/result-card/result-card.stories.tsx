@@ -9,7 +9,7 @@ import { ResultCard } from './result-card';
 const meta = {
   title: 'AI/ResultCard',
   component: ResultCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   decorators: [
     (Story) => (
       <div className="max-w-3xl">

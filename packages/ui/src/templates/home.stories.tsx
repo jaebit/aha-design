@@ -69,6 +69,7 @@ function HomePage() {
 
 const meta = {
   title: 'Templates/Home',
+  tags: ['kit:ai'],
   component: HomePage,
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions()],

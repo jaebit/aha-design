@@ -1,5 +1,15 @@
 {
   "$description": "다크 테마. semantic 토큰 중 다크에서 값이 달라지는 것만 덮어쓴다. 시스템 설정(prefers-color-scheme: dark) 또는 <html data-theme=\"dark\">에서 적용된다.",
+  "$extensions": {
+    "aha.theme": {
+      "label": "다크",
+      "attribute": "data-theme",
+      "value": "dark",
+      "colorScheme": "dark",
+      "media": "(prefers-color-scheme: dark)",
+      "mediaUnless": "light"
+    }
+  },
   "color": {
     "$type": "color",
     "background": { "$value": "{color.neutral.900}" },

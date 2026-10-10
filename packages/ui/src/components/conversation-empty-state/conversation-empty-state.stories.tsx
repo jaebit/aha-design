@@ -8,7 +8,7 @@ import { ConversationEmptyState } from './conversation-empty-state';
 const meta = {
   title: 'AI/ConversationEmptyState',
   component: ConversationEmptyState,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (

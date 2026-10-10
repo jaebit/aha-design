@@ -1,4 +1,5 @@
-// 빌드된 manifest로 라이트·다크 테마의 글자/배경 대비를 검사한다 (WCAG AA 4.5:1).
+// 빌드된 manifest로 기본(라이트)과 모든 테마(tokens/themes/*.json)의 글자/배경 대비를 검사한다 (WCAG AA 4.5:1).
+// 테마가 덮어쓰지 않은 토큰은 기본값으로 검사한다.
 // 토큰 값을 바꾸면 pnpm build 후 이 검사를 돌린다. 새 글자색 토큰을 추가하면 아래 pairs에도 추가한다.
 import { readFile } from 'node:fs/promises';
 
@@ -24,7 +25,7 @@ const pairs = [
 function color(name, mode) {
   const token = manifest.tokens.find((t) => t.name === `color.${name}`);
   if (!token) throw new Error(`토큰 없음: color.${name}`);
-  return mode === 'dark' && token.dark ? token.dark.value : token.value;
+  return token[mode]?.value ?? token.value;
 }
 
 function luminance(hex) {
@@ -40,7 +41,7 @@ function contrast(a, b) {
 }
 
 const failures = [];
-for (const mode of ['light', 'dark']) {
+for (const mode of manifest.themes) {
   let min = Infinity;
   for (const [fg, backgrounds] of pairs) {
     for (const bg of backgrounds) {

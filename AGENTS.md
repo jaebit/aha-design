@@ -9,6 +9,7 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 | `packages/tokens` | W3C DTCG 2025.10 토큰(`tokens/**/*.json`) → Style Dictionary 빌드 → `dist/tokens.css`, `dist/tokens.js`, `dist/tokens.manifest.json` |
 | `packages/tokens/src/tailwind.css` | 토큰 → Tailwind v4 `@theme` 매핑. 색상 이름은 shadcn/ui 규약을 따른다 |
 | `packages/ui` | React 컴포넌트 + Storybook 10 (`@storybook/addon-mcp`). `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
+| `packages/*/catalog.config.json` | 갤러리·MCP 카탈로그 메타데이터: 키트 목록, 분류(Storybook 제목 첫 단계 → 갤러리 분류), 템플릿 이름·설명 |
 | `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다 |
 | `Dockerfile`, `compose.yaml` | 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 띄운다 (포트 4100) |
 | `scripts/check-tokens.mjs` | 하드코딩 색상 검사 |
@@ -34,6 +35,8 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - **브랜드:** 검정 primary를 유지하고 별도 브랜드 강조색은 두지 않는다. 브랜드는 로고(💡)로만 드러낸다.
 - **서체:** Pretendard. `@aha/ui/styles.css`가 `pretendard` 패키지의 dynamic subset 웹폰트를 불러온다. 외부 CDN을 쓰지 않는다.
 - **다크 모드:** 시스템 설정을 따르고, `<html data-theme="light|dark">`로 고정할 수 있다. 다크 값은 `packages/tokens/tokens/themes/dark.json`에 있으며 시맨틱 토큰만 덮어쓴다. 컴포넌트에서 테마별 분기를 쓰지 않는다 (시맨틱 토큰이 알아서 바뀐다).
+- **테마 추가:** `tokens/themes/<이름>.json`을 만들고 `$extensions["aha.theme"]`에 적용 조건(`attribute`, `value`, 선택: `colorScheme`, `media`, `mediaUnless`, `label`)을 적는다. 빌드가 파일을 자동으로 찾아 CSS 블록과 manifest의 `<이름>` 값을 만들고, `check:contrast`도 모든 테마를 검사한다. 다른 축의 테마는 다른 attribute를 쓴다 (예: 밀도는 `data-density`).
+- **키트:** 공통 부품(core) 위에 도메인 키트(AI 서비스, 관리자, CMS 등)를 얹는다. 키트는 core만 참조하고 키트끼리는 참조하지 않는다. 두 키트 이상에서 쓰는 부품만 core에 둔다. 확장 계획은 「AHA 디자인 시스템 다중 디자인 확장 검토」 문서를 따른다.
 - **상태색:** `status-good|warning|serious|critical`은 아이콘·마크용, `status-*-foreground`는 글자용이다. 상태는 색만으로 전달하지 않고 아이콘 + 라벨과 함께 쓴다 (`<Badge tone="warning">일부 품질 저하</Badge>`). 라이트 모드의 warning·serious 아이콘은 배경 대비가 3:1 미만이므로, 라벨 글자가 반드시 상태를 말해야 한다.
 
 ## UI 작업 규칙
@@ -59,6 +62,8 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - **스토리 import 규칙 (MCP 예제 코드용):** meta의 `component`만 같은 폴더에서 상대 경로로 import하고, 스토리에서 쓰는 다른 컴포넌트와 보조 컴포넌트는 모두 `@aha/ui`에서 import한다. Storybook은 args에 쓴 식별자의 import를 원래 경로 그대로 예제에 싣기 때문에, 상대 경로로 import하면 에이전트가 존재하지 않는 경로를 보게 된다. `templates/fixtures` 같은 스토리 전용 데이터도 컴포넌트 스토리에서 import하지 말고 예시 값을 직접 적는다. 스토리를 바꾼 뒤에는 Storybook을 띄운 상태에서 `pnpm check:mcp-docs`로 확인한다.
 - 컴포넌트 소스는 상대 경로로 import한다 (`../../lib/cn`). 배포용 타입 선언(`.d.ts`)이 경로 별칭을 풀지 못하기 때문이다.
 - 템플릿 스토리(`src/templates/*.stories.tsx`)도 컴포넌트를 `@aha/ui`에서 import한다. MCP `get_template`이 이 파일을 그대로 에이전트에 준다.
+- 키트에 속한 컴포넌트와 템플릿은 스토리 meta에 `tags: ['autodocs', 'kit:<id>']`를 단다 (지금은 AI 대화 부품과 템플릿이 `kit:ai`). 태그가 없으면 core다. 키트 id는 `catalog.config.json`의 `kits`에 있어야 하며, 없으면 카탈로그 빌드가 실패한다.
+- 새 템플릿을 만들면 `catalog.config.json`의 `templates`에 이름(`label`), 묶음(`group`), 한 줄 설명을 추가한다.
 - 갤러리는 스토리를 직접 렌더링한다. `layout: 'fullscreen'` 스토리와 `defaultOpen`처럼 화면 위에 뜨는 요소가 있는 스토리는 Storybook iframe으로 보여준다. 스토리에서 `storybook/test`의 `fn`·`expect` 외의 Storybook 런타임 API를 쓰면 `apps/gallery/src/shims/`에 대체 구현을 추가한다.
 - 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 

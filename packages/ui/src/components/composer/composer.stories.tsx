@@ -7,7 +7,7 @@ import { Composer } from './composer';
 const meta = {
   title: 'AI/Composer',
   component: Composer,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: {
     onSubmit: fn(),
     onValueChange: fn(),

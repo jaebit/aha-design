@@ -270,6 +270,7 @@ function DocumentReviewPage() {
 
 const meta = {
   title: 'Templates/TaskConversation',
+  tags: ['kit:ai'],
   parameters: { layout: 'fullscreen' },
   decorators: [withLinkActions()],
 } satisfies Meta;

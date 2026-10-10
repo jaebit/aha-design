@@ -6,7 +6,7 @@ import { PreviewCard } from './preview-card';
 const meta = {
   title: 'AI/PreviewCard',
   component: PreviewCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: {
     title: '음성 원문 미리보기',
     lines: ['[화자 A] 지난주 베타 피드백부터 정리할게요.', '[화자 B] 가이드 챗 근거 표시가 좋다는 의견이 많았어요.'],

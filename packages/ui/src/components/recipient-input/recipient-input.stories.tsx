@@ -9,7 +9,7 @@ import { RecipientInput } from './recipient-input';
 const meta = {
   title: 'AI/RecipientInput',
   component: RecipientInput,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: { label: '받는 사람', value: ['이아하', '박팀장'], onValueChange: fn() },
 } satisfies Meta<typeof RecipientInput>;
 

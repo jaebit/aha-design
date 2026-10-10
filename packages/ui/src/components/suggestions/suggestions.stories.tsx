@@ -6,7 +6,7 @@ import { Suggestions } from './suggestions';
 const meta = {
   title: 'AI/Suggestions',
   component: Suggestions,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: { onSelect: fn() },
 } satisfies Meta<typeof Suggestions>;
 

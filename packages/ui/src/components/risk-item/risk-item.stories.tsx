@@ -5,7 +5,7 @@ import { RiskItem } from './risk-item';
 const meta = {
   title: 'AI/RiskItem',
   component: RiskItem,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'kit:ai'],
   args: {
     severity: '높음',
     tone: 'critical',
