@@ -4,7 +4,8 @@ import { ArrowRight, Bot, ClipboardCopy, LayoutTemplate, MousePointerClick } fro
 import { catalog, storyFrameUrl } from '../lib/catalog';
 import { Link } from '../lib/router';
 import { StoryPreview } from '../lib/story-preview';
-import { domainKits } from '../lib/kit';
+import { inKit } from '../catalog-types';
+import { domainKits, kitById, useKit } from '../lib/kit';
 import { useTheme } from '../lib/theme';
 import { KitCard } from './kits';
 import { ScaledFrame } from '../site/scaled-frame';
@@ -35,11 +36,20 @@ const featured = [
   { slug: 'result-card', story: undefined },
 ];
 
+/** 키트를 고르지 않았을 때 보여줄 대표 템플릿. */
+const defaultShots = ['guide-chat', 'service-usage', 'user-management'];
+
 function Showcase() {
   const { resolved } = useTheme();
-  const shots = ['guide-chat', 'admin-dashboard', 'ith-report']
-    .map((slug) => catalog.templates.find((t) => t.slug === slug))
-    .filter((t) => t !== undefined);
+  const { kit } = useKit();
+  // 키트를 고르면 그 키트의 템플릿을 먼저 보여준다.
+  const shots = (
+    kit
+      ? [...catalog.templates.filter((t) => t.kit === kit), ...catalog.templates.filter((t) => t.kit !== kit && inKit(t, kit))]
+      : defaultShots.map((slug) => catalog.templates.find((t) => t.slug === slug))
+  )
+    .filter((t) => t !== undefined)
+    .slice(0, 3);
   const [main, ...rest] = shots;
   if (!main) return null;
   const storyId = (t: (typeof shots)[number]) =>
@@ -64,8 +74,17 @@ function Showcase() {
 }
 
 export function HomePage() {
-  const componentCount = catalog.components.length;
-  const templateCount = catalog.templates.length;
+  const { kit } = useKit();
+  const current = kitById(kit);
+  const componentCount = catalog.components.filter((c) => inKit(c, kit)).length;
+  const templateCount = catalog.templates.filter((t) => inKit(t, kit)).length;
+  // 키트를 고르면 그 키트의 부품을, 아니면 분류별 대표 부품을 보여준다.
+  const shown = kit
+    ? catalog.components
+        .filter((c) => c.kit === kit)
+        .slice(0, 4)
+        .map((c) => ({ slug: c.slug, story: undefined as string | undefined }))
+    : featured;
 
   return (
     <div className="flex flex-col gap-24 pb-24">
@@ -73,7 +92,7 @@ export function HomePage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 pb-16 pt-16 sm:px-6 sm:pt-24">
           <div className="flex max-w-3xl flex-col gap-6">
             <Badge variant="outline" size="md" className="self-start">
-              사내 디자인 시스템
+              {current ? `사내 디자인 시스템 · ${current.label} 키트` : '사내 디자인 시스템'}
             </Badge>
             <h1 className="text-display font-bold tracking-tight">
               고르고, 복사하고,
@@ -166,7 +185,7 @@ export function HomePage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="flex flex-col gap-3">
             <h2 id="components" className="text-title font-bold">
-              컴포넌트 {componentCount}개
+              {current ? `공통 + ${current.label} 컴포넌트 ${componentCount}개` : `컴포넌트 ${componentCount}개`}
             </h2>
             <p className="text-body text-muted-foreground">실제로 동작하는 미리보기로 확인하세요. 화면 템플릿 {templateCount}개도 같은 부품으로 만들었습니다.</p>
           </div>
@@ -178,7 +197,7 @@ export function HomePage() {
           </Button>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          {featured.map(({ slug, story }) => {
+          {shown.map(({ slug, story }) => {
             const component = catalog.components.find((c) => c.slug === slug);
             if (!component) return null;
             const s = component.stories.find((x) => x.exportName === story) ?? component.stories[0];

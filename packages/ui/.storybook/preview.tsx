@@ -4,6 +4,16 @@ import { useEffect } from 'react';
 import { TooltipProvider } from '../src/components/tooltip/tooltip';
 import './preview.css';
 
+// 갤러리가 미리보기 iframe에 embed=gallery를 붙인다. 이때 iframe 안의 스크립트가 바깥 페이지의 포커스를 빼앗지 못하게 한다.
+// 예: 열린 DropdownMenu 예제는 바깥에서 다른 메뉴를 열면 닫히면서 자기 트리거로 포커스를 옮기고,
+// 바깥 창이 포커스를 잃어 바깥 메뉴까지 닫혔다. iframe 안을 직접 누른 뒤(문서에 포커스가 있을 때)의 포커스 이동은 그대로 둔다.
+if (new URLSearchParams(window.location.search).get('embed') === 'gallery') {
+  const focus = HTMLElement.prototype.focus;
+  HTMLElement.prototype.focus = function (this: HTMLElement, options?: FocusOptions) {
+    if (document.hasFocus()) focus.call(this, options);
+  };
+}
+
 const preview: Preview = {
   parameters: {
     layout: 'padded',
