@@ -2,19 +2,20 @@ import { Badge, Button, Card, Chip, cn } from '@aha/ui';
 import { ChevronRight, Code, ExternalLink, Monitor, Smartphone, Tablet } from 'lucide-react';
 import { useState } from 'react';
 
-import type { CatalogTemplate } from '../catalog-types';
+import { type CatalogTemplate, type Density, inKit } from '../catalog-types';
 import { catalog, storyFrameUrl } from '../lib/catalog';
+import { kitById, useKit } from '../lib/kit';
 import { templatePrompt } from '../lib/prompt';
 import { Link, navigate, useLocation } from '../lib/router';
 import { useTheme } from '../lib/theme';
 import { CodeBlock } from '../site/code-block';
 import { CopyButton } from '../site/copy-button';
+import { DensityToggle } from '../site/density-toggle';
+import { KitScopeNotice } from '../site/kit-scope';
 import { ScaledFrame } from '../site/scaled-frame';
 import { NotFoundPage } from './not-found';
 
-const groups = [...new Set(catalog.templates.map((t) => t.group))];
-
-function TemplateCard({ template }: { template: CatalogTemplate }) {
+export function TemplateCard({ template }: { template: CatalogTemplate }) {
   const { resolved } = useTheme();
   const storyId = template.stories[0]?.storyId;
   return (
@@ -24,9 +25,9 @@ function TemplateCard({ template }: { template: CatalogTemplate }) {
           {storyId ? <ScaledFrame src={storyFrameUrl(storyId, resolved)} title={`${template.label} 미리보기`} /> : null}
         </div>
         <div className="flex flex-1 flex-col gap-2 p-5">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-heading font-semibold group-hover:underline group-hover:underline-offset-4">{template.label}</span>
-            <Badge variant="soft">{template.group}</Badge>
+            <Badge variant="soft">{kitById(template.kit)?.label ?? template.group}</Badge>
           </div>
           <p className="text-body-sm text-muted-foreground">{template.summary}</p>
           {template.stories.length > 1 ? (
@@ -41,7 +42,10 @@ function TemplateCard({ template }: { template: CatalogTemplate }) {
 export function TemplatesIndexPage() {
   const { search } = useLocation();
   const group = search.get('group') ?? '';
-  const visible = catalog.templates.filter((t) => !group || t.group === group);
+  const { kit } = useKit();
+  const scoped = catalog.templates.filter((t) => inKit(t, kit));
+  const groups = [...new Set(scoped.map((t) => t.group))];
+  const visible = scoped.filter((t) => !group || t.group === group);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-12 sm:px-6">
@@ -50,9 +54,10 @@ export function TemplatesIndexPage() {
         <p className="max-w-2xl text-body text-muted-foreground">
           컴포넌트를 조합한 완성 화면입니다. 만들려는 서비스와 가장 비슷한 화면을 골라 에이전트에게 바꿀 부분만 알려 주세요.
         </p>
+        <KitScopeNotice hidden={catalog.templates.length - scoped.length} />
         <div className="flex flex-wrap gap-2 pt-2" role="group" aria-label="분류">
           <Chip selected={!group} onClick={() => navigate('/templates', { replace: true, scroll: false })}>
-            전체 {catalog.templates.length}
+            전체 {scoped.length}
           </Chip>
           {groups.map((g) => (
             <Chip key={g} selected={group === g} onClick={() => navigate(`/templates?group=${encodeURIComponent(g)}`, { replace: true, scroll: false })}>
@@ -82,11 +87,13 @@ export function TemplateDetailPage({ slug }: { slug: string }) {
   const [storyIndex, setStoryIndex] = useState(0);
   const [viewport, setViewport] = useState<(typeof viewports)[number]['id']>('desktop');
   const [showSource, setShowSource] = useState(false);
+  const recommended: Density = kitById(template?.kit)?.density ?? 'default';
+  const [density, setDensity] = useState<Density>(recommended);
   if (!template) return <NotFoundPage />;
 
   const story = template.stories[storyIndex] ?? template.stories[0];
   const width = viewports.find((v) => v.id === viewport)!.width;
-  const src = story?.storyId ? storyFrameUrl(story.storyId, resolved) : '';
+  const src = story?.storyId ? storyFrameUrl(story.storyId, resolved, density) : '';
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 sm:px-6">
@@ -134,6 +141,8 @@ export function TemplateDetailPage({ slug }: { slug: string }) {
           ) : (
             <span />
           )}
+          <div className="flex flex-wrap items-center gap-3">
+          <DensityToggle value={density} onChange={setDensity} recommended={recommended} />
           <div className="flex gap-1" role="group" aria-label="화면 크기">
             {viewports.map((v) => (
               <Button
@@ -147,6 +156,7 @@ export function TemplateDetailPage({ slug }: { slug: string }) {
                 {v.icon}
               </Button>
             ))}
+          </div>
           </div>
         </div>
         {story?.description ? <p className="text-body-sm text-muted-foreground">{story.description}</p> : null}

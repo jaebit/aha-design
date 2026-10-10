@@ -1,6 +1,6 @@
 {
   "name": "@aha/tokens",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "AHA 디자인 토큰 (W3C DTCG 2025.10 → CSS 변수, JS 상수, 에이전트용 manifest)",
   "type": "module",
   "exports": {

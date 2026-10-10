@@ -151,8 +151,7 @@ const meta = {
   title: 'Templates/UserEdit',
   tags: ['kit:admin'],
   component: UserEditPage,
-  parameters: { layout: 'fullscreen' },
-  globals: { density: 'compact' },
+  parameters: { layout: 'fullscreen', density: 'compact' },
   decorators: [withLinkActions()],
 } satisfies Meta<typeof UserEditPage>;
 

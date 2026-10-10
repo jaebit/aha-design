@@ -2,19 +2,20 @@ import { Badge, Button, Callout } from '@aha/ui';
 import { ChevronRight, Code, ExternalLink, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-import { type CatalogComponent, type CatalogStory, kitOf } from '../catalog-types';
+import { type CatalogComponent, type CatalogStory, type Density, kitOf } from '../catalog-types';
 import { catalog, categoryLabel } from '../lib/catalog';
 import { componentPrompt } from '../lib/prompt';
 import { Link } from '../lib/router';
 import { StoryPreview } from '../lib/story-preview';
 import { CodeBlock } from '../site/code-block';
 import { CopyButton } from '../site/copy-button';
+import { DensityToggle } from '../site/density-toggle';
 import { RichText } from '../site/rich-text';
 import { NotFoundPage } from './not-found';
 
 const anchor = (story: CatalogStory) => `example-${story.exportName.toLowerCase()}`;
 
-function Example({ component, story }: { component: CatalogComponent; story: CatalogStory }) {
+function Example({ component, story, density }: { component: CatalogComponent; story: CatalogStory; density: Density }) {
   const [showCode, setShowCode] = useState(false);
   return (
     <section id={anchor(story)} className="flex scroll-mt-24 flex-col gap-3" aria-labelledby={`${anchor(story)}-title`}>
@@ -26,7 +27,8 @@ function Example({ component, story }: { component: CatalogComponent; story: Cat
       </div>
       <div className="overflow-hidden rounded-lg border border-border">
         <div className="flex min-h-40 items-center justify-center bg-subtle p-6 sm:p-10">
-          <div className="w-full">
+          {/* 이 칸 안에만 밀도 테마를 건다. 토큰 CSS가 [data-density] 요소에도 적용된다. */}
+          <div className="w-full" data-density={density === 'compact' ? 'compact' : undefined}>
             <StoryPreview
               storyFile={component.storyFile}
               exportName={story.exportName}
@@ -34,6 +36,7 @@ function Example({ component, story }: { component: CatalogComponent; story: Cat
               title={`${component.name} ${story.name}`}
               isolate={story.snippet.includes('defaultOpen')}
               frameHeight={360}
+              density={density}
             />
           </div>
         </div>
@@ -104,9 +107,11 @@ function PropsTable({ component }: { component: CatalogComponent }) {
 
 export function ComponentDetailPage({ slug }: { slug: string }) {
   const component = catalog.components.find((c) => c.slug === slug);
+  const kit = component ? kitOf(catalog, component) : undefined;
+  const recommended: Density = kit?.density ?? 'default';
+  const [density, setDensity] = useState<Density>(recommended);
   if (!component) return <NotFoundPage />;
   const siblings = catalog.components.filter((c) => c.category === component.category && c.slug !== slug).slice(0, 6);
-  const kit = kitOf(catalog, component);
 
   return (
     <div className="mx-auto flex max-w-7xl gap-12 px-4 py-12 sm:px-6">
@@ -145,8 +150,9 @@ export function ComponentDetailPage({ slug }: { slug: string }) {
             <Sparkles aria-hidden className="size-6" />
             예제
           </h2>
+          <DensityToggle value={density} onChange={setDensity} recommended={recommended} />
           {component.stories.map((story) => (
-            <Example key={story.exportName} component={component} story={story} />
+            <Example key={story.exportName} component={component} story={story} density={density} />
           ))}
         </section>
 

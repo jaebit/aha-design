@@ -1,5 +1,5 @@
 {
-  "$comment": "갤러리·MCP 카탈로그 메타데이터. apps/gallery/scripts/build-catalog.mjs가 packages/*/catalog.config.json을 모두 읽는다 (ui가 먼저, 나머지는 이름순). 스토리의 키트는 meta의 tags('kit:<id>')로 정하고, 태그가 없으면 core다. 키트 패키지는 자기 키트·분류·템플릿을 자기 catalog.config.json에 적는다.",
+  "$comment": "갤러리·MCP 카탈로그 메타데이터. apps/gallery/scripts/build-catalog.mjs가 packages/*/catalog.config.json을 모두 읽는다 (ui가 먼저, 나머지는 이름순). 스토리의 키트는 meta의 tags('kit:<id>')로 정하고, 태그가 없으면 core다. 키트의 density(예: compact)는 그 키트 화면의 기본 밀도로, 갤러리 미리보기와 MCP 설치 안내에 쓰인다. 키트 패키지는 자기 키트·분류·템플릿을 자기 catalog.config.json에 적는다.",
   "kits": [
     { "id": "core", "label": "공통", "description": "모든 사내 시스템이 함께 쓰는 부품. 두 키트 이상에서 쓰는 것만 둔다." }
   ],

@@ -13,6 +13,9 @@ export const mcpUrl = () => `${window.location.origin}/mcp`;
 /** @aha 패키지 npm 레지스트리. 빌드할 때 VITE_NPM_REGISTRY로 바꾼다. */
 export const registryUrl: string = import.meta.env.VITE_NPM_REGISTRY ?? 'http://localhost:3000/api/packages/aha/npm/';
 
-/** Storybook iframe 주소. 전체 화면 미리보기에 쓴다. */
-export const storyFrameUrl = (storyId: string, theme: 'light' | 'dark') =>
-  `/storybook/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story&globals=theme:${theme}`;
+/**
+ * Storybook iframe 주소. 전체 화면 미리보기에 쓴다.
+ * density를 생략하면 스토리의 기본 밀도(parameters.density)를 따른다.
+ */
+export const storyFrameUrl = (storyId: string, theme: 'light' | 'dark', density?: 'default' | 'compact') =>
+  `/storybook/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story&globals=theme:${theme}${density ? `;density:${density}` : ''}`;

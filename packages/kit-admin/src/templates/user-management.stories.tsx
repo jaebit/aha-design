@@ -156,9 +156,8 @@ const meta = {
   title: 'Templates/UserManagement',
   tags: ['kit:admin'],
   component: UserManagementPage,
-  parameters: { layout: 'fullscreen' },
-  // 관리자 화면은 촘촘한 밀도(data-density="compact")로 본다. 툴바에서 기본 밀도와 비교할 수 있다.
-  globals: { density: 'compact' },
+  // 관리자 화면은 촘촘한 밀도(data-density="compact")가 기본이다. 툴바나 갤러리에서 기본 밀도와 비교할 수 있다.
+  parameters: { layout: 'fullscreen', density: 'compact' },
   decorators: [withLinkActions()],
 } satisfies Meta<typeof UserManagementPage>;
 

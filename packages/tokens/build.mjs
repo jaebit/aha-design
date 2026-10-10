@@ -1,7 +1,7 @@
 // DTCG 토큰(tokens/**/*.json)을 CSS 변수, JS/TS 상수, 에이전트용 manifest로 빌드한다.
 // - 기본(라이트): tokens/primitive + tokens/semantic → :root
 // - 테마: tokens/themes/<이름>.json이 semantic 값을 덮어쓴다. 적용 조건은 각 파일의 $extensions["aha.theme"]에 적는다.
-//     attribute, value   <html attribute="value">일 때 적용 (필수)
+//     attribute, value   <html attribute="value">일 때 적용 (필수). 다른 요소에 달면 그 안쪽에만 적용된다
 //     colorScheme        light | dark. 네이티브 요소(날짜 입력, 스크롤바)의 색 체계
 //     media, mediaUnless 시스템 설정(media)을 따르되, attribute="mediaUnless"로 고정한 페이지는 제외
 //   테마는 서로 다른 attribute를 쓰면 함께 적용된다 (예: data-theme="dark" + data-density="compact").
@@ -55,7 +55,16 @@ StyleDictionary.registerFormat({
         '',
       );
     }
-    lines.push(`/* ${label} 테마: ${attribute}="${value}"로 고른 경우. */`, `:root[${attribute}="${value}"] {`, ...scheme, variables, '}', '');
+    // :root뿐 아니라 일반 요소에도 건다. 갤러리 미리보기처럼 화면 일부만 다른 테마(예: 촘촘한 밀도)로 보여줄 때 쓴다.
+    lines.push(
+      `/* ${label} 테마: ${attribute}="${value}"로 고른 경우. 요소에 달면 그 안쪽에만 적용된다. */`,
+      `:root[${attribute}="${value}"],`,
+      `[${attribute}="${value}"] {`,
+      ...scheme,
+      variables,
+      '}',
+      '',
+    );
     return lines.join('\n');
   },
 });

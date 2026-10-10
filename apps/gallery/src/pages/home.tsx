@@ -4,7 +4,9 @@ import { ArrowRight, Bot, ClipboardCopy, LayoutTemplate, MousePointerClick } fro
 import { catalog, storyFrameUrl } from '../lib/catalog';
 import { Link } from '../lib/router';
 import { StoryPreview } from '../lib/story-preview';
+import { domainKits } from '../lib/kit';
 import { useTheme } from '../lib/theme';
+import { KitCard } from './kits';
 import { ScaledFrame } from '../site/scaled-frame';
 
 const steps = [
@@ -71,7 +73,7 @@ export function HomePage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 pb-16 pt-16 sm:px-6 sm:pt-24">
           <div className="flex max-w-3xl flex-col gap-6">
             <Badge variant="outline" size="md" className="self-start">
-              사내 AI 서비스 디자인 시스템
+              사내 디자인 시스템
             </Badge>
             <h1 className="text-display font-bold tracking-tight">
               고르고, 복사하고,
@@ -79,7 +81,7 @@ export function HomePage() {
               에이전트에게 맡기세요
             </h1>
             <p className="text-heading text-muted-foreground">
-              AHA의 모든 AI 서비스는 같은 버튼, 같은 입력창, 같은 색을 씁니다. 마음에 드는 화면을 고르면 에이전트가 똑같은
+              AHA의 사내 시스템은 같은 버튼, 같은 입력창, 같은 색을 씁니다. 마음에 드는 화면을 고르면 에이전트가 똑같은
               디자인으로 만들어 줍니다.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -133,6 +135,30 @@ export function HomePage() {
               <ArrowRight aria-hidden />
             </Link>
           </Button>
+        </div>
+      </section>
+
+      <section className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 sm:px-6" aria-labelledby="kits">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-col gap-3">
+            <h2 id="kits" className="text-title font-bold">
+              어떤 화면을 만드나요?
+            </h2>
+            <p className="text-body text-muted-foreground">
+              화면 종류에 맞는 키트를 고르면 그 키트의 부품과 템플릿만 모아 볼 수 있습니다. 공통 부품은 어느 키트에나 들어 있습니다.
+            </p>
+          </div>
+          <Button variant="ghost" asChild>
+            <Link href="/kits">
+              키트 소개
+              <ArrowRight aria-hidden />
+            </Link>
+          </Button>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {domainKits.map((kit) => (
+            <KitCard key={kit.id} kit={kit} level={3} />
+          ))}
         </div>
       </section>
 

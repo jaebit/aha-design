@@ -168,7 +168,7 @@ importers:
   packages/ui:
     dependencies:
       '@aha/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
       '@radix-ui/react-avatar':
         specifier: ^1.2.7

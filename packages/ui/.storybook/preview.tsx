@@ -25,13 +25,15 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
-    // 밀도 전환. <html data-density="compact">로 간격 단위(--spacing)를 줄인다. 관리자 템플릿은 스토리에서 compact로 고정한다.
+    // 밀도 전환. <html data-density="compact">로 간격 단위(--spacing)를 줄인다.
+    // "스토리 기본값"은 스토리의 parameters.density를 따른다 (관리자 템플릿은 compact). 갤러리는 URL globals로 직접 고른다.
     density: {
       description: '밀도',
       toolbar: {
         title: '밀도',
         icon: 'component',
         items: [
+          { value: 'auto', title: '스토리 기본값' },
           { value: 'default', title: '기본' },
           { value: 'compact', title: '촘촘하게' },
         ],
@@ -39,7 +41,7 @@ const preview: Preview = {
       },
     },
   },
-  initialGlobals: { theme: 'system', density: 'default' },
+  initialGlobals: { theme: 'system', density: 'auto' },
   decorators: [
     (Story, context) => {
       const theme = context.globals.theme as 'system' | 'light' | 'dark';
@@ -48,7 +50,8 @@ const preview: Preview = {
         if (theme === 'system') delete root.dataset.theme;
         else root.dataset.theme = theme;
       }, [theme]);
-      const density = context.globals.density as 'default' | 'compact' | undefined;
+      const chosen = context.globals.density as 'auto' | 'default' | 'compact' | undefined;
+      const density = !chosen || chosen === 'auto' ? (context.parameters.density as string | undefined) : chosen;
       useEffect(() => {
         const root = document.documentElement;
         if (density === 'compact') root.dataset.density = 'compact';

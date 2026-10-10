@@ -1,9 +1,11 @@
 import { Card, Chip, cn, SearchInput } from '@aha/ui';
 
-import type { CatalogComponent } from '../catalog-types';
+import { type CatalogComponent, inKit } from '../catalog-types';
 import { catalog } from '../lib/catalog';
+import { useKit } from '../lib/kit';
 import { Link, navigate, useLocation } from '../lib/router';
 import { StoryPreview } from '../lib/story-preview';
+import { KitScopeNotice } from '../site/kit-scope';
 
 /** 카드에 보여줄 스토리. "Gallery"처럼 여러 변형을 모은 스토리가 있으면 그것을 쓴다. */
 function thumbnailStory(component: CatalogComponent) {
@@ -60,18 +62,21 @@ export function ComponentsIndexPage() {
     navigate(`/components${qs ? `?${qs}` : ''}`, { replace: true, scroll: false });
   };
 
-  const visible = catalog.components.filter((c) => matches(c, query) && (!category || c.category === category));
-  const sections = catalog.categories
+  const { kit } = useKit();
+  const scoped = catalog.components.filter((c) => inKit(c, kit));
+  const categories = catalog.categories.filter((cat) => scoped.some((c) => c.category === cat.id));
+  const visible = scoped.filter((c) => matches(c, query) && (!category || c.category === category));
+  const sections = categories
     .map((cat) => ({ ...cat, items: visible.filter((c) => c.category === cat.id) }))
     .filter((cat) => cat.items.length > 0);
 
   return (
     <div className="mx-auto flex max-w-7xl gap-10 px-4 py-12 sm:px-6">
       <aside className="sticky top-24 hidden h-[calc(100dvh-8rem)] w-56 shrink-0 flex-col gap-6 overflow-y-auto lg:flex" aria-label="컴포넌트 목록">
-        {catalog.categories.map((cat) => (
+        {categories.map((cat) => (
           <div key={cat.id} className="flex flex-col gap-1">
             <span className="px-2 text-caption font-semibold text-muted-foreground">{cat.label}</span>
-            {catalog.components
+            {scoped
               .filter((c) => c.category === cat.id)
               .map((c) => (
                 <Link key={c.slug} href={`/components/${c.slug}`} className="rounded-md px-2 py-1.5 text-body-sm hover:bg-accent">
@@ -86,8 +91,9 @@ export function ComponentsIndexPage() {
         <header className="flex flex-col gap-4">
           <h1 className="text-display font-bold tracking-tight">컴포넌트</h1>
           <p className="max-w-2xl text-body text-muted-foreground">
-            AHA 서비스 화면을 이루는 부품입니다. 카드를 누르면 쓰임새, 변형별 예제, 에이전트용 프롬프트를 볼 수 있습니다.
+            AHA 사내 시스템 화면을 이루는 부품입니다. 카드를 누르면 쓰임새, 변형별 예제, 에이전트용 프롬프트를 볼 수 있습니다.
           </p>
+          <KitScopeNotice hidden={catalog.components.length - scoped.length} />
           <div className="flex flex-col gap-3 pt-2">
             <SearchInput
               aria-label="컴포넌트 검색"
@@ -98,11 +104,11 @@ export function ComponentsIndexPage() {
             />
             <div className="flex flex-wrap gap-2" role="group" aria-label="분류">
               <Chip selected={!category} onClick={() => setParam('category', '')}>
-                전체 {catalog.components.length}
+                전체 {scoped.length}
               </Chip>
-              {catalog.categories.map((cat) => (
+              {categories.map((cat) => (
                 <Chip key={cat.id} selected={category === cat.id} onClick={() => setParam('category', cat.id)}>
-                  {cat.label} {catalog.components.filter((c) => c.category === cat.id).length}
+                  {cat.label} {scoped.filter((c) => c.category === cat.id).length}
                 </Chip>
               ))}
             </div>

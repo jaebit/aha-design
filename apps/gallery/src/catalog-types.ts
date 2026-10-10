@@ -51,6 +51,15 @@ export interface CatalogKit {
   description: string;
   /** 이 키트를 쓰려면 설치하는 패키지. core는 @aha/ui. */
   package: { name: string; version: string };
+  /** 이 키트 화면의 기본 밀도. 관리자 키트는 compact. 없으면 기본 밀도. */
+  density?: Density;
+}
+
+export type Density = 'default' | 'compact';
+
+/** 선택한 키트에서 보이는 항목인지. 공통(core)은 항상 보인다. kit이 없으면(전체) 모두 보인다. */
+export function inKit(item: { kit: string }, kit: string | null | undefined) {
+  return !kit || item.kit === 'core' || item.kit === kit;
 }
 
 export interface CatalogCategory {
