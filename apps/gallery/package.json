@@ -19,6 +19,7 @@
   "devDependencies": {
     "@aha/kit-admin": "workspace:*",
     "@aha/kit-ai": "workspace:*",
+    "@aha/kit-dashboard": "workspace:*",
     "@aha/tokens": "workspace:*",
     "@aha/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
