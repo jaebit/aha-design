@@ -22,12 +22,15 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), storybookStatic()],
   resolve: {
     alias: [
-      // 스토리 파일이 쓰는 자기 참조 (packages/ui/vite.config.ts와 같다). @aha/ui/styles.css는 건드리지 않는다.
+      // 스토리 파일이 쓰는 패키지 참조 (packages/ui/vite.config.ts와 같다). @aha/ui/styles.css는 건드리지 않는다.
       { find: /^@aha\/ui$/, replacement: `${uiRoot}src/index.ts` },
+      { find: /^@aha\/(kit-[a-z0-9-]+)$/, replacement: `${uiRoot}../$1/src/index.ts` },
       // 갤러리는 스토리를 직접 렌더링한다. Storybook 런타임 대신 가벼운 대체 구현을 쓴다.
       { find: /^storybook\/test$/, replacement: fileURLToPath(new URL('./src/shims/storybook-test.ts', import.meta.url)) },
       { find: /^storybook\/actions$/, replacement: fileURLToPath(new URL('./src/shims/storybook-actions.ts', import.meta.url)) },
     ],
+    // 키트 패키지의 react가 다른 사본으로 풀리지 않게 한다.
+    dedupe: ['react', 'react-dom'],
   },
   // 카탈로그(약 170kB)를 번들에 넣기 때문에 기본 경고 기준(500kB)을 넘는다. 사내용이라 한 번에 받는다.
   build: { chunkSizeWarningLimit: 800 },

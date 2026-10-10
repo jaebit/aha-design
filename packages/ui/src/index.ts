@@ -5,6 +5,7 @@ export { Avatar, type AvatarProps } from './components/avatar/avatar';
 export { Badge, type BadgeProps, type BadgeTone, badgeVariants } from './components/badge/badge';
 export { Button, buttonVariants, type ButtonProps } from './components/button/button';
 export { Callout, type CalloutProps } from './components/callout/callout';
+export { Card, cardVariants, type CardProps } from './components/card/card';
 export { Chip, type ChipProps } from './components/chip/chip';
 export {
   DropdownMenu,
@@ -17,6 +18,7 @@ export {
   DropdownMenuTrigger,
 } from './components/dropdown-menu/dropdown-menu';
 export { Input, type InputProps } from './components/input/input';
+export { Stepper, type StepperProps } from './components/stepper/stepper';
 export {
   Tooltip,
   TooltipContent,
@@ -25,22 +27,6 @@ export {
   type TooltipTermProps,
   TooltipTrigger,
 } from './components/tooltip/tooltip';
-
-// AI 대화
-export { Citation, type CitationProps } from './components/citation/citation';
-export { Composer, type ComposerProps } from './components/composer/composer';
-export {
-  ConversationEmptyState,
-  type ConversationEmptyStateProps,
-} from './components/conversation-empty-state/conversation-empty-state';
-export { Message, MessageContent, type MessageProps } from './components/message/message';
-export {
-  type MessageFeedback,
-  MessageActions,
-  type MessageActionsProps,
-} from './components/message-actions/message-actions';
-export { Suggestions, type SuggestionsProps } from './components/suggestions/suggestions';
-export { ThinkingIndicator, type ThinkingIndicatorProps } from './components/thinking-indicator/thinking-indicator';
 
 // 앱 셸
 export { AccountMenu, type AccountMenuProps } from './components/account-menu/account-menu';
@@ -61,26 +47,9 @@ export {
   SidebarSection,
   type SidebarSectionProps,
 } from './components/service-sidebar/service-sidebar';
-export {
-  GuideChatScreen,
-  type GuideAnswer,
-  type GuideChatScreenProps,
-  type GuideConversation,
-  type GuideTurn,
-} from './templates/guide-chat-screen/guide-chat-screen';
-
-// P1: AI 작업 흐름
-export { AttachmentCard, type AttachmentCardProps } from './components/attachment-card/attachment-card';
-export { Card, cardVariants, type CardProps } from './components/card/card';
-export { ChoiceCardGroup, type ChoiceCardGroupProps, type ChoiceOption } from './components/choice-card/choice-card';
-export { PreviewCard, type PreviewCardProps } from './components/preview-card/preview-card';
-export { RecipientInput, type RecipientInputProps } from './components/recipient-input/recipient-input';
-export { ResultCard, type ResultCardProps, ResultSection, type ResultSectionProps } from './components/result-card/result-card';
-export { RiskItem, type RiskItemProps } from './components/risk-item/risk-item';
 export { SidePanel, type SidePanelProps } from './components/side-panel/side-panel';
-export { Stepper, type StepperProps } from './components/stepper/stepper';
 
-// P1: 데이터 · 목록
+// 데이터 · 목록
 export {
   CellText,
   type CellTextProps,
@@ -95,7 +64,7 @@ export { Pagination, type PaginationProps } from './components/pagination/pagina
 export { SearchInput, type SearchInputProps } from './components/search-input/search-input';
 export { ServiceCard, type ServiceCardProps } from './components/service-card/service-card';
 
-// P2: 설정 · 대시보드
+// 설정 · 대시보드
 export { BarList, type BarListItem, type BarListProps } from './components/bar-list/bar-list';
 export { InfoSummary, type InfoSummaryItem, type InfoSummaryProps } from './components/info-summary/info-summary';
 export { MonthStepper, type MonthStepperProps, type YearMonth } from './components/month-stepper/month-stepper';

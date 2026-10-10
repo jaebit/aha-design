@@ -20,16 +20,23 @@ const uiPkg = await readJson(new URL('package.json', ui));
 const tokensPkg = await readJson(new URL('package.json', tokens));
 
 // 각 패키지의 catalog.config.json: 키트, 분류(Storybook 제목의 첫 단계 → 갤러리 분류), 템플릿 설명.
-// 여러 패키지의 설정을 순서대로 합친다. 분류와 키트의 순서가 화면 순서다.
+// ui(공통)를 먼저, 나머지 패키지는 이름순으로 합친다. 분류와 키트의 순서가 화면 순서다.
 const packagesDir = new URL('packages/', root);
+const dirs = (await readdir(packagesDir, { withFileTypes: true }))
+  .filter((d) => d.isDirectory())
+  .map((d) => d.name)
+  .sort((a, b) => Number(b === 'ui') - Number(a === 'ui') || a.localeCompare(b));
 const configs = [];
-for (const dir of (await readdir(packagesDir, { withFileTypes: true })).filter((d) => d.isDirectory())) {
-  const config = await readJson(new URL(`${dir.name}/catalog.config.json`, packagesDir)).catch(() => null);
-  if (config) configs.push(config);
+for (const dir of dirs) {
+  const base = new URL(`${dir}/`, packagesDir);
+  const config = await readJson(new URL('catalog.config.json', base)).catch(() => null);
+  if (config) configs.push({ ...config, dir: base, pkg: await readJson(new URL('package.json', base)) });
 }
-const kits = configs.flatMap((c) => c.kits ?? []);
+// 키트마다 설치할 패키지를 붙인다 (core → @aha/ui, ai → @aha/kit-ai).
+const kits = configs.flatMap((c) => (c.kits ?? []).map((kit) => ({ ...kit, package: { name: c.pkg.name, version: c.pkg.version } })));
 const categories = configs.flatMap((c) => c.categories ?? []);
 const templateMeta = Object.assign({}, ...configs.map((c) => c.templates ?? {}));
+const fixturesConfig = configs.find((c) => c.templateFixtures);
 
 const storiesByTitle = new Map();
 for (const entry of Object.values(index.entries)) {
@@ -46,6 +53,9 @@ function kitOf(title) {
   if (!kits.some((k) => k.id === kit)) throw new Error(`${title}: catalog.config.json에 없는 키트 "${kit}"`);
   return kit;
 }
+
+/** Storybook manifest의 경로(packages/ui 기준) → 저장소 루트 기준 경로. 예: ../kit-ai/src/... → packages/kit-ai/src/... */
+const repoPath = (path) => fileURLToPath(new URL(path, ui)).slice(fileURLToPath(root).length);
 
 const slugify = (name) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 const firstSentence = (text = '') => text.split('\n')[0].trim();
@@ -95,7 +105,7 @@ for (const component of Object.values(manifest.components)) {
     description: component.description ?? '',
     summary: firstSentence(component.description),
     import: component.import ?? '',
-    storyFile: component.path.replace(/^\.\//, 'packages/ui/'),
+    storyFile: repoPath(component.path),
     props: props(component),
     stories: stories(component, title),
   };
@@ -122,7 +132,7 @@ const catalog = {
   components,
   templates,
   // 템플릿 스토리가 쓰는 예시 데이터. 에이전트가 템플릿을 옮겨 쓸 때 함께 본다.
-  templateFixtures: await readFile(new URL('src/templates/fixtures.tsx', ui), 'utf8'),
+  templateFixtures: fixturesConfig ? await readFile(new URL(fixturesConfig.templateFixtures, fixturesConfig.dir), 'utf8') : '',
   tokens: tokenManifest.tokens,
 };
 

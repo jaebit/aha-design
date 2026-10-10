@@ -23,10 +23,13 @@ interface StoryModule {
   [exportName: string]: unknown;
 }
 
-const modules = import.meta.glob<StoryModule>('../../../../packages/ui/src/**/*.stories.tsx');
+const modules = import.meta.glob<StoryModule>([
+  '../../../../packages/ui/src/**/*.stories.tsx',
+  '../../../../packages/kit-*/src/**/*.stories.tsx',
+]);
 const cache = new Map<string, StoryModule>();
 
-/** catalog의 storyFile(packages/ui/...)로 스토리 모듈을 불러온다. */
+/** catalog의 storyFile(packages/ui/... 또는 키트 패키지 경로)로 스토리 모듈을 불러온다. */
 function useStoryModule(storyFile: string) {
   const [module, setModule] = useState(() => cache.get(storyFile));
   useEffect(() => {

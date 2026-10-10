@@ -3,8 +3,11 @@
   "compilerOptions": {
     "types": ["node", "vite/client"],
     "paths": {
-      "@aha/ui": ["./src/index.ts"]
+      "@aha/ui": ["./src/index.ts"],
+      "@aha/kit-*": ["../kit-*/src/index.ts"]
     }
   },
-  "include": ["src", ".storybook", "vite.config.ts", "vite.lib.config.ts"]
+  // 키트 소스도 넣는다. Storybook은 이 패키지에서 키트 스토리까지 함께 그리고,
+  // manifest의 props·설명(react-docgen-typescript)은 이 tsconfig에 포함된 파일만 분석한다.
+  "include": ["src", ".storybook", "vite.config.ts", "vite.lib.config.ts", "../kit-*/src"]
 }

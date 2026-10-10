@@ -2,7 +2,7 @@ import { Badge, Button, Callout } from '@aha/ui';
 import { ChevronRight, Code, ExternalLink, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-import type { CatalogComponent, CatalogStory } from '../catalog-types';
+import { type CatalogComponent, type CatalogStory, kitOf } from '../catalog-types';
 import { catalog, categoryLabel } from '../lib/catalog';
 import { componentPrompt } from '../lib/prompt';
 import { Link } from '../lib/router';
@@ -106,6 +106,7 @@ export function ComponentDetailPage({ slug }: { slug: string }) {
   const component = catalog.components.find((c) => c.slug === slug);
   if (!component) return <NotFoundPage />;
   const siblings = catalog.components.filter((c) => c.category === component.category && c.slug !== slug).slice(0, 6);
+  const kit = kitOf(catalog, component);
 
   return (
     <div className="mx-auto flex max-w-7xl gap-12 px-4 py-12 sm:px-6">
@@ -120,7 +121,14 @@ export function ComponentDetailPage({ slug }: { slug: string }) {
               {categoryLabel(component.category)}
             </Link>
           </nav>
-          <h1 className="text-display font-bold tracking-tight">{component.name}</h1>
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-display font-bold tracking-tight">{component.name}</h1>
+            {kit && kit.id !== 'core' ? (
+              <Badge variant="soft" size="md">
+                {kit.label} 키트 · {kit.package.name}
+              </Badge>
+            ) : null}
+          </div>
           <RichText text={component.description} className="max-w-3xl text-body text-muted-foreground" />
           <div className="flex flex-wrap gap-2">
             <CopyButton value={() => componentPrompt(component)} label="에이전트용 프롬프트 복사" copiedLabel="복사됨 · 에이전트에 붙여넣으세요" variant="primary" size="md" />

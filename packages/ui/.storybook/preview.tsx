@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react-vite';
 import { useEffect } from 'react';
 
 import { TooltipProvider } from '../src/components/tooltip/tooltip';
-import '../src/styles.css';
+import './preview.css';
 
 const preview: Preview = {
   parameters: {

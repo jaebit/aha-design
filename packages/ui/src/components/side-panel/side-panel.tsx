@@ -11,17 +11,17 @@ export interface SidePanelProps {
   badge?: ReactNode;
   /** 닫기. 생략하면 닫기 버튼을 숨긴다. */
   onClose?: () => void;
-  /** 하단 고정 영역. `variant="compact"` Composer를 둔다. */
+  /** 하단 고정 영역. 버튼이나 입력창을 둔다. 대화 패널이면 AI 키트의 `<Composer variant="compact">`. */
   footer?: ReactNode;
-  /** 본문 (메시지 목록). */
+  /** 본문. 항목 상세나 메시지 목록. */
   children: ReactNode;
   className?: string;
 }
 
 /**
- * 본문 오른쪽에 붙는 대화 패널 (16쪽 ITH).
- * 데이터를 보면서 AI에게 묻는 화면에 쓴다. 모달이 아니라 본문과 나란히 놓이는 분할 화면이므로,
- * AppShell 본문 안에서 `flex` 행의 마지막 요소로 둔다.
+ * 본문 오른쪽에 붙는 보조 패널 (16쪽 ITH).
+ * 목록을 보면서 항목 상세를 띄우거나, 데이터를 보면서 AI에게 묻는 대화 패널로 쓴다. 모달이 아니라 본문과 나란히 놓이는
+ * 분할 화면이므로, AppShell 본문 안에서 `flex` 행의 마지막 요소로 둔다. 대화 패널 예시는 ITH 보고서 템플릿에 있다.
  */
 export function SidePanel({ title, badge, onClose, footer, children, className }: SidePanelProps) {
   return (

@@ -1,22 +1,11 @@
 {
-  "$comment": "갤러리·MCP 카탈로그 메타데이터. apps/gallery/scripts/build-catalog.mjs가 packages/*/catalog.config.json을 모두 읽는다. 스토리의 키트는 meta의 tags('kit:<id>')로 정하고, 태그가 없으면 core다.",
+  "$comment": "갤러리·MCP 카탈로그 메타데이터. apps/gallery/scripts/build-catalog.mjs가 packages/*/catalog.config.json을 모두 읽는다 (ui가 먼저, 나머지는 이름순). 스토리의 키트는 meta의 tags('kit:<id>')로 정하고, 태그가 없으면 core다. 키트 패키지는 자기 키트·분류·템플릿을 자기 catalog.config.json에 적는다.",
   "kits": [
-    { "id": "core", "label": "공통", "description": "모든 사내 시스템이 함께 쓰는 부품. 두 키트 이상에서 쓰는 것만 둔다." },
-    { "id": "ai", "label": "AI 서비스", "description": "AHA AI 서비스(가이드 챗, 회의록, 문서 검토, ITH) 화면의 부품과 템플릿." }
+    { "id": "core", "label": "공통", "description": "모든 사내 시스템이 함께 쓰는 부품. 두 키트 이상에서 쓰는 것만 둔다." }
   ],
   "categories": [
     { "id": "components", "storybook": "Components", "label": "기본", "description": "버튼, 배지, 입력창처럼 어디서나 쓰는 부품" },
-    { "id": "ai", "storybook": "AI", "label": "AI 대화", "description": "질문 입력, 답변, 근거, 결과 카드 등 AI 서비스 화면 부품" },
     { "id": "shell", "storybook": "Shell", "label": "앱 틀", "description": "내비게이션, 사이드바, 머리말처럼 화면의 뼈대" },
     { "id": "data", "storybook": "Data", "label": "데이터", "description": "표, 차트, 통계 카드, 필터" }
-  ],
-  "templates": {
-    "templates-home": { "label": "홈", "group": "공통", "description": "로그인 후 첫 화면. 서비스 카드와 이어서 하기 목록." },
-    "templates-allhistory": { "label": "전체 기록", "group": "공통", "description": "모든 서비스의 대화 기록을 검색하고 거르는 목록 화면." },
-    "templates-guidechat": { "label": "사내 가이드 챗", "group": "AI 대화", "description": "질문하고 근거와 함께 답을 받는 대화형 서비스 화면." },
-    "templates-taskconversation": { "label": "작업형 대화 (회의록·문서 검토)", "group": "AI 대화", "description": "파일을 올리고 단계별로 결과를 받는 작업형 AI 화면." },
-    "templates-ithreport": { "label": "ITH 보고서", "group": "업무", "description": "보고서 목록과 상세, 표와 상태 배지를 쓰는 업무 화면." },
-    "templates-newsletter": { "label": "뉴스레터 구독", "group": "업무", "description": "구독 설정과 요약 정보를 보여주는 설정 화면." },
-    "templates-admindashboard": { "label": "관리자 대시보드", "group": "관리", "description": "통계 카드, 차트, 대기 목록이 있는 관리 화면." }
-  }
+  ]
 }

@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { ahaUser } from '../../templates/fixtures';
 import { AccountMenu } from './account-menu';
 
 const meta = {
   title: 'Shell/AccountMenu',
   component: AccountMenu,
   tags: ['autodocs'],
-  args: { ...ahaUser, onLogout: fn() },
+  args: { name: '김하마', team: '팀아하', email: 'hama@actoz.com', initials: '하마', onLogout: fn() },
   decorators: [
     (Story) => (
       <div className="flex h-80 w-62 items-end">
