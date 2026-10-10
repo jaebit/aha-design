@@ -98,3 +98,19 @@ export const CompactWithSelection: Story = {
 
 /** 조회 결과가 없을 때. */
 export const Empty: Story = { args: { rows: [] } };
+
+/** 체크박스로 행을 고른다. 일괄 작업이 있는 목록에서 쓴다. 머리글 체크박스는 이 페이지의 행 전체를 고른다. */
+export const Selectable: Story = {
+  render: function Render(args) {
+    const [selectedIds, setSelectedIds] = useState<string[]>(['2026-10-03']);
+    return (
+      <DataTable
+        {...args}
+        selectedIds={selectedIds}
+        onSelectedIdsChange={setSelectedIds}
+        getRowLabel={(row) => `${row.date} 보고서`}
+        footer={<span className="text-body-sm text-muted-foreground">{selectedIds.length}개 선택됨</span>}
+      />
+    );
+  },
+};

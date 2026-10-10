@@ -88,7 +88,7 @@ function templateDoc(template: CatalogTemplate, ctx: McpContext) {
     'Storybook 스토리 파일이다. 옮겨 쓸 때 `Meta`/`StoryObj`/`withLinkActions` 같은 Storybook 전용 코드는 빼고, 페이지 함수만 가져간다. `./fixtures`의 예시 데이터는 아래에 있다.',
     `\`\`\`tsx\n${template.source}\n\`\`\``,
     '## fixtures.tsx (예시 데이터)',
-    `\`\`\`tsx\n${ctx.catalog.templateFixtures}\n\`\`\``,
+    `\`\`\`tsx\n${ctx.catalog.templateFixtures[template.kit] ?? ''}\n\`\`\``,
   ].join('\n\n');
 }
 
@@ -122,7 +122,9 @@ function tokensDoc(catalog: Catalog, group: keyof typeof tokenGroups | 'all') {
 function setupGuide(ctx: McpContext) {
   const { ui, tokens } = ctx.catalog.packages;
   const kits = ctx.catalog.kits.filter((k) => k.id !== 'core');
-  const kitList = kits.map((k) => `   - \`${k.package.name}\` — ${k.label}: ${k.description}`).join('\n');
+  const kitList = kits
+    .map((k) => `   - **${k.label}** — ${k.description}\n     설치 \`pnpm add ${k.package.name}@^${k.package.version}\`, CSS \`@import "${k.package.name}/styles.css";\``)
+    .join('\n');
   return `# AHA 디자인 시스템 설치와 규칙
 
 ## 새 React 프로젝트에 설치 (Vite + Tailwind v4)
@@ -136,22 +138,21 @@ function setupGuide(ctx: McpContext) {
    pnpm add ${ui.name}@^${ui.version} ${tokens.name}@^${tokens.version} lucide-react
    pnpm add -D tailwindcss @tailwindcss/vite
    \`\`\`
-   화면에 도메인 키트 부품이 필요하면 해당 키트도 설치한다. get_component 결과의 "패키지" 줄로 어느 키트인지 안다.
+   화면에 도메인 키트 부품이 필요하면 그 키트만 설치한다. get_component 결과의 "패키지" 줄로 어느 키트인지 안다.
 ${kitList}
-   \`\`\`sh
-   pnpm add ${kits.map((k) => `${k.package.name}@^${k.package.version}`).join(' ')}
-   \`\`\`
 3. \`vite.config.ts\`의 plugins에 \`tailwindcss()\` (from \`@tailwindcss/vite\`)를 추가한다.
 4. 앱의 메인 CSS(예: \`src/index.css\`)를 아래 한 줄로 시작한다. Tailwind, 토큰, Pretendard 서체가 함께 들어온다. \`@import "tailwindcss"\`를 따로 쓰지 않는다.
    \`\`\`css
    @import "@aha/ui/styles.css";
    \`\`\`
-   키트를 설치했다면 바로 다음 줄에 키트 CSS를 추가한다 (키트 컴포넌트의 클래스를 생성 대상에 넣는다).
+   설치한 키트마다 바로 다음 줄에 키트 CSS를 추가한다 (키트 컴포넌트의 클래스를 생성 대상에 넣는다). 예:
    \`\`\`css
-${kits.map((k) => `   @import "${k.package.name}/styles.css";`).join('\n')}
+   @import "@aha/ui/styles.css";
+   @import "${kits[0]?.package.name ?? '@aha/kit-이름'}/styles.css";
    \`\`\`
 5. Tooltip을 쓰는 화면은 앱 루트를 \`<TooltipProvider>\`로 감싼다 (AppShell은 이미 포함).
 6. 다크 모드는 OS 설정을 자동으로 따른다. 고정하려면 \`<html data-theme="light">\` 또는 \`"dark"\`.
+7. 관리자 화면처럼 한 화면에 많은 행과 입력을 보여야 하면 \`<html data-density="compact">\`로 촘촘한 밀도를 켠다. 간격만 줄고 글자 크기와 색은 그대로다. 관리자 키트(@aha/kit-admin) 템플릿은 이 밀도 기준이다. 컴포넌트에 간격을 따로 줄이는 클래스를 넣지 않는다.
 
 ## UI 규칙
 

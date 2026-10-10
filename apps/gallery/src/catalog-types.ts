@@ -77,7 +77,8 @@ export interface Catalog {
   categories: CatalogCategory[];
   components: CatalogComponent[];
   templates: CatalogTemplate[];
-  templateFixtures: string;
+  /** 키트 id → 그 키트의 템플릿 스토리가 쓰는 예시 데이터(fixtures.tsx) 소스. */
+  templateFixtures: Record<string, string>;
   tokens: CatalogToken[];
 }
 

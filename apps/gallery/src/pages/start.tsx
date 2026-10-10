@@ -157,10 +157,13 @@ export function StartPage() {
             {kits.length > 0 ? (
               <>
                 <p className="text-body text-muted-foreground">
-                  AI 서비스처럼 특정 업무 화면의 부품은 키트 패키지에 있습니다. 컴포넌트 페이지 제목 옆에 키트 이름이 보이면 그 키트를
-                  함께 설치하세요.
+                  관리자 화면, AI 서비스처럼 특정 업무 화면의 부품은 키트 패키지에 있습니다. 컴포넌트 페이지 제목 옆에 키트 이름이
+                  보이면 그 키트만 함께 설치하세요.
                 </p>
-                <CodeBlock code={`pnpm add ${kits.map((k) => `${k.package.name}@^${k.package.version}`).join(' ')}`} label="터미널 (키트)" />
+                <CodeBlock
+                  code={kits.map((k) => `# ${k.label}\npnpm add ${k.package.name}@^${k.package.version}`).join('\n\n')}
+                  label="터미널 (필요한 키트만)"
+                />
               </>
             ) : null}
           </Step>
@@ -172,10 +175,10 @@ export function StartPage() {
             <CodeBlock code={`@import "@aha/ui/styles.css";`} label="src/index.css" />
             <p className="text-body-sm text-muted-foreground">
               이 한 줄에 Tailwind, 디자인 토큰, Pretendard 서체, 다크 모드가 모두 들어 있습니다. <code className="font-mono">@import "tailwindcss"</code>를 따로 쓰지 않습니다.
-              키트를 설치했다면 바로 다음 줄에 키트 CSS를 추가합니다.
+              키트를 설치했다면 설치한 키트마다 바로 다음 줄에 키트 CSS를 추가합니다.
             </p>
             {kits.length > 0 ? (
-              <CodeBlock code={kits.map((k) => `@import "${k.package.name}/styles.css";`).join('\n')} label="src/index.css (키트)" />
+              <CodeBlock code={kits.map((k) => `@import "${k.package.name}/styles.css";`).join('\n')} label="src/index.css (설치한 키트만)" />
             ) : null}
           </Step>
           <Step n={4} title="사용">

@@ -1,6 +1,6 @@
 {
   "name": "@aha/ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "AHA React 컴포넌트 (shadcn/ui 규약, Tailwind v4, Storybook 갤러리 + MCP)",
   "type": "module",
   "sideEffects": [

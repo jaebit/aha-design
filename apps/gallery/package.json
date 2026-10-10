@@ -17,6 +17,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@aha/kit-admin": "workspace:*",
     "@aha/kit-ai": "workspace:*",
     "@aha/tokens": "workspace:*",
     "@aha/ui": "workspace:*",

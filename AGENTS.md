@@ -9,7 +9,7 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 | `packages/tokens` | W3C DTCG 2025.10 토큰(`tokens/**/*.json`) → Style Dictionary 빌드 → `dist/tokens.css`, `dist/tokens.js`, `dist/tokens.manifest.json` |
 | `packages/tokens/src/tailwind.css` | 토큰 → Tailwind v4 `@theme` 매핑. 색상 이름은 shadcn/ui 규약을 따른다 |
 | `packages/ui` | 공통 React 컴포넌트(`@aha/ui`) + Storybook 10 (`@storybook/addon-mcp`). Storybook은 여기 하나만 두고 키트 스토리까지 함께 싣는다. `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
-| `packages/kit-*` | 도메인 키트 패키지. 지금은 `kit-ai`(`@aha/kit-ai`): AI 대화 부품과 화면 템플릿. 빌드 방식은 `packages/ui`와 같고, `@aha/ui`를 peer 의존성으로 둔다 |
+| `packages/kit-*` | 도메인 키트 패키지. `kit-ai`(`@aha/kit-ai`): AI 대화 부품과 화면 템플릿. `kit-admin`(`@aha/kit-admin`): 관리 화면의 폼·상세·일괄 작업·권한 부품과 템플릿. 빌드 방식은 `packages/ui`와 같고, `@aha/ui`를 peer 의존성으로 둔다 |
 | `packages/*/catalog.config.json` | 갤러리·MCP 카탈로그 메타데이터: 키트 목록, 분류(Storybook 제목 첫 단계 → 갤러리 분류), 템플릿 이름·설명 |
 | `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다 |
 | `Dockerfile`, `compose.yaml` | 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 띄운다 (포트 4100) |
@@ -29,14 +29,15 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm build-storybook` — Storybook 정적 빌드 (갤러리 카탈로그의 원본)
 - `pnpm gallery` — Storybook 정적 빌드 후 갤러리 개발 서버 http://localhost:5180
 - `pnpm docker:up` — 갤러리 + MCP를 Docker로 http://localhost:4100 에 띄운다. MCP는 `/mcp`
-- `pnpm publish:packages` — `@aha/tokens`, `@aha/ui`, `@aha/kit-*`를 Forgejo npm 레지스트리(`aha` 조직)에 배포. 공통 부품을 빼거나 이름을 바꾸면 `@aha/ui`의 minor(1.0 전) 또는 major 버전을 올리고, 키트의 peer 범위도 맞춘다
+- `pnpm publish:packages` — `@aha/tokens`, `@aha/ui`, `@aha/kit-*`를 Forgejo npm 레지스트리(`aha` 조직)에 배포. 이미 배포한 버전은 다시 올릴 수 없으므로 바뀐 패키지만 버전을 올리고 `pnpm --filter`로 골라 배포한다. 1.0 전에는 `^0.3.0`이 0.3.x만 허용하므로, `@aha/ui`의 minor를 올리면 모든 키트의 patch도 올려 peer 범위(`workspace:^`)를 새 버전으로 맞춰 다시 배포한다
 
 ## 테마와 기본 결정 (2026-10-09 확정)
 
 - **브랜드:** 검정 primary를 유지하고 별도 브랜드 강조색은 두지 않는다. 브랜드는 로고(💡)로만 드러낸다.
 - **서체:** Pretendard. `@aha/ui/styles.css`가 `pretendard` 패키지의 dynamic subset 웹폰트를 불러온다. 외부 CDN을 쓰지 않는다.
 - **다크 모드:** 시스템 설정을 따르고, `<html data-theme="light|dark">`로 고정할 수 있다. 다크 값은 `packages/tokens/tokens/themes/dark.json`에 있으며 시맨틱 토큰만 덮어쓴다. 컴포넌트에서 테마별 분기를 쓰지 않는다 (시맨틱 토큰이 알아서 바뀐다).
-- **테마 추가:** `tokens/themes/<이름>.json`을 만들고 `$extensions["aha.theme"]`에 적용 조건(`attribute`, `value`, 선택: `colorScheme`, `media`, `mediaUnless`, `label`)을 적는다. 빌드가 파일을 자동으로 찾아 CSS 블록과 manifest의 `<이름>` 값을 만들고, `check:contrast`도 모든 테마를 검사한다. 다른 축의 테마는 다른 attribute를 쓴다 (예: 밀도는 `data-density`).
+- **테마 추가:** `tokens/themes/<이름>.json`을 만들고 `$extensions["aha.theme"]`에 적용 조건(`attribute`, `value`, 선택: `colorScheme`, `media`, `mediaUnless`, `label`)을 적는다. 빌드가 파일을 자동으로 찾아 CSS 블록과 manifest의 `<이름>` 값을 만들고, `check:contrast`도 색을 바꾸는 모든 테마를 검사한다. 다른 축의 테마는 다른 attribute를 쓴다 (예: 밀도는 `data-density`).
+- **밀도:** 기본 밀도와 촘촘한 밀도(`<html data-density="compact">`, `tokens/themes/compact.json`) 두 가지. 간격 단위 토큰 `space.unit`(Tailwind `--spacing`)만 4px → 3.5px로 줄여 모든 간격·크기 클래스가 함께 줄어든다. 글자 크기와 색은 그대로다. 관리자 화면은 compact로 쓴다. 컴포넌트에 밀도별 분기나 작은 크기 클래스를 따로 넣지 않는다.
 - **키트:** 공통 부품(core) 위에 도메인 키트(AI 서비스, 관리자, CMS 등)를 얹는다. 키트는 core만 참조하고 키트끼리는 참조하지 않는다. 두 키트 이상에서 쓰는 부품만 core에 둔다. 확장 계획은 「AHA 디자인 시스템 다중 디자인 확장 검토」 문서를 따른다.
 - **상태색:** `status-good|warning|serious|critical`은 아이콘·마크용, `status-*-foreground`는 글자용이다. 상태는 색만으로 전달하지 않고 아이콘 + 라벨과 함께 쓴다 (`<Badge tone="warning">일부 품질 저하</Badge>`). 라이트 모드의 warning·serious 아이콘은 배경 대비가 3:1 미만이므로, 라벨 글자가 반드시 상태를 말해야 한다.
 
@@ -62,6 +63,8 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 아이콘은 `lucide-react`를 쓴다.
 - 네이티브 요소 속성(`ComponentProps<'input'>` 등)만 받는 컴포넌트도 `XxxProps` 인터페이스를 만들고, 자주 쓰는 속성(`value`, `onChange`, `aria-label` 등)을 JSDoc과 함께 다시 선언한다. docgen은 react 타입에서 온 속성을 문서에서 빼기 때문에, 선언하지 않으면 MCP 문서의 props가 비어 보인다.
 - **스토리 import 규칙 (MCP 예제 코드용):** meta의 `component`만 같은 폴더에서 상대 경로로 import하고, 스토리에서 쓰는 다른 컴포넌트와 보조 컴포넌트는 모두 패키지 이름(`@aha/ui`, 키트 부품이면 `@aha/kit-<id>`)으로 import한다. Storybook은 args에 쓴 식별자의 import를 원래 경로 그대로 예제에 싣기 때문에, 상대 경로로 import하면 에이전트가 존재하지 않는 경로를 보게 된다. `templates/fixtures` 같은 스토리 전용 데이터도 컴포넌트 스토리에서 import하지 말고 예시 값을 직접 적는다. 스토리를 바꾼 뒤에는 Storybook을 띄운 상태에서 `pnpm check:mcp-docs`로 확인한다.
+- 주석에 `kit-*/src` 같은 글롭 경로를 쓰지 않는다. `*/`가 주석(`/* */`, `/** */`)을 닫아 빌드가 깨진다. "키트 패키지(packages/kit-이름)"처럼 풀어 쓴다.
+- 대화상자처럼 화면 전체를 덮는 부품의 스토리는 `defaultOpen`으로 연다 (갤러리가 iframe으로 격리한다). meta에 `parameters.docs.story.inline: false`를 줘서 Storybook 문서 페이지에서도 iframe으로 그린다.
 - 컴포넌트 소스는 같은 패키지 안이면 상대 경로로 import한다 (`../../lib/cn`). 배포용 타입 선언(`.d.ts`)이 경로 별칭을 풀지 못하기 때문이다. 키트 소스가 공통 부품을 쓸 때는 `@aha/ui`에서 import한다 (`cn`도 `@aha/ui`에서).
 - 템플릿은 키트 패키지의 `src/templates/`에 둔다. 템플릿 스토리도 컴포넌트를 `@aha/ui`·`@aha/kit-<id>`에서 import한다. MCP `get_template`이 이 파일을 그대로 에이전트에 준다.
 - 키트에 속한 컴포넌트와 템플릿은 스토리 meta에 `tags: ['autodocs', 'kit:<id>']`를 단다 (지금은 `packages/kit-ai`의 부품과 템플릿이 `kit:ai`). 태그가 없으면 core다. 키트 id는 그 키트 패키지의 `catalog.config.json`의 `kits`에 있어야 하며, 없으면 카탈로그 빌드가 실패한다.

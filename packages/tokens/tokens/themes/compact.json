@@ -1,0 +1,14 @@
+{
+  "$description": "촘촘한 밀도 테마. 관리자 화면처럼 한 화면에 많은 행과 입력을 보여야 할 때 <html data-density=\"compact\">로 켠다. 간격 단위만 줄이고(4px → 3.5px) 글자 크기와 색은 그대로 둔다. 다크 테마와 함께 쓸 수 있다.",
+  "$extensions": {
+    "aha.theme": {
+      "label": "촘촘한 밀도",
+      "attribute": "data-density",
+      "value": "compact"
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "unit": { "$value": { "value": 0.21875, "unit": "rem" } }
+  }
+}

@@ -96,6 +96,10 @@
     "tooltip-foreground": {
       "$value": "{color.neutral.0}",
       "$description": "툴팁 텍스트"
+    },
+    "overlay": {
+      "$value": { "colorSpace": "srgb", "components": [0.0667, 0.0667, 0.0627], "alpha": 0.4, "hex": "#111110" },
+      "$description": "대화상자(ConfirmDialog) 뒤를 덮는 반투명 막. 뒤 화면을 흐리게 해 지금 답해야 할 질문에 집중시킨다"
     }
   }
 }
