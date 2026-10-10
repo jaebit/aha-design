@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { Checkbox } from '../checkbox/checkbox';
 import { cn } from '../../lib/cn';
 
 export interface DataTableColumn<Row> {
@@ -23,6 +24,15 @@ export interface DataTableProps<Row> {
   getRowId: (row: Row) => string;
   /** 강조할 행. 옆 대화 패널에서 이야기하는 행 (16쪽 10/03). */
   selectedRowId?: string;
+  /**
+   * 체크박스로 고른 행 id. `onSelectedIdsChange`와 함께 주면 맨 앞에 선택 열이 생긴다.
+   * 일괄 작업(삭제, 권한 변경)이 있는 목록에 쓴다. 고른 행이 있으면 관리자 키트의 BulkActionBar를 표 위에 둔다.
+   */
+  selectedIds?: string[];
+  /** 선택이 바뀔 때. 머리글 체크박스는 현재 `rows` 전체를 고르거나 푼다. */
+  onSelectedIdsChange?: (ids: string[]) => void;
+  /** 행 선택 체크박스의 스크린리더용 이름에 쓸 행 이름. 예: `(row) => row.name` → "김하마 선택". 생략하면 행 id. */
+  getRowLabel?: (row: Row) => string;
   /** true면 `secondary` 열을 숨긴다. */
   compact?: boolean;
   /** 행이 없을 때 문구. */
@@ -42,12 +52,26 @@ export function DataTable<Row>({
   rows,
   getRowId,
   selectedRowId,
+  selectedIds,
+  onSelectedIdsChange,
+  getRowLabel,
   compact = false,
   emptyMessage = '조건에 맞는 데이터가 없어요.',
   footer,
   className,
 }: DataTableProps<Row>) {
   const visible = compact ? columns.filter((column) => !column.secondary) : columns;
+  const selectable = Boolean(onSelectedIdsChange);
+  const chosen = new Set(selectedIds ?? []);
+  const rowIds = rows.map(getRowId);
+  const chosenCount = rowIds.filter((id) => chosen.has(id)).length;
+  const toggleAll = (checked: boolean) => {
+    const others = (selectedIds ?? []).filter((id) => !rowIds.includes(id));
+    onSelectedIdsChange?.(checked ? [...others, ...rowIds] : others);
+  };
+  const toggleRow = (id: string, checked: boolean) =>
+    onSelectedIdsChange?.(checked ? [...(selectedIds ?? []), id] : (selectedIds ?? []).filter((v) => v !== id));
+  const colSpan = visible.length + (selectable ? 1 : 0);
   return (
     <div data-slot="data-table" className={cn('flex flex-col', className)}>
       <div className="overflow-x-auto">
@@ -55,6 +79,17 @@ export function DataTable<Row>({
           <caption className="sr-only">{caption}</caption>
           <thead>
             <tr className="border-y border-border bg-subtle">
+              {selectable ? (
+                <th scope="col" className="w-12 pl-6">
+                  <Checkbox
+                    aria-label="이 페이지 전체 선택"
+                    checked={rows.length > 0 && chosenCount === rows.length}
+                    indeterminate={chosenCount > 0 && chosenCount < rows.length}
+                    onCheckedChange={toggleAll}
+                    disabled={rows.length === 0}
+                  />
+                </th>
+              ) : null}
               {visible.map((column) => (
                 <th
                   key={column.key}
@@ -72,7 +107,7 @@ export function DataTable<Row>({
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={visible.length} className="px-6 py-12 text-center text-body text-muted-foreground">
+                <td colSpan={colSpan} className="px-6 py-12 text-center text-body text-muted-foreground">
                   {emptyMessage}
                 </td>
               </tr>
@@ -80,12 +115,23 @@ export function DataTable<Row>({
               rows.map((row) => {
                 const id = getRowId(row);
                 const selected = id === selectedRowId;
+                const checked = chosen.has(id);
                 return (
                   <tr
                     key={id}
                     aria-current={selected ? 'true' : undefined}
-                    className={cn('border-b border-border', selected && 'bg-muted')}
+                    aria-selected={selectable ? checked : undefined}
+                    className={cn('border-b border-border', checked && 'bg-subtle', selected && 'bg-muted')}
                   >
+                    {selectable ? (
+                      <td className="w-12 pl-6 align-middle">
+                        <Checkbox
+                          aria-label={`${getRowLabel ? getRowLabel(row) : id} 선택`}
+                          checked={checked}
+                          onCheckedChange={(next) => toggleRow(id, next)}
+                        />
+                      </td>
+                    ) : null}
                     {visible.map((column) => (
                       <td
                         key={column.key}

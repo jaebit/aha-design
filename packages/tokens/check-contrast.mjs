@@ -41,7 +41,11 @@ function contrast(a, b) {
 }
 
 const failures = [];
-for (const mode of manifest.themes) {
+// 색을 바꾸지 않는 테마(밀도 등)는 라이트와 같으므로 건너뛴다.
+const colorThemes = manifest.themes.filter(
+  (mode) => mode === 'light' || manifest.tokens.some((t) => t.type === 'color' && t[mode]),
+);
+for (const mode of colorThemes) {
   let min = Infinity;
   for (const [fg, backgrounds] of pairs) {
     for (const bg of backgrounds) {

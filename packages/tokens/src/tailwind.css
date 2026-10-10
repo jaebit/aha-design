@@ -28,6 +28,7 @@
   --color-card-foreground: var(--aha-color-card-foreground);
   --color-popover: var(--aha-color-popover);
   --color-popover-foreground: var(--aha-color-popover-foreground);
+  --color-overlay: var(--aha-color-overlay);
   --color-tooltip: var(--aha-color-tooltip);
   --color-tooltip-foreground: var(--aha-color-tooltip-foreground);
 
@@ -75,4 +76,7 @@
   --radius-full: var(--aha-radius-full);
 
   --shadow-popover: var(--aha-shadow-popover);
+
+  /* 간격 단위. 모든 간격·크기 클래스(h-10, px-4, gap-2)가 이 값의 배수다. 밀도 테마(data-density="compact")가 바꾼다. */
+  --spacing: var(--aha-space-unit);
 }

@@ -6,6 +6,7 @@ export { Badge, type BadgeProps, type BadgeTone, badgeVariants } from './compone
 export { Button, buttonVariants, type ButtonProps } from './components/button/button';
 export { Callout, type CalloutProps } from './components/callout/callout';
 export { Card, cardVariants, type CardProps } from './components/card/card';
+export { Checkbox, type CheckboxProps } from './components/checkbox/checkbox';
 export { Chip, type ChipProps } from './components/chip/chip';
 export {
   DropdownMenu,
@@ -19,6 +20,7 @@ export {
 } from './components/dropdown-menu/dropdown-menu';
 export { Input, type InputProps } from './components/input/input';
 export { Stepper, type StepperProps } from './components/stepper/stepper';
+export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export {
   Tooltip,
   TooltipContent,

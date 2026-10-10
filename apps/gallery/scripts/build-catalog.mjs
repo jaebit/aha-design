@@ -36,7 +36,12 @@ for (const dir of dirs) {
 const kits = configs.flatMap((c) => (c.kits ?? []).map((kit) => ({ ...kit, package: { name: c.pkg.name, version: c.pkg.version } })));
 const categories = configs.flatMap((c) => c.categories ?? []);
 const templateMeta = Object.assign({}, ...configs.map((c) => c.templates ?? {}));
-const fixturesConfig = configs.find((c) => c.templateFixtures);
+// 키트 id → 그 키트 템플릿이 쓰는 예시 데이터 파일 내용.
+const templateFixtures = {};
+for (const config of configs.filter((c) => c.templateFixtures)) {
+  const source = await readFile(new URL(config.templateFixtures, config.dir), 'utf8');
+  for (const kit of config.kits ?? []) templateFixtures[kit.id] = source;
+}
 
 const storiesByTitle = new Map();
 for (const entry of Object.values(index.entries)) {
@@ -132,7 +137,7 @@ const catalog = {
   components,
   templates,
   // 템플릿 스토리가 쓰는 예시 데이터. 에이전트가 템플릿을 옮겨 쓸 때 함께 본다.
-  templateFixtures: fixturesConfig ? await readFile(new URL(fixturesConfig.templateFixtures, fixturesConfig.dir), 'utf8') : '',
+  templateFixtures,
   tokens: tokenManifest.tokens,
 };
 

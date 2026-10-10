@@ -1,0 +1,9 @@
+{
+  "space": {
+    "$type": "dimension",
+    "unit": {
+      "$value": { "value": 0.25, "unit": "rem" },
+      "$description": "간격 단위. Tailwind의 --spacing으로 쓰여 h-10, px-4, gap-2 같은 모든 간격·크기 클래스가 이 값의 배수가 된다. 밀도 테마(compact)가 이 값만 바꿔 화면 전체를 촘촘하게 만든다. 컴포넌트에서 직접 쓰지 않는다"
+    }
+  }
+}

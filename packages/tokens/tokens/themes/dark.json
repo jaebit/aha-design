@@ -47,7 +47,8 @@
     "status-good-foreground": { "$value": "{color.signal.good-text-dark}" },
     "status-warning-foreground": { "$value": "{color.signal.warning}" },
     "status-serious-foreground": { "$value": "{color.signal.serious}" },
-    "status-critical-foreground": { "$value": "{color.signal.critical-text-dark}" }
+    "status-critical-foreground": { "$value": "{color.signal.critical-text-dark}" },
+    "overlay": { "$value": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.6, "hex": "#000000" } }
   },
   "shadow": {
     "$type": "shadow",
