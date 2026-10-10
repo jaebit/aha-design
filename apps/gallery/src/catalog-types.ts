@@ -42,6 +42,8 @@ export interface CatalogTemplate extends Omit<CatalogComponent, 'category'> {
   group: string;
   /** 템플릿 스토리 파일 전체 소스. */
   source: string;
+  /** 이 템플릿의 권장 밀도. catalog.config.json의 templates에 적는다. 없으면 키트의 밀도를 따른다. */
+  density?: Density;
 }
 
 /** 공통(core) 또는 도메인 키트. 각 패키지의 catalog.config.json에 정의한다. */

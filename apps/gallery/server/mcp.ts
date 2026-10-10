@@ -103,12 +103,17 @@ function templateDoc(template: CatalogTemplate, ctx: McpContext) {
     template.summary,
     `갤러리: ${ctx.publicUrl}/templates/${template.slug}`,
     packageLine(ctx.catalog, template),
+    (template.density ?? kitOf(ctx.catalog, template)?.density) === 'compact'
+      ? '이 화면은 촘촘한 밀도로 쓴다: `<html data-density="compact">`.'
+      : '',
     '## 전체 소스',
     'Storybook 스토리 파일이다. 옮겨 쓸 때 `Meta`/`StoryObj`/`withLinkActions` 같은 Storybook 전용 코드는 빼고, 페이지 함수만 가져간다. `./fixtures`의 예시 데이터는 아래에 있다.',
     `\`\`\`tsx\n${template.source}\n\`\`\``,
     '## fixtures.tsx (예시 데이터)',
     `\`\`\`tsx\n${ctx.catalog.templateFixtures[template.kit] ?? ''}\n\`\`\``,
-  ].join('\n\n');
+  ]
+    .filter(Boolean)
+    .join('\n\n');
 }
 
 const tokenGroups = {

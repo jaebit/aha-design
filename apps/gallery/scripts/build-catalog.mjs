@@ -122,7 +122,14 @@ for (const component of Object.values(manifest.components)) {
   if (group === 'Templates') {
     const meta = templateMeta[component.id] ?? { label: displayName, group: '기타', description: '' };
     const source = await readFile(new URL(component.path, ui), 'utf8');
-    templates.push({ ...base, label: meta.label, group: meta.group, summary: meta.description, source });
+    templates.push({
+      ...base,
+      label: meta.label,
+      group: meta.group,
+      summary: meta.description,
+      ...(meta.density ? { density: meta.density } : {}),
+      source,
+    });
     continue;
   }
   const category = categories.find((c) => c.storybook === group);

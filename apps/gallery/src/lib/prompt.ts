@@ -33,8 +33,9 @@ ${rules}`;
 
 function templatePackages(template: CatalogTemplate) {
   const kit = kitOf(catalog, template);
-  if (!kit || kit.id === 'core') return `- 필요한 패키지: ${catalog.packages.ui.name}`;
-  const density = kit.density === 'compact' ? ' 이 키트 화면은 <html data-density="compact">(촘촘한 밀도)로 쓴다.' : '';
+  const compact = (template.density ?? kit?.density) === 'compact';
+  const density = compact ? ' 이 화면은 <html data-density="compact">(촘촘한 밀도)로 쓴다.' : '';
+  if (!kit || kit.id === 'core') return `- 필요한 패키지: ${catalog.packages.ui.name}.${density}`;
   return `- 필요한 패키지: ${catalog.packages.ui.name} + ${kit.package.name} (${kit.label} 키트).${density}`;
 }
 

@@ -70,7 +70,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - 템플릿은 키트 패키지의 `src/templates/`에 둔다. 템플릿 스토리도 컴포넌트를 `@aha/ui`·`@aha/kit-<id>`에서 import한다. MCP `get_template`이 이 파일을 그대로 에이전트에 준다.
 - 키트에 속한 컴포넌트와 템플릿은 스토리 meta에 `tags: ['autodocs', 'kit:<id>']`를 단다 (지금은 `packages/kit-ai`의 부품과 템플릿이 `kit:ai`). 태그가 없으면 core다. 키트 id는 그 키트 패키지의 `catalog.config.json`의 `kits`에 있어야 하며, 없으면 카탈로그 빌드가 실패한다.
 - 새 키트 패키지를 만들 때: `packages/kit-ai`를 본떠 `package.json`(peer `@aha/ui`), `vite.lib.config.ts`, `tsconfig*.json`, `src/styles.css`(`@source "./";`), `catalog.config.json`(키트·분류·템플릿)을 두고, 갤러리(`apps/gallery`)의 devDependencies와 `src/styles.css`에 키트를 추가한다. Storybook, 카탈로그, `check:tokens`, 배포 스크립트는 `packages/kit-*`를 자동으로 찾는다.
-- 새 템플릿을 만들면 그 키트의 `catalog.config.json`의 `templates`에 이름(`label`), 묶음(`group`), 한 줄 설명을 추가한다.
+- 새 템플릿을 만들면 그 키트의 `catalog.config.json`의 `templates`에 이름(`label`), 묶음(`group`), 한 줄 설명을 추가한다. 키트 밀도와 다른 화면이면 `density`(`compact` 등)를 함께 적는다 (갤러리 권장 밀도·프롬프트·MCP 안내에 쓰인다).
 - 갤러리는 스토리를 직접 렌더링한다. `layout: 'fullscreen'` 스토리와 `defaultOpen`처럼 화면 위에 뜨는 요소가 있는 스토리는 Storybook iframe으로 보여준다. 스토리에서 `storybook/test`의 `fn`·`expect` 외의 Storybook 런타임 API를 쓰면 `apps/gallery/src/shims/`에 대체 구현을 추가한다.
 - 제네릭 컴포넌트(DataTable 등)의 스토리 meta에는 `component: DataTable`처럼 값을 그대로 넘기고, 행 타입은 `satisfies Meta<typeof DataTable<Row>>`로만 고정한다. `DataTable<Row>`나 `as` 캐스트를 값으로 넘기면 MCP manifest에서 설명과 props가 빠진다.
 
