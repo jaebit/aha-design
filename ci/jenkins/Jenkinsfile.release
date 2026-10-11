@@ -21,8 +21,10 @@ pipeline {
         stage('Validate tag') {
             steps {
                 script {
-                    if (!(params.RELEASE_TAG ==~ /release-[0-9]{8}-[0-9]{1,3}/)) {
-                        error('INVALID_RELEASE_TAG: release-YYYYMMDD-N 형식의 tag가 필요합니다.')
+                    // 붙여넣을 때 섞인 앞뒤 공백은 지운다. 빌드 매개변수 이름(RELEASE_TAG)의 환경 변수는 덮어쓸 수 없어 TAG에 둔다.
+                    env.TAG = (params.RELEASE_TAG ?: '').trim()
+                    if (!(env.TAG ==~ /release-[0-9]{8}-[0-9]{1,3}/)) {
+                        error("INVALID_RELEASE_TAG: release-YYYYMMDD-N 형식의 tag가 필요합니다 (받은 값: \"${params.RELEASE_TAG}\").")
                     }
                 }
             }
@@ -30,7 +32,7 @@ pipeline {
         stage('Checkout tag') {
             steps {
                 deleteDir()
-                checkout([$class: 'GitSCM', branches: [[name: "refs/tags/${params.RELEASE_TAG}"]],
+                checkout([$class: 'GitSCM', branches: [[name: "refs/tags/${env.TAG}"]],
                     userRemoteConfigs: [[url: 'http://forgejo:3000/jay/design-hub.git', credentialsId: 'design-hub-read',
                         refspec: '+refs/heads/main:refs/remotes/origin/main +refs/tags/*:refs/tags/*']]])
                 script { env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim() }
