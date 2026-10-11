@@ -66,8 +66,8 @@
       "$description": "입력창(Composer) 외곽선, 선택된 카드"
     },
     "input": {
-      "$value": "{color.neutral.300}",
-      "$description": "폼 입력 테두리"
+      "$value": "{color.neutral.450}",
+      "$description": "폼 입력 테두리, 꺼진 스위치 트랙. 바탕(background·subtle·card·popover)과 3:1 이상 (WCAG 1.4.11)"
     },
     "ring": {
       "$value": "{color.neutral.500}",
