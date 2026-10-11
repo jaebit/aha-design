@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Button, HistoryItem, SidebarSection } from '@aha/ui';
+import { Button, HistoryItem, SidebarSection } from '@actoz/ui';
 
 import { ServiceSidebar } from './service-sidebar';
 

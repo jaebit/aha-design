@@ -22,7 +22,7 @@ const registry = process.env.NPM_REGISTRY || site.registry;
 const path = (env: string | undefined, fallback: string) => env ?? fileURLToPath(new URL(fallback, import.meta.url));
 
 // 사이트(SITE)마다 갤러리 빌드와 카탈로그가 다르다. Docker 이미지는 SITES_DIR/<사이트>/{dist,generated}에 사이트별로 둔다.
-// 로컬에서는 마지막으로 빌드한 dist·generated를 쓴다 (SITE=iam pnpm --filter @aha/gallery build 뒤 SITE=iam으로 실행).
+// 로컬에서는 마지막으로 빌드한 dist·generated를 쓴다 (SITE=iam pnpm --filter @actoz/gallery build 뒤 SITE=iam으로 실행).
 const siteDir = process.env.SITES_DIR ? `${process.env.SITES_DIR.replace(/\/$/, '')}/${site.id}` : undefined;
 const catalogPath = path(process.env.CATALOG_PATH ?? (siteDir && `${siteDir}/generated/catalog.json`), '../generated/catalog.json');
 const galleryDir = path(process.env.GALLERY_DIR ?? (siteDir && `${siteDir}/dist`), '../dist');

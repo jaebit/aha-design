@@ -17,7 +17,7 @@
         "^build"
       ]
     },
-    "@aha/ui#typecheck": {
+    "@actoz/ui#typecheck": {
       "dependsOn": [
         "^build"
       ],
@@ -41,7 +41,7 @@
         "storybook-static/**"
       ]
     },
-    "@aha/ui#build-storybook": {
+    "@actoz/ui#build-storybook": {
       "dependsOn": [
         "^build"
       ],
@@ -54,20 +54,20 @@
         "storybook-static/**"
       ]
     },
-    "@aha/gallery#build": {
+    "@actoz/gallery#build": {
       "dependsOn": [
         "^build",
-        "@aha/ui#build-storybook"
+        "@actoz/ui#build-storybook"
       ],
       "outputs": [
         "dist/**",
         "generated/**"
       ]
     },
-    "@aha/gallery#typecheck": {
+    "@actoz/gallery#typecheck": {
       "dependsOn": [
         "^build",
-        "@aha/ui#build-storybook"
+        "@actoz/ui#build-storybook"
       ],
       "outputs": [
         "generated/**"

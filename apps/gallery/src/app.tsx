@@ -1,4 +1,4 @@
-import { TooltipProvider } from '@aha/ui';
+import { TooltipProvider } from '@actoz/ui';
 import { useEffect } from 'react';
 
 import { useLocation } from './lib/router';

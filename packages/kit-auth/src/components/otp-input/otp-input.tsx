@@ -1,6 +1,6 @@
 import { type ClipboardEvent, type KeyboardEvent, useRef, useState } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface OtpInputProps {
   /** 자릿수. 인증 앱(TOTP)·문자 인증은 6, 복구 코드는 쓰지 않는다(Input을 쓴다). 기본 6. */

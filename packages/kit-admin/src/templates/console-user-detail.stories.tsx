@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ShieldCheck, ShieldOff } from 'lucide-react';
 import { useState } from 'react';
 
-import { AppShell, Badge, Button, Callout, Card, FormField, NativeSelect, PageHeader } from '@aha/ui';
-import { ConfirmDialog, DescriptionList, SessionList } from '@aha/kit-admin';
+import { AppShell, Badge, Button, Callout, Card, FormField, NativeSelect, PageHeader } from '@actoz/ui';
+import { ConfirmDialog, DescriptionList, SessionList } from '@actoz/kit-admin';
 
 import { consoleRail, iamUsers, iamStatusBadge, userSessions } from './fixtures';
 import { withLinkActions } from './link-actions';

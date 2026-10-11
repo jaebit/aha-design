@@ -6,7 +6,7 @@ services:
     build:
       context: .
       args:
-        NPM_REGISTRY: http://localhost:3000/api/packages/aha/npm/
+        NPM_REGISTRY: http://localhost:3000/api/packages/actoz/npm/
     image: aha-design:latest
     init: true
     ports:

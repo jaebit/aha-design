@@ -1,8 +1,8 @@
 /* 기본 서체 Pretendard (OFL). 쓰는 글자만 내려받는 dynamic subset 웹폰트를 패키지에서 직접 불러온다. */
 @import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 @import "tailwindcss";
-@import "@aha/tokens/tokens.css";
-@import "@aha/tokens/tailwind.css";
+@import "@actoz/tokens/tokens.css";
+@import "@actoz/tokens/tailwind.css";
 
 @source "./";
 

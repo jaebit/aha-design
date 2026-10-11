@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Download } from 'lucide-react';
 import { useState } from 'react';
 
-import { AppShell, BarList, Button, PageHeader, StatCard } from '@aha/ui';
-import { DonutChart, Heatmap, LineChart, type Period, PeriodPicker, periodOf, Widget, WidgetGrid } from '@aha/kit-dashboard';
+import { AppShell, BarList, Button, PageHeader, StatCard } from '@actoz/ui';
+import { DonutChart, Heatmap, LineChart, type Period, PeriodPicker, periodOf, Widget, WidgetGrid } from '@actoz/kit-dashboard';
 
 import { daily, dashboardRail, hourly, hours, services, teams, weekdays } from './fixtures';
 import { withLinkActions } from './link-actions';

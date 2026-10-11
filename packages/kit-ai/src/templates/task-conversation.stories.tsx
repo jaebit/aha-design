@@ -13,7 +13,7 @@ import {
   ServiceSidebar,
   SidebarSection,
   Stepper,
-} from '@aha/ui';
+} from '@actoz/ui';
 import {
   AttachmentCard,
   ChoiceCardGroup,
@@ -26,7 +26,7 @@ import {
   ResultSection,
   RiskItem,
   Suggestions,
-} from '@aha/kit-ai';
+} from '@actoz/kit-ai';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

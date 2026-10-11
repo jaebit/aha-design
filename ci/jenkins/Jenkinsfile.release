@@ -77,8 +77,8 @@ pipeline {
                         sleep 1; kill -0 $SOCAT_PID 2>/dev/null || { echo 'socat을 띄우지 못했습니다 (127.0.0.1:3000 사용 중?)' >&2; exit 1; }
                         trap 'kill $SOCAT_PID 2>/dev/null; rm -f "$NPMRC"' EXIT
                         NPMRC=$(mktemp) && chmod 600 "$NPMRC"
-                        printf '%s\\n' "@aha:registry=http://localhost:3000/api/packages/aha/npm/" \
-                          "//localhost:3000/api/packages/aha/npm/:_authToken=${PACKAGE_TOKEN}" > "$NPMRC"
+                        printf '%s\\n' "@actoz:registry=http://localhost:3000/api/packages/actoz/npm/" \
+                          "//localhost:3000/api/packages/actoz/npm/:_authToken=${PACKAGE_TOKEN}" > "$NPMRC"
                         export NPM_CONFIG_USERCONFIG="$NPMRC"
                         unset PACKAGE_TOKEN
                         pnpm changeset publish-plan
@@ -98,7 +98,7 @@ pipeline {
                     for dir in packages/*/; do
                       name=$(node -p "require('./${dir}package.json').name")
                       version=$(node -p "require('./${dir}package.json').version")
-                      npm view "${name}@${version}" version --registry http://localhost:3000/api/packages/aha/npm/
+                      npm view "${name}@${version}" version --registry http://localhost:3000/api/packages/actoz/npm/
                     done
                 '''
             }

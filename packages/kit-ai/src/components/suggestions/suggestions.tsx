@@ -1,4 +1,4 @@
-import { Chip, cn } from '@aha/ui';
+import { Chip, cn } from '@actoz/ui';
 
 export interface SuggestionsProps {
   /** 추천 질문 문장. 2~3개를 권장한다. */

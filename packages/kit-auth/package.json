@@ -1,7 +1,7 @@
 {
-  "name": "@aha/kit-auth",
+  "name": "@actoz/kit-auth",
   "version": "0.0.0",
-  "description": "인증 키트: 로그인·2단계 인증·OAuth 동의 화면의 틀(AuthLayout)과 인증 코드 입력(OtpInput), 인증 화면 템플릿 (@aha/ui 위에 얹는다)",
+  "description": "인증 키트: 로그인·2단계 인증·OAuth 동의 화면의 틀(AuthLayout)과 인증 코드 입력(OtpInput), 인증 화면 템플릿 (@actoz/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -14,7 +14,7 @@
     "dist"
   ],
   "publishConfig": {
-    "registry": "http://localhost:3000/api/packages/aha/npm/",
+    "registry": "http://localhost:3000/api/packages/actoz/npm/",
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -31,13 +31,13 @@
     "lucide-react": "^1.53.0"
   },
   "peerDependencies": {
-    "@aha/ui": "workspace:^",
+    "@actoz/ui": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
-    "@aha/ui": "workspace:*",
+    "@actoz/ui": "workspace:*",
     "@storybook/react-vite": "^10.6.1",
     "@types/node": "^24.19.1",
     "@types/react": "^19.3.0",

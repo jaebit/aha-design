@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Badge, Card, CellText, type DataTableColumn, Pagination } from '@aha/ui';
+import { Badge, Card, CellText, type DataTableColumn, Pagination } from '@actoz/ui';
 
 import { DataTable } from './data-table';
 

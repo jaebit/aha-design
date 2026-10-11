@@ -30,22 +30,22 @@ importers:
         specifier: ^4.6.5
         version: 4.6.5
     devDependencies:
-      '@aha/kit-admin':
+      '@actoz/kit-admin':
         specifier: workspace:*
         version: link:../../packages/kit-admin
-      '@aha/kit-ai':
+      '@actoz/kit-ai':
         specifier: workspace:*
         version: link:../../packages/kit-ai
-      '@aha/kit-auth':
+      '@actoz/kit-auth':
         specifier: workspace:*
         version: link:../../packages/kit-auth
-      '@aha/kit-dashboard':
+      '@actoz/kit-dashboard':
         specifier: workspace:*
         version: link:../../packages/kit-dashboard
-      '@aha/tokens':
+      '@actoz/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@aha/ui':
+      '@actoz/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@tailwindcss/vite':
@@ -94,7 +94,7 @@ importers:
         specifier: ^4.0.0
         version: 4.3.3
     devDependencies:
-      '@aha/ui':
+      '@actoz/ui':
         specifier: workspace:*
         version: link:../ui
       '@storybook/react-vite':
@@ -140,7 +140,7 @@ importers:
         specifier: ^4.0.0
         version: 4.3.3
     devDependencies:
-      '@aha/ui':
+      '@actoz/ui':
         specifier: workspace:*
         version: link:../ui
       '@storybook/react-vite':
@@ -183,7 +183,7 @@ importers:
         specifier: ^4.0.0
         version: 4.3.3
     devDependencies:
-      '@aha/ui':
+      '@actoz/ui':
         specifier: workspace:*
         version: link:../ui
       '@storybook/react-vite':
@@ -223,7 +223,7 @@ importers:
         specifier: ^4.0.0
         version: 4.3.3
     devDependencies:
-      '@aha/ui':
+      '@actoz/ui':
         specifier: workspace:*
         version: link:../ui
       '@storybook/react-vite':
@@ -268,7 +268,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@aha/tokens':
+      '@actoz/tokens':
         specifier: workspace:^
         version: link:../tokens
       '@radix-ui/react-avatar':

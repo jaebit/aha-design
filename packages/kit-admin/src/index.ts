@@ -1,9 +1,9 @@
-// 관리자 키트. 공통 부품(@aha/ui) 위에 관리 화면(목록 · 상세 · 편집 · 권한)의 부품을 둔다.
+// 관리자 키트. 공통 부품(@actoz/ui) 위에 관리 화면(목록 · 상세 · 편집 · 권한)의 부품을 둔다.
 
 // 폼
 export { FormActions, type FormActionsProps } from './components/form-actions/form-actions';
-/** @deprecated FormField는 공통 부품으로 옮겼다. `@aha/ui`에서 import한다. 다음 minor에서 뺀다. */
-export { FormField, type FormFieldProps } from '@aha/ui';
+/** @deprecated FormField는 공통 부품으로 옮겼다. `@actoz/ui`에서 import한다. 다음 minor에서 뺀다. */
+export { FormField, type FormFieldProps } from '@actoz/ui';
 export { FormSection, type FormSectionProps } from './components/form-section/form-section';
 
 // 상세 · 목록

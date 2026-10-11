@@ -1,4 +1,4 @@
-import { Button, cn } from '@aha/ui';
+import { Button, cn } from '@actoz/ui';
 import { Check, Copy, Eye, EyeOff, RefreshCw, TriangleAlert } from 'lucide-react';
 import { type ReactNode, useEffect, useId, useState } from 'react';
 

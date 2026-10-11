@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { type MessageFeedback } from '@aha/kit-ai';
+import { type MessageFeedback } from '@actoz/kit-ai';
 
 import { MessageActions } from './message-actions';
 

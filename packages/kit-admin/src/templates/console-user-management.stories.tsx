@@ -16,8 +16,8 @@ import {
   NativeSelect,
   PageHeader,
   Pagination,
-} from '@aha/ui';
-import { BulkActionBar, ConfirmDialog } from '@aha/kit-admin';
+} from '@actoz/ui';
+import { BulkActionBar, ConfirmDialog } from '@actoz/kit-admin';
 
 import { consoleRail, type IamUser, iamUsers, iamStatusBadge, type IamUserStatus } from './fixtures';
 import { withLinkActions } from './link-actions';

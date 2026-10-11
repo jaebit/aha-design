@@ -1,7 +1,7 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import type { ReactNode } from 'react';
 
-import { Button } from '@aha/ui';
+import { Button } from '@actoz/ui';
 
 export interface ConfirmDialogProps {
   /** 열림 상태. `onOpenChange`와 함께 쓴다. `trigger`를 주면 생략해도 된다. */

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Card } from '@aha/ui';
+import { Card } from '@actoz/ui';
 
 import { StackedColumnChart } from './stacked-column-chart';
 

@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 import { ChartHeader, defaultFormat, SERIES_COLORS } from '../../lib/chart';
 

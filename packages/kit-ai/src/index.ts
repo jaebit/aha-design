@@ -1,4 +1,4 @@
-// AI 서비스 키트. 공통 부품(@aha/ui) 위에 AI 대화 화면의 부품과 화면 템플릿을 둔다.
+// AI 서비스 키트. 공통 부품(@actoz/ui) 위에 AI 대화 화면의 부품과 화면 템플릿을 둔다.
 
 // 대화
 export { Citation, type CitationProps } from './components/citation/citation';

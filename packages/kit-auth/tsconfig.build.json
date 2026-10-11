@@ -8,8 +8,8 @@
     "outDir": "dist",
     "types": ["vite/client"],
     "paths": {
-      // 워크스페이스의 @aha/ui는 소스(src)를 가리키므로, 선언 파일은 빌드된 dist 타입을 참조한다.
-      "@aha/ui": ["../ui/dist/index.d.ts"]
+      // 워크스페이스의 @actoz/ui는 소스(src)를 가리키므로, 선언 파일은 빌드된 dist 타입을 참조한다.
+      "@actoz/ui": ["../ui/dist/index.d.ts"]
     }
   },
   "include": ["src"],

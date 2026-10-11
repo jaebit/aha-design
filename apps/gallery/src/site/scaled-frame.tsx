@@ -1,5 +1,5 @@
 // 전체 화면 템플릿을 작은 칸에 축소해서 보여주는 iframe. 1280×800 화면을 칸 너비에 맞춰 줄인다.
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 import { useEffect, useRef, useState } from 'react';
 
 interface ScaledFrameProps {

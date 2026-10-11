@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button, Input, NativeSelect, Textarea } from '@aha/ui';
+import { Button, Input, NativeSelect, Textarea } from '@actoz/ui';
 
 import { FormField } from './form-field';
 

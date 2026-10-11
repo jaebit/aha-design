@@ -1,5 +1,5 @@
 ---
-"@aha/ui": patch
+"@actoz/ui": patch
 ---
 
 IAM 디자인 시스템의 공통 부품 변경을 합쳤다 (AHA·IAM 통합 2단계).

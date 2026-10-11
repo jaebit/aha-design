@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Copy, Download, RotateCcw } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { Button } from '@aha/ui';
-import { ResultSection, RiskItem } from '@aha/kit-ai';
+import { Button } from '@actoz/ui';
+import { ResultSection, RiskItem } from '@actoz/kit-ai';
 
 import { ResultCard } from './result-card';
 

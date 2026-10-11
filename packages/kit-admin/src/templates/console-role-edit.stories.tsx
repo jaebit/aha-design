@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { AppShell, Button, FormField, Input, PageHeader, Textarea } from '@aha/ui';
-import { FormActions, FormSection, PermissionMatrix } from '@aha/kit-admin';
+import { AppShell, Button, FormField, Input, PageHeader, Textarea } from '@actoz/ui';
+import { FormActions, FormSection, PermissionMatrix } from '@actoz/kit-admin';
 
 import { auditorPermissions, consoleRail, permissionActions, permissionResources } from './fixtures';
 import { withLinkActions } from './link-actions';

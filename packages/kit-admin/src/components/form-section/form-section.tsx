@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface FormSectionProps {
   /** 묶음 이름. 예: "기본 정보", "역할과 권한", "리디렉션 URI". */
   title: string;
   /** 묶음 설명. 무엇을 정하는 곳인지, 바꾸면 어떻게 되는지. */
   description?: ReactNode;
-  /** FormField(`@aha/ui`) 목록이나 PermissionMatrix. */
+  /** FormField(`@actoz/ui`) 목록이나 PermissionMatrix. */
   children: ReactNode;
   /** 바깥 요소에 더할 클래스. */
   className?: string;

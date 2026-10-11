@@ -1,4 +1,4 @@
-import { Badge, Button, Card } from '@aha/ui';
+import { Badge, Button, Card } from '@actoz/ui';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 
 import type { CatalogKit } from '../catalog-types';

@@ -1,4 +1,4 @@
-import { Chip } from '@aha/ui';
+import { Chip } from '@actoz/ui';
 
 import type { Density } from '../catalog-types';
 

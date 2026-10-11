@@ -1,6 +1,6 @@
 // 갤러리·MCP 서버의 브랜드별 설정. 화면 문구, 이름, 주소를 여기에만 둔다.
 // 한 코드로 브랜드마다 사이트를 하나씩 띄운다 (AHA·IAM 통합 4단계). 환경변수 SITE(aha | iam)로 고르고, 없으면 aha.
-//   갤러리 빌드: SITE=iam pnpm --filter @aha/gallery build   서버: SITE=iam node server/index.ts
+//   갤러리 빌드: SITE=iam pnpm --filter @actoz/gallery build   서버: SITE=iam node server/index.ts
 // 사이트마다 자기 브랜드(<html data-brand>)로 미리보기를 그리고, kits에 적은 키트와 자기 브랜드의 템플릿만 보여준다.
 // 갤러리 화면(src)과 MCP 서버(server), 카탈로그 빌드(scripts)가 함께 읽으므로 Node가 바로 실행할 수 있는 문법(타입 표기만)으로 쓴다.
 
@@ -28,7 +28,7 @@ export interface SiteConfig {
   logo: SiteLogo;
   /** SVG 로고를 파비콘으로 쓸 때의 선 색 (hex). 파비콘은 페이지 CSS 변수를 못 쓴다. 이모지 로고면 쓰지 않는다. */
   faviconColor: string;
-  /** npm 범위. 예: "@aha". */
+  /** npm 범위. 예: "@actoz". */
   scope: string;
   /** MCP 서버 이름. 에이전트 설정에 이 이름으로 등록한다. */
   mcpName: string;
@@ -80,9 +80,9 @@ const aha: SiteConfig = {
   description: 'AHA 사내 디자인 시스템. 컴포넌트와 화면을 보고, 에이전트로 바로 가져다 씁니다.',
   logo: { emoji: '💡' },
   faviconColor: '#111110',
-  scope: '@aha',
+  scope: '@actoz',
   mcpName: 'aha-design',
-  registry: 'http://localhost:3000/api/packages/aha/npm/',
+  registry: 'http://localhost:3000/api/packages/actoz/npm/',
   repoUrl: 'http://localhost:3000/jay/aha-design',
   port: 4100,
   devPort: 5180,
@@ -106,7 +106,7 @@ const aha: SiteConfig = {
     '관리자 대시보드 템플릿으로 우리 팀 서비스의 월별 사용량 화면을 만들어 줘. 통계 카드는 요청 수, 사용자 수, 실패율 세 개.',
     'DataTable과 Pagination으로 신청 내역 목록을 만들고, 상태 열은 Badge tone으로 표시해 줘.',
   ],
-  usageExample: `import { Badge, Button } from '@aha/ui';
+  usageExample: `import { Badge, Button } from '@actoz/ui';
 
 export function Example() {
   return (
@@ -118,7 +118,7 @@ export function Example() {
 }`,
   statusExample: '`<Badge tone="warning">일부 품질 저하</Badge>`, StatCard `delta.tone`',
   densityGuide:
-    '관리자 화면처럼 한 화면에 많은 행과 입력을 보여야 하면 `<html data-density="compact">`로 촘촘한 밀도를 켠다. 간격만 줄고 글자 크기와 색은 그대로다. 관리자 키트(@aha/kit-admin) 템플릿은 이 밀도 기준이다. 컴포넌트에 간격을 따로 줄이는 클래스를 넣지 않는다.',
+    '관리자 화면처럼 한 화면에 많은 행과 입력을 보여야 하면 `<html data-density="compact">`로 촘촘한 밀도를 켠다. 간격만 줄고 글자 크기와 색은 그대로다. 관리자 키트(@actoz/kit-admin) 템플릿은 이 밀도 기준이다. 컴포넌트에 간격을 따로 줄이는 클래스를 넣지 않는다.',
   extraRules: [],
 };
 
@@ -136,10 +136,10 @@ const iam: SiteConfig = {
   },
   // color.brand.600
   faviconColor: '#2458db',
-  // 패키지는 AHA와 같다 (공통 부품과 키트를 함께 쓴다). 범위 이름은 통합 5단계에서 @actoz로 바꾼다.
-  scope: '@aha',
+  // 패키지는 AHA와 같다 (공통 부품과 키트를 함께 쓴다).
+  scope: '@actoz',
   mcpName: 'iam-design',
-  registry: 'http://localhost:3000/api/packages/aha/npm/',
+  registry: 'http://localhost:3000/api/packages/actoz/npm/',
   repoUrl: 'http://localhost:3000/jay/aha-design',
   port: 4200,
   devPort: 5280,
@@ -163,8 +163,8 @@ const iam: SiteConfig = {
     '관리 콘솔 사용자 관리 템플릿으로 OAuth 클라이언트 목록 화면을 만들어 줘. 열은 앱 이름, 클라이언트 id, 유형(기밀/공개), 허용 scope, 만든 날.',
     'ScopeList와 Button으로 계정 설정의 "연결된 앱" 화면을 만들고, 앱마다 접근 취소 버튼을 둬 줘.',
   ],
-  usageExample: `import { Button, FormField, Input } from '@aha/ui';
-import { AuthLayout } from '@aha/kit-auth';
+  usageExample: `import { Button, FormField, Input } from '@actoz/ui';
+import { AuthLayout } from '@actoz/kit-auth';
 
 // <html data-brand="iam">이 있어야 IAM 파랑으로 보인다.
 export function LoginPage() {
@@ -184,13 +184,13 @@ export function LoginPage() {
 }`,
   statusExample: '`<Badge tone="critical">잠김</Badge>`',
   densityGuide:
-    '관리 콘솔(사용자·그룹·역할·클라이언트·감사 로그)은 `<html data-density="compact">`로 촘촘한 밀도를 켠다. 관리자 키트(@aha/kit-admin)의 관리 콘솔 템플릿은 이 밀도 기준이다. 로그인·2단계 인증·동의 같은 인증 화면은 기본 밀도로 둔다. 간격만 줄고 글자 크기와 색은 그대로다. 컴포넌트에 간격을 따로 줄이는 클래스를 넣지 않는다.',
+    '관리 콘솔(사용자·그룹·역할·클라이언트·감사 로그)은 `<html data-density="compact">`로 촘촘한 밀도를 켠다. 관리자 키트(@actoz/kit-admin)의 관리 콘솔 템플릿은 이 밀도 기준이다. 로그인·2단계 인증·동의 같은 인증 화면은 기본 밀도로 둔다. 간격만 줄고 글자 크기와 색은 그대로다. 컴포넌트에 간격을 따로 줄이는 클래스를 넣지 않는다.',
   extraRules: [
     {
       title: 'IAM 브랜드',
       items: [
         '모든 IAM 화면의 `<html>`에 `data-brand="iam"`을 단다. 없으면 AHA 색(검정 primary)으로 보인다. 다크(`data-theme`)·밀도(`data-density`) 속성과 함께 쓸 수 있다.',
-        '부품은 AHA와 같은 패키지(`@aha/ui`, `@aha/kit-admin`, `@aha/kit-auth`)를 쓴다. 브랜드마다 다른 것은 prop으로 넘긴다: AuthLayout `logo`, NavRail `logo`·`aria-label="주 메뉴"`, AccountMenu `adminLabel="관리 콘솔"`.',
+        '부품은 AHA와 같은 패키지(`@actoz/ui`, `@actoz/kit-admin`, `@actoz/kit-auth`)를 쓴다. 브랜드마다 다른 것은 prop으로 넘긴다: AuthLayout `logo`, NavRail `logo`·`aria-label="주 메뉴"`, AccountMenu `adminLabel="관리 콘솔"`.',
       ],
     },
     {

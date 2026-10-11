@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { AppShell, Badge, Button, Card, PageHeader, ScopeList } from '@aha/ui';
-import { ConfirmDialog, DescriptionList, SecretField } from '@aha/kit-admin';
+import { AppShell, Badge, Button, Card, PageHeader, ScopeList } from '@actoz/ui';
+import { ConfirmDialog, DescriptionList, SecretField } from '@actoz/kit-admin';
 
 import { clientScopes, consoleRail, oauthClient } from './fixtures';
 import { withLinkActions } from './link-actions';

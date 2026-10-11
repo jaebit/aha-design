@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Ellipsis, Pencil, Pin, Trash2 } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { Button, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@aha/ui';
+import { Button, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@actoz/ui';
 
 import { DropdownMenuContent } from './dropdown-menu';
 

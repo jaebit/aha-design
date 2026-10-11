@@ -1,4 +1,4 @@
-import { Button, Callout, Card, Chip } from '@aha/ui';
+import { Button, Callout, Card, Chip } from '@actoz/ui';
 import { ArrowRight } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 

@@ -16,7 +16,7 @@ import {
   NativeSelect,
   PageHeader,
   Pagination,
-} from '@aha/ui';
+} from '@actoz/ui';
 
 import { type AuditEvent, auditEvents, auditResultBadge, type AuditResult, consoleRail } from './fixtures';
 import { withLinkActions } from './link-actions';

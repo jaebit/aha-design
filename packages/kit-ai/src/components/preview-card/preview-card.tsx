@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Button, cn } from '@aha/ui';
+import { Button, cn } from '@actoz/ui';
 
 export interface PreviewCardProps {
   /** 미리보기 제목. 예: "음성 원문 미리보기". */

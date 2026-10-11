@@ -11,7 +11,7 @@ import {
   ServiceSidebar,
   SidebarSection,
   TooltipTerm,
-} from '@aha/ui';
+} from '@actoz/ui';
 // 패키지 배럴(../../index)은 이 파일도 내보내므로 순환 참조가 생긴다. 부품 파일에서 바로 가져온다.
 import { Citation } from '../../components/citation/citation';
 import { Composer } from '../../components/composer/composer';

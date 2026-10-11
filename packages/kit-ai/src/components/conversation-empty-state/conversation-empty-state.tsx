@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Badge, cn } from '@aha/ui';
+import { Badge, cn } from '@actoz/ui';
 
 export interface ConversationEmptyStateProps {
   /** 무엇을 할 수 있는지 한 문장. 예: "사내 가이드에서 찾아드려요" (3쪽). */

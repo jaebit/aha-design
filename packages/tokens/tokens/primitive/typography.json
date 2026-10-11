@@ -12,7 +12,7 @@
           "Malgun Gothic",
           "sans-serif"
         ],
-        "$description": "기본 서체 Pretendard. @aha/ui/styles.css가 pretendard npm 패키지의 웹폰트를 불러온다 (외부 CDN 없음)"
+        "$description": "기본 서체 Pretendard. @actoz/ui/styles.css가 pretendard npm 패키지의 웹폰트를 불러온다 (외부 CDN 없음)"
       },
       "mono": {
         "$value": [

@@ -1,4 +1,4 @@
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 import { CopyButton } from './copy-button';
 

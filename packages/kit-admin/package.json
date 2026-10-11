@@ -1,7 +1,7 @@
 {
-  "name": "@aha/kit-admin",
+  "name": "@actoz/kit-admin",
   "version": "0.1.2",
-  "description": "AHA 관리자 키트: 폼·상세·일괄 작업·권한 부품과 관리 화면 템플릿 (@aha/ui 위에 얹는다)",
+  "description": "AHA 관리자 키트: 폼·상세·일괄 작업·권한 부품과 관리 화면 템플릿 (@actoz/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -14,7 +14,7 @@
     "dist"
   ],
   "publishConfig": {
-    "registry": "http://localhost:3000/api/packages/aha/npm/",
+    "registry": "http://localhost:3000/api/packages/actoz/npm/",
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -32,13 +32,13 @@
     "lucide-react": "^1.53.0"
   },
   "peerDependencies": {
-    "@aha/ui": "workspace:^",
+    "@actoz/ui": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
-    "@aha/ui": "workspace:*",
+    "@actoz/ui": "workspace:*",
     "@storybook/react-vite": "^10.6.1",
     "@types/node": "^24.19.1",
     "@types/react": "^19.3.0",

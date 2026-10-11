@@ -1,5 +1,5 @@
 {
-  "name": "@aha/ui",
+  "name": "@actoz/ui",
   "version": "0.3.3",
   "description": "AHA React 컴포넌트 (shadcn/ui 규약, Tailwind v4, Storybook 갤러리 + MCP)",
   "type": "module",
@@ -14,7 +14,7 @@
     "dist"
   ],
   "publishConfig": {
-    "registry": "http://localhost:3000/api/packages/aha/npm/",
+    "registry": "http://localhost:3000/api/packages/actoz/npm/",
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -30,7 +30,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@aha/tokens": "workspace:^",
+    "@actoz/tokens": "workspace:^",
     "@radix-ui/react-avatar": "^1.2.7",
     "@radix-ui/react-dropdown-menu": "^2.1.25",
     "@radix-ui/react-slot": "^1.4.0",

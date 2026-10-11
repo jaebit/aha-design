@@ -8,7 +8,7 @@ AHA 사내 디자인 시스템. 토큰, React 컴포넌트, Storybook 갤러리�
 | --- | --- |
 | 누구나 (비개발자 포함) | **갤러리** http://localhost:4100 — 컴포넌트·화면 템플릿을 보고 "에이전트용 프롬프트 복사" |
 | AI 에이전트 | **aha-design MCP** http://localhost:4100/mcp — 컴포넌트 검색, props·예제, 템플릿 소스, 토큰, 설치 방법 |
-| 프로젝트 | **npm 패키지** `@aha/ui`(공통), `@aha/kit-admin`(관리자 키트), `@aha/kit-ai`(AI 서비스 키트), `@aha/kit-dashboard`(대시보드 키트), `@aha/tokens` — 사내 Forgejo 레지스트리 (`aha` 조직) |
+| 프로젝트 | **npm 패키지** `@actoz/ui`(공통), `@actoz/kit-admin`(관리자 키트), `@actoz/kit-ai`(AI 서비스 키트), `@actoz/kit-dashboard`(대시보드 키트), `@actoz/kit-auth`(인증 키트), `@actoz/tokens` — 사내 Forgejo 레지스트리 (`actoz` 조직) |
 | 디자인 시스템 개발자 | **Storybook** http://localhost:6006 (개발), 갤러리의 `/storybook/` (정적) |
 
 ## 갤러리 + MCP 띄우기 (Docker)
@@ -49,16 +49,16 @@ pnpm version-packages  # 모인 변경 기록으로 버전과 CHANGELOG를 올�
 pnpm release           # 패키지를 빌드하고 레지스트리에 없는 버전만 Forgejo npm 레지스트리에 배포
 ```
 
-CI와 배포는 로컬 Jenkins가 한다 (main 푸시마다 검사, 배포는 tag를 넣어 수동 실행). 준비와 사용법은 [ci/jenkins/README.md](ci/jenkins/README.md). 직접 배포할 때는 배포하는 쪽의 `~/.npmrc`에 `//localhost:3000/api/packages/aha/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 사용하는 프로젝트는 `.npmrc`에 `@aha:registry=http://localhost:3000/api/packages/aha/npm/`를 두고 `@import "@aha/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@aha/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
+CI와 배포는 로컬 Jenkins가 한다 (main 푸시마다 검사, 배포는 tag를 넣어 수동 실행). 준비와 사용법은 [ci/jenkins/README.md](ci/jenkins/README.md). 직접 배포할 때는 배포하는 쪽의 `~/.npmrc`에 `//localhost:3000/api/packages/actoz/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 사용하는 프로젝트는 `.npmrc`에 `@actoz:registry=http://localhost:3000/api/packages/actoz/npm/`를 두고 `@import "@actoz/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@actoz/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
 
 ## 현재 상태
 
 패키지 버전은 각 패키지의 `CHANGELOG.md`와 레지스트리에서 본다 (Changesets가 올리므로 여기에 적지 않는다).
 
-- 대시보드 키트 `@aha/kit-dashboard`: LineChart, DonutChart, Heatmap, PeriodPicker, WidgetGrid·Widget + 템플릿 `ServiceUsage`(서비스 사용 현황). 숫자 카드·막대 목록·쌓은 막대는 공통(StatCard, BarList, StackedColumnChart)을 쓴다. Wiki와 CMS는 AHA 키트가 아니라 별도 시스템으로 나중에 진행한다.
+- 대시보드 키트 `@actoz/kit-dashboard`: LineChart, DonutChart, Heatmap, PeriodPicker, WidgetGrid·Widget + 템플릿 `ServiceUsage`(서비스 사용 현황). 숫자 카드·막대 목록·쌓은 막대는 공통(StatCard, BarList, StackedColumnChart)을 쓴다. Wiki와 CMS는 AHA 키트가 아니라 별도 시스템으로 나중에 진행한다.
 
-- 패키지: 공통 부품은 `@aha/ui`, AI 대화 부품 13개와 화면 템플릿은 `@aha/kit-ai`에 있다. 0.2.0에서 AI 부품이 `@aha/ui`에서 빠졌으므로, 0.1.0을 쓰던 프로젝트는 `@aha/kit-ai`를 설치하고 해당 import를 옮긴다.
-- 관리자 키트 `@aha/kit-admin`: FormSection, FormField, FormActions, DescriptionList, BulkActionBar, ConfirmDialog, PermissionMatrix + 템플릿 `UserManagement`(사용자 관리), `UserEdit`(사용자 편집). 공통에 Checkbox, Textarea, DataTable 행 선택(`selectedIds`)을 더했다.
+- 패키지: 공통 부품은 `@actoz/ui`, AI 대화 부품 13개와 화면 템플릿은 `@actoz/kit-ai`에 있다. 0.2.0에서 AI 부품이 `@actoz/ui`에서 빠졌으므로, 0.1.0을 쓰던 프로젝트는 `@actoz/kit-ai`를 설치하고 해당 import를 옮긴다.
+- 관리자 키트 `@actoz/kit-admin`: FormSection, FormField, FormActions, DescriptionList, BulkActionBar, ConfirmDialog, PermissionMatrix + 템플릿 `UserManagement`(사용자 관리), `UserEdit`(사용자 편집). 공통에 Checkbox, Textarea, DataTable 행 선택(`selectedIds`)을 더했다.
 - 밀도: `<html data-density="compact">`로 촘촘한 밀도를 켠다 (간격만 4px → 3.5px). 관리자 화면 기준이다. 테마 속성은 일반 요소에 달아도 그 안쪽에만 적용된다.
 - 갤러리: 상단 키트 메뉴로 "공통 + 고른 키트"만 볼 수 있고, `/kits`에 키트별 소개·설치·템플릿이 있다. 컴포넌트 예제와 템플릿 미리보기에서 밀도를 바꿔 볼 수 있다.
 

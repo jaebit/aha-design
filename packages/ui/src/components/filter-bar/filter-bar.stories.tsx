@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Card, FilterField, Input, NativeSelect } from '@aha/ui';
+import { Card, FilterField, Input, NativeSelect } from '@actoz/ui';
 
 import { FilterBar } from './filter-bar';
 

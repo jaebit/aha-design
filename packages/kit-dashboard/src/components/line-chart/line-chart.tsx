@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react';
 
-import { type ChartSeries, cn } from '@aha/ui';
+import { type ChartSeries, cn } from '@actoz/ui';
 
 import { AXIS_COLOR, ChartHeader, defaultFormat, GRID_COLOR, niceTicks, SERIES_COLORS, useWidth } from '../../lib/chart';
 

@@ -3,7 +3,7 @@ import { PanelLeftOpen, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { Button } from '@aha/ui';
+import { Button } from '@actoz/ui';
 
 import { ConversationHeader } from './conversation-header';
 

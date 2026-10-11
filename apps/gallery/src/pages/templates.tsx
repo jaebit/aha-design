@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Chip, cn } from '@aha/ui';
+import { Badge, Button, Card, Chip, cn } from '@actoz/ui';
 import { ChevronRight, Code, ExternalLink, Monitor, Smartphone, Tablet } from 'lucide-react';
 import { useState } from 'react';
 

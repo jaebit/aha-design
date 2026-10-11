@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Badge, Button } from '@aha/ui';
+import { Badge, Button } from '@actoz/ui';
 
 import { SidePanel } from './side-panel';
 

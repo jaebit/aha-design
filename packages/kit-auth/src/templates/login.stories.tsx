@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CircleAlert, LockKeyhole } from 'lucide-react';
 import { type FormEvent, useId } from 'react';
 
-import { Button, Callout, Checkbox, FormField, Input } from '@aha/ui';
-import { AuthLayout } from '@aha/kit-auth';
+import { Button, Callout, Checkbox, FormField, Input } from '@actoz/ui';
+import { AuthLayout } from '@actoz/kit-auth';
 
 import { iamLogo } from './fixtures';
 import { withLinkActions } from './link-actions';

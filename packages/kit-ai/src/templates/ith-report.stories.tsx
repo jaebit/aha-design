@@ -19,8 +19,8 @@ import {
   ServiceSidebar,
   SidebarSection,
   SidePanel,
-} from '@aha/ui';
-import { Citation, Composer, Message, MessageContent } from '@aha/kit-ai';
+} from '@actoz/ui';
+import { Citation, Composer, Message, MessageContent } from '@actoz/kit-ai';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

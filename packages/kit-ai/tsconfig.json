@@ -3,7 +3,7 @@
   "compilerOptions": {
     "types": ["node", "vite/client"],
     "paths": {
-      "@aha/kit-ai": ["./src/index.ts"]
+      "@actoz/kit-ai": ["./src/index.ts"]
     }
   },
   "include": ["src", "vite.lib.config.ts"]

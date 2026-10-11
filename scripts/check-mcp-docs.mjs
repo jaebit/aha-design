@@ -1,10 +1,10 @@
 // 실행 중인 Storybook MCP(기본 http://localhost:6006/mcp)에서 모든 문서를 받아, 에이전트가 보는 예제 코드를 검사한다.
-// - 예제 import가 @aha/ui, 키트 패키지(@aha/kit-*) 또는 허용된 외부 패키지만 가리키는지 (상대 경로·fixtures 금지)
-// - 같은 예제에 같은 @aha 패키지 import가 두 번 나오지 않는지
+// - 예제 import가 @actoz/ui, 키트 패키지(@actoz/kit-*) 또는 허용된 외부 패키지만 가리키는지 (상대 경로·fixtures 금지)
+// - 같은 예제에 같은 @actoz 패키지 import가 두 번 나오지 않는지
 // - 컴포넌트 문서에 설명과 props가 있는지
 // 사용: pnpm dev 로 Storybook을 띄운 상태에서 pnpm check:mcp-docs
 const endpoint = process.env.STORYBOOK_MCP_URL ?? 'http://localhost:6006/mcp';
-const allowedSources = /^(@aha\/ui|@aha\/kit-[a-z0-9-]+|react|storybook\/test|lucide-react)$/;
+const allowedSources = /^(@actoz\/ui|@actoz\/kit-[a-z0-9-]+|react|storybook\/test|lucide-react)$/;
 
 async function call(name, args) {
   const response = await fetch(endpoint, {
@@ -44,7 +44,7 @@ for (const id of ids) {
   }
   const blocks = doc.split('```');
   for (let i = 1; i < blocks.length; i += 2) {
-    const packages = [...blocks[i].matchAll(/from '(@aha\/[a-z0-9-]+)'/g)].map((m) => m[1]);
+    const packages = [...blocks[i].matchAll(/from '(@actoz\/[a-z0-9-]+)'/g)].map((m) => m[1]);
     const duplicate = packages.find((name, index) => packages.indexOf(name) !== index);
     if (duplicate) {
       problems.push(`${id}: 예제에 ${duplicate} import가 중복됨`);

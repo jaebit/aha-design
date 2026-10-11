@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { type Period } from '@aha/kit-dashboard';
+import { type Period } from '@actoz/kit-dashboard';
 
 import { PeriodPicker } from './period-picker';
 

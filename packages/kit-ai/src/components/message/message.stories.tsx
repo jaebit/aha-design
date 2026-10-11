@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 
-import { Button, Callout } from '@aha/ui';
+import { Button, Callout } from '@actoz/ui';
 import {
   Citation,
   MessageActions,
@@ -10,7 +10,7 @@ import {
   type MessageFeedback,
   Suggestions,
   ThinkingIndicator,
-} from '@aha/kit-ai';
+} from '@actoz/kit-ai';
 
 import { Message } from './message';
 
