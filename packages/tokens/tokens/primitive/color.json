@@ -69,6 +69,18 @@
           "hex": "#a8a6a0"
         }
       },
+      "450": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5412,
+            0.5333,
+            0.5137
+          ],
+          "hex": "#8a8883"
+        },
+        "$description": "입력 테두리처럼 바탕과 3:1 이상 떨어져야 하는 비텍스트 요소용 (WCAG 1.4.11)"
+      },
       "500": {
         "$value": {
           "colorSpace": "srgb",

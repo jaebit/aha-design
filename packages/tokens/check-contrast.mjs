@@ -26,7 +26,10 @@ const pairs = [
 ];
 
 // 글자가 아닌 요소. 상태 아이콘(status-*)은 라이트 warning·serious가 3:1 미만이라 라벨 글자와 함께 쓰는 규칙으로 대신한다 (AGENTS.md).
-const nonTextPairs = [['ring', ['background', 'subtle', 'muted', 'card', 'popover']]];
+const nonTextPairs = [
+  ['ring', ['background', 'subtle', 'muted', 'card', 'popover']],
+  ['input', ['background', 'subtle', 'card', 'popover']],
+];
 
 function color(name, mode) {
   const token = manifest.tokens.find((t) => t.name === `color.${name}`);
@@ -65,7 +68,7 @@ for (const mode of colorThemes) {
   };
   const text = check(pairs, MIN);
   const nonText = check(nonTextPairs, MIN_NON_TEXT);
-  console.log(`[${mode}] 최소 대비 글자 ${text.toFixed(2)}:1, 포커스 링 ${nonText.toFixed(2)}:1`);
+  console.log(`[${mode}] 최소 대비 글자 ${text.toFixed(2)}:1, 글자 아닌 요소(포커스 링·입력 테두리) ${nonText.toFixed(2)}:1`);
 }
 
 if (failures.length > 0) {

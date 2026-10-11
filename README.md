@@ -62,7 +62,7 @@ CI와 배포는 로컬 Jenkins가 한다 (main 푸시마다 검사, 배포는 ta
 - 밀도: `<html data-density="compact">`로 촘촘한 밀도를 켠다 (간격만 4px → 3.5px). 관리자 화면 기준이다. 테마 속성은 일반 요소에 달아도 그 안쪽에만 적용된다.
 - 갤러리: 상단 키트 메뉴로 "공통 + 고른 키트"만 볼 수 있고, `/kits`에 키트별 소개·설치·템플릿이 있다. 컴포넌트 예제와 템플릿 미리보기에서 밀도를 바꿔 볼 수 있다.
 
-- 토큰: 검정 primary 무채색 팔레트, 상태색(dataviz 검증 팔레트), 차트 색, Pretendard, 글자 크기, 모서리, 그림자. **라이트·다크 테마** 지원 (`<html data-theme>` 또는 시스템 설정). 라이트·다크 모두 글자 대비 4.5:1 이상 (`pnpm check:contrast`).
+- 토큰: 검정 primary 무채색 팔레트, 상태색(dataviz 검증 팔레트), 차트 색, Pretendard, 글자 크기, 모서리, 그림자. **라이트·다크 테마** 지원 (`<html data-theme>` 또는 시스템 설정). 라이트·다크 모두 글자 대비 4.5:1 이상, 포커스 링과 입력 테두리는 바탕과 3:1 이상 (`pnpm check:contrast`).
 - 컴포넌트: P0 24개 완료 (범용 9 · AI 대화 9 · 앱 셸 6). 링크는 `Button variant="link"`, 담당 부서 연결은 `Callout` + `action`으로 쓴다.
 - 컴포넌트: P1 16개 완료 (Stepper, SidePanel, AttachmentCard, ChoiceCardGroup, Card, ResultCard, RiskItem, PreviewCard, RecipientInput, SearchInput, NativeSelect, ServiceCard, ListRow, FilterBar, DataTable, Pagination). 날짜 입력은 `Input type="date"`를 쓴다.
 - 컴포넌트: P2 6개 완료 (StatCard, BarList, StackedColumnChart, Switch, MonthStepper, InfoSummary) + SidebarNavItem. 차트 색 `chart-1~6`은 dataviz 기준 팔레트(라이트·다크 검증 통과).
