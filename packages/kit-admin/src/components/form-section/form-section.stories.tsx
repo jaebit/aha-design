@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Input, NativeSelect } from '@aha/ui';
-import { FormField } from '@aha/kit-admin';
+import { FormField, Input, NativeSelect } from '@aha/ui';
 
 import { FormSection } from './form-section';
 

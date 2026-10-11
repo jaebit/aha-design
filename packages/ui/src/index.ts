@@ -19,6 +19,7 @@ export {
   DropdownMenuTrigger,
 } from './components/dropdown-menu/dropdown-menu';
 export { Input, type InputProps } from './components/input/input';
+export { FormField, type FormFieldProps } from './components/form-field/form-field';
 export { Stepper, type StepperProps } from './components/stepper/stepper';
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export {
