@@ -4,6 +4,8 @@
 //     attribute, value   <html attribute="value">일 때 적용 (필수). 다른 요소에 달면 그 안쪽에만 적용된다
 //     colorScheme        light | dark. 네이티브 요소(날짜 입력, 스크롤바)의 색 체계
 //     media, mediaUnless 시스템 설정(media)을 따르되, attribute="mediaUnless"로 고정한 페이지는 제외
+//     with               다른 테마 이름. 그 테마와 이 테마가 함께 적용될 때만 쓰는 값이다 (예: brand-iam-dark는 with: "dark").
+//                        두 테마가 같은 토큰을 덮어써서 조합마다 값이 달라야 할 때 쓴다
 //   테마는 서로 다른 attribute를 쓰면 함께 적용된다 (예: data-theme="dark" + data-density="compact").
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 
@@ -37,11 +39,40 @@ StyleDictionary.registerFormat({
 StyleDictionary.registerFormat({
   name: 'aha/css-theme',
   format: async ({ dictionary, options }) => {
-    const { name, label = name, attribute, value, colorScheme, media, mediaUnless } = options.theme;
+    const { name, label = name, attribute, value, colorScheme, media, mediaUnless, withTheme } = options.theme;
     const indent = (text, depth) => text.replace(/^ {2}/gm, ' '.repeat(depth));
     const variables = cssVariables(dictionary);
     const scheme = colorScheme ? [`  color-scheme: ${colorScheme};`] : [];
     const lines = [''];
+    if (withTheme) {
+      // 두 테마가 함께 적용된 경우. 두 속성이 같은 요소에 있거나, 어느 쪽이든 바깥 요소에 있을 수 있다.
+      // 단일 테마 블록보다 뒤에 붙고 선택자도 더 구체적이라 두 테마의 값을 덮어쓴다.
+      const own = `[${attribute}="${value}"]`;
+      const other = `[${withTheme.attribute}="${withTheme.value}"]`;
+      if (withTheme.media) {
+        const exclude = withTheme.mediaUnless ? `:not([${withTheme.attribute}="${withTheme.mediaUnless}"])` : '';
+        lines.push(
+          `/* ${label}: ${own} + 시스템 설정의 ${withTheme.label ?? withTheme.name} 테마. */`,
+          `@media ${withTheme.media} {`,
+          `  :root${exclude}${own},`,
+          `  :root${exclude} ${own} {`,
+          indent(variables, 4),
+          '  }',
+          '}',
+          '',
+        );
+      }
+      lines.push(
+        `/* ${label}: ${own} + ${other}. */`,
+        `${other}${own},`,
+        `${other} ${own},`,
+        `${own} ${other} {`,
+        variables,
+        '}',
+        '',
+      );
+      return lines.join('\n');
+    }
     if (media) {
       const exclude = mediaUnless ? `:not([${attribute}="${mediaUnless}"])` : '';
       lines.push(
@@ -77,7 +108,9 @@ StyleDictionary.registerFormat({
       ...manifestEntry(token),
       layer: token.filePath.includes('/semantic/') ? 'semantic' : 'primitive',
     }));
-    return JSON.stringify({ prefix: 'aha', themes: ['light', ...options.themeNames], tokens }, null, 2) + '\n';
+    // fallbacks: 테마가 덮어쓰지 않은 토큰을 어느 테마 값에서 찾을지 (앞에서부터, 없으면 기본값). 조합 테마만 있다.
+    const { themeNames, fallbacks } = options;
+    return JSON.stringify({ prefix: 'aha', themes: ['light', ...themeNames], fallbacks, tokens }, null, 2) + '\n';
   },
 });
 
@@ -97,6 +130,30 @@ for (const file of themeFiles) {
   }
   themes.push({ name, file, ...config });
 }
+for (const theme of themes) {
+  if (!theme.with) continue;
+  const withTheme = themes.find((t) => t.name === theme.with);
+  if (!withTheme || withTheme.with || withTheme.attribute === theme.attribute) {
+    throw new Error(
+      `tokens/themes/${theme.file}: with "${theme.with}"는 attribute가 다른 단일 테마 이름이어야 합니다.`,
+    );
+  }
+  theme.withTheme = withTheme;
+}
+// 조합 테마는 단일 테마 블록 뒤에 붙어야 같은 구체성의 선택자에서도 이긴다.
+themes.sort((a, b) => Number(Boolean(a.with)) - Number(Boolean(b.with)));
+// 조합 테마의 값 찾는 순서: 자기 값 → 함께 쓰는 테마(예: dark) → 같은 속성의 단일 테마(예: brand-iam) → 기본값.
+const fallbacks = Object.fromEntries(
+  themes
+    .filter((t) => t.with)
+    .map((t) => [
+      t.name,
+      [
+        t.with,
+        ...themes.filter((s) => !s.with && s.attribute === t.attribute && s.value === t.value).map((s) => s.name),
+      ],
+    ]),
+);
 
 const base = new StyleDictionary({
   source: baseSource,
@@ -127,7 +184,7 @@ const base = new StyleDictionary({
         {
           destination: 'tokens.manifest.json',
           format: 'aha/agent-manifest',
-          options: { themeNames: themes.map((t) => t.name) },
+          options: { themeNames: themes.map((t) => t.name), fallbacks },
         },
       ],
     },
