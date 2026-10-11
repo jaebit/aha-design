@@ -31,7 +31,12 @@ const LABELS: Record<PeriodPreset, string> = {
   custom: '직접 선택',
 };
 
+// 날짜 계산은 UTC 자정끼리 해서 시간대·서머타임에 흔들리지 않게 한다. "오늘"만 사용자 시간대로 정한다.
 const iso = (date: Date) => date.toISOString().slice(0, 10);
+const localToday = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+};
 const parse = (value: string) => new Date(`${value}T00:00:00Z`);
 const shift = (value: string, days: number) => {
   const date = parse(value);
@@ -63,12 +68,14 @@ export function PeriodPicker({
   value,
   onChange,
   presets = ['today', '7d', '30d', 'month', 'custom'],
-  today = iso(new Date()),
+  today = localToday(),
   className,
 }: PeriodPickerProps) {
   const id = useId();
+  // 직접 선택에서 날짜 칸을 비우면 빈 문자열이 온다.
+  const incomplete = !value.from || !value.to;
   const days = Math.round((parse(value.to).getTime() - parse(value.from).getTime()) / 86_400_000) + 1;
-  const invalid = value.preset === 'custom' && value.from > value.to;
+  const invalid = value.preset === 'custom' && !incomplete && value.from > value.to;
 
   return (
     <div data-slot="period-picker" className={cn('flex flex-wrap items-center gap-x-4 gap-y-3', className)}>
@@ -115,7 +122,11 @@ export function PeriodPicker({
         </div>
       ) : null}
       <p aria-live="polite" className={cn('text-body-sm tabular-nums', invalid ? 'text-destructive' : 'text-muted-foreground')}>
-        {invalid ? '시작일이 종료일보다 늦어요.' : `${short(value.from)} ~ ${short(value.to)} (${days}일)`}
+        {invalid
+          ? '시작일이 종료일보다 늦어요.'
+          : incomplete
+            ? '시작일과 종료일을 골라 주세요.'
+            : `${short(value.from)} ~ ${short(value.to)} (${days}일)`}
       </p>
     </div>
   );

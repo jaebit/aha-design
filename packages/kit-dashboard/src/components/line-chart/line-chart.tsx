@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { type ChartSeries, cn } from '@aha/ui';
 
@@ -14,7 +14,7 @@ export interface LineChartDatum {
 export interface LineChartProps {
   /** 스크린리더와 표 보기의 제목. 예: "일별 활성 사용자". */
   title: string;
-  /** 선으로 그릴 시리즈. 순서대로 chart-1~6 색을 받는다. 최대 6개. */
+  /** 선으로 그릴 시리즈. 순서대로 chart-1~6 색을 받는다. 최대 6개이며, 7번째부터는 그리지 않고 콘솔에 경고한다. 값을 더할 수 있으면 넘기기 전에 "기타"로 묶는다. */
   series: ChartSeries[];
   /** 시간 순서대로 정렬한 값. */
   data: LineChartDatum[];
@@ -57,6 +57,12 @@ export function LineChart({
   const [ref, width] = useWidth<HTMLDivElement>(view);
   const [active, setActive] = useState<number | null>(null);
   const shown = series.slice(0, SERIES_COLORS.length);
+
+  // 비율·평균처럼 더할 수 없는 값도 있어 "기타"로 자동으로 묶지 않는다. 빠진 시리즈를 알 수 있게 경고만 한다.
+  const dropped = series.slice(SERIES_COLORS.length).map((s) => s.label).join(', ');
+  useEffect(() => {
+    if (dropped) console.warn(`LineChart "${title}": 시리즈는 ${SERIES_COLORS.length}개까지 그립니다. 빠진 시리즈: ${dropped}`);
+  }, [title, dropped]);
 
   const values = data.flatMap((d) => shown.map((s) => d.values[s.key] ?? 0));
   const ticks = niceTicks(Math.max(0, ...values));

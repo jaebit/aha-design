@@ -98,6 +98,7 @@ function componentDoc(component: CatalogComponent, ctx: McpContext) {
 }
 
 function templateDoc(template: CatalogTemplate, ctx: McpContext) {
+  const fixtures = ctx.catalog.templateFixtures[template.kit];
   return [
     `# ${template.label} (${template.name})`,
     template.summary,
@@ -107,10 +108,9 @@ function templateDoc(template: CatalogTemplate, ctx: McpContext) {
       ? '이 화면은 촘촘한 밀도로 쓴다: `<html data-density="compact">`.'
       : '',
     '## 전체 소스',
-    'Storybook 스토리 파일이다. 옮겨 쓸 때 `Meta`/`StoryObj`/`withLinkActions` 같은 Storybook 전용 코드는 빼고, 페이지 함수만 가져간다. `./fixtures`의 예시 데이터는 아래에 있다.',
+    `Storybook 스토리 파일이다. 옮겨 쓸 때 \`Meta\`/\`StoryObj\`/\`withLinkActions\` 같은 Storybook 전용 코드는 빼고, 페이지 함수만 가져간다.${fixtures ? ' `./fixtures`의 예시 데이터는 아래에 있다.' : ''}`,
     `\`\`\`tsx\n${template.source}\n\`\`\``,
-    '## fixtures.tsx (예시 데이터)',
-    `\`\`\`tsx\n${ctx.catalog.templateFixtures[template.kit] ?? ''}\n\`\`\``,
+    fixtures ? `## fixtures.tsx (예시 데이터)\n\n\`\`\`tsx\n${fixtures}\n\`\`\`` : '',
   ]
     .filter(Boolean)
     .join('\n\n');
@@ -170,7 +170,7 @@ ${
     ? `   화면에 도메인 키트 부품이 필요하면 그 키트만 설치한다. get_component 결과의 "패키지" 줄로 어느 키트인지 안다.\n${kitList}\n`
     : ''
 }3. \`vite.config.ts\`의 plugins에 \`tailwindcss()\` (from \`@tailwindcss/vite\`)를 추가한다.
-4. 앱의 메인 CSS(예: \`src/index.css\`)를 아래 한 줄로 시작한다. Tailwind, 토큰, Pretendard 서체가 함께 들어온다. \`@import "tailwindcss"\`를 따로 쓰지 않는다.
+4. 앱의 메인 CSS(예: \`src/index.css\`)를 아래 한 줄로 시작한다. Tailwind, 토큰, ${site.fontName} 서체가 함께 들어온다. \`@import "tailwindcss"\`를 따로 쓰지 않는다.
    \`\`\`css
    @import "${ui.name}/styles.css";
    \`\`\`
@@ -270,9 +270,9 @@ export function createMcpServer(ctx: McpContext) {
     catalog.templates.find((t) => t.slug === site.featuredTemplates[0]) ?? catalog.templates[0];
   const kitIds = domainKitsOf(catalog).map((k) => k.id);
   const kitArg = z
-    .enum((kitIds.length > 0 ? kitIds : ['core']) as [string, ...string[]])
+    .enum(['core', ...kitIds] as [string, ...string[]])
     .optional()
-    .describe(`키트 id. 주면 공통 + 그 키트만 본다. 프로젝트 package.json의 ${site.scope}/kit-*로 정한다. 생략하면 전체`);
+    .describe(`키트 id. 주면 공통 + 그 키트만 본다 (core는 공통만). 프로젝트 package.json의 ${site.scope}/kit-*로 정한다. 생략하면 전체`);
   // 도메인 키트가 없으면 도구가 kit 인자를 받지 않는다. 타입은 같게 두고 실행 시에만 뺀다 (값은 늘 undefined).
   const kitShape = (kitIds.length > 0 ? { kit: kitArg } : {}) as { kit: typeof kitArg };
 
@@ -344,16 +344,18 @@ export function createMcpServer(ctx: McpContext) {
       inputSchema: { ...kitShape },
       annotations: readOnly,
     },
-    ({ kit }) =>
-      catalog.templates.length === 0
-        ? text('아직 화면 템플릿이 없습니다. list_components와 get_component의 예제로 화면을 만든다.')
-        : text(
-        catalog.templates
-          .filter((t) => inKit(t, kit))
-          .map((t) => `- **${t.label}** (\`${t.name}\`, ${kitOf(catalog, t)?.label ?? t.group}) — ${t.summary}`)
-          .join('\n') +
+    ({ kit }) => {
+      const templates = catalog.templates.filter((t) => inKit(t, kit));
+      if (templates.length === 0) {
+        return text(
+          `${kit ? `"${kit}"에는` : '아직'} 화면 템플릿이 없습니다.${kit ? ' kit 없이 부르면 다른 키트의 템플릿을 볼 수 있다.' : ''} list_components와 get_component의 예제로 화면을 만든다.`,
+        );
+      }
+      return text(
+        templates.map((t) => `- **${t.label}** (\`${t.name}\`, ${kitOf(catalog, t)?.label ?? t.group}) — ${t.summary}`).join('\n') +
           '\n\n전체 소스는 get_template(name)으로 본다.',
-      ),
+      );
+    },
   );
 
   server.registerTool(

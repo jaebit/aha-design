@@ -9,13 +9,17 @@ const tokens = new URL('packages/tokens/', root);
 const out = new URL('../generated/catalog.json', import.meta.url);
 
 const readJson = async (url) => JSON.parse(await readFile(url, 'utf8'));
+/** 빌드 결과물을 읽는다. 없으면 무엇을 먼저 실행할지 알려 주고 끝낸다. */
+const readBuilt = (url, hint) =>
+  readJson(url).catch((error) => {
+    if (error.code !== 'ENOENT') throw error;
+    console.error(`${fileURLToPath(url)}가 없습니다. 먼저 \`${hint}\`을 실행하세요.`);
+    process.exit(1);
+  });
 
-const manifest = await readJson(new URL('storybook-static/manifests/components.json', ui)).catch(() => {
-  console.error('Storybook manifest가 없습니다. 먼저 `pnpm build-storybook`을 실행하세요.');
-  process.exit(1);
-});
-const index = await readJson(new URL('storybook-static/index.json', ui));
-const tokenManifest = await readJson(new URL('dist/tokens.manifest.json', tokens));
+const manifest = await readBuilt(new URL('storybook-static/manifests/components.json', ui), 'pnpm build-storybook');
+const index = await readBuilt(new URL('storybook-static/index.json', ui), 'pnpm build-storybook');
+const tokenManifest = await readBuilt(new URL('dist/tokens.manifest.json', tokens), 'pnpm --filter ./packages/tokens build');
 const uiPkg = await readJson(new URL('package.json', ui));
 const tokensPkg = await readJson(new URL('package.json', tokens));
 
@@ -40,6 +44,19 @@ for (const dir of dirs) {
 const kits = configs.flatMap((c) => (c.kits ?? []).map((kit) => ({ ...kit, package: { name: c.pkg.name, version: c.pkg.version } })));
 const categories = configs.flatMap((c) => c.categories ?? []);
 const templateMeta = Object.assign({}, ...configs.map((c) => c.templates ?? {}));
+
+/** 여러 catalog.config.json에 걸쳐 id가 겹치면 빌드를 실패시킨다. 겹치면 갤러리 경로와 MCP 이름 찾기가 먼저 나온 것만 고른다. */
+function assertUnique(label, ids) {
+  const seen = new Set();
+  for (const id of ids) {
+    if (seen.has(id)) throw new Error(`catalog.config.json: ${label} "${id}"가 두 번 나옵니다`);
+    seen.add(id);
+  }
+}
+assertUnique('키트 id', kits.map((k) => k.id));
+assertUnique('분류 id', categories.map((c) => c.id));
+assertUnique('분류 storybook', categories.map((c) => c.storybook));
+assertUnique('템플릿 id', configs.flatMap((c) => Object.keys(c.templates ?? {})));
 // 키트 id → 그 키트 템플릿이 쓰는 예시 데이터 파일 내용.
 const templateFixtures = {};
 for (const config of configs.filter((c) => c.templateFixtures)) {
@@ -120,7 +137,8 @@ for (const component of Object.values(manifest.components)) {
   };
 
   if (group === 'Templates') {
-    const meta = templateMeta[component.id] ?? { label: displayName, group: '기타', description: '' };
+    const meta = templateMeta[component.id];
+    if (!meta) throw new Error(`${title}: 키트의 catalog.config.json templates에 "${component.id}"가 없습니다 (label, group, description)`);
     const source = await readFile(new URL(component.path, ui), 'utf8');
     templates.push({
       ...base,
@@ -132,10 +150,15 @@ for (const component of Object.values(manifest.components)) {
     });
     continue;
   }
+  if (group === 'Foundations') continue; // 토큰 데이터로 따로 보여준다.
   const category = categories.find((c) => c.storybook === group);
-  if (!category) continue; // Foundations는 토큰 데이터로 따로 보여준다.
+  if (!category) throw new Error(`${title}: catalog.config.json categories에 storybook "${group}"인 분류가 없습니다`);
   components.push({ ...base, category: category.id });
 }
+
+const missingTemplates = Object.keys(templateMeta).filter((id) => !templates.some((t) => t.id === id));
+if (missingTemplates.length > 0) throw new Error(`catalog.config.json templates에 스토리가 없는 id: ${missingTemplates.join(', ')}`);
+assertUnique('slug (컴포넌트·템플릿)', [...components, ...templates].map((c) => c.slug));
 
 components.sort((a, b) => a.name.localeCompare(b.name));
 templates.sort((a, b) => Object.keys(templateMeta).indexOf(a.id) - Object.keys(templateMeta).indexOf(b.id));

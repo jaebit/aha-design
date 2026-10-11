@@ -29,7 +29,7 @@
     "border": { "$value": "{color.neutral.800}" },
     "border-strong": { "$value": "{color.neutral.100}" },
     "input": { "$value": "{color.neutral.700}" },
-    "ring": { "$value": "{color.neutral.500}" },
+    "ring": { "$value": "{color.neutral.400}" },
     "card": { "$value": "{color.neutral.900}" },
     "card-foreground": { "$value": "{color.neutral.50}" },
     "popover": { "$value": "{color.neutral.900}" },

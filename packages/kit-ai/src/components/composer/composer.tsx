@@ -4,7 +4,10 @@ import { type FormEvent, type KeyboardEvent, type ReactNode, useId, useState } f
 
 import { Button, cn } from '@aha/ui';
 
-const composerVariants = cva('w-full rounded-xl border border-border-strong bg-background', {
+// 입력칸은 테두리 상자 안에 있어 자기 외곽선을 끄고, 상자 전체에 포커스 링을 그린다.
+const composerVariants = cva(
+  'w-full rounded-xl border border-border-strong bg-background has-[textarea:focus-visible]:outline-2 has-[textarea:focus-visible]:outline-offset-2 has-[textarea:focus-visible]:outline-ring',
+  {
   variants: {
     variant: {
       hero: 'flex flex-col gap-3 p-4',

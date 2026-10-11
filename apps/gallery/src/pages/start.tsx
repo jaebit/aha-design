@@ -172,7 +172,7 @@ export function StartPage() {
             />
             <CodeBlock code={`@import "${ui.name}/styles.css";`} label="src/index.css" />
             <p className="text-body-sm text-muted-foreground">
-              이 한 줄에 Tailwind, 디자인 토큰, Pretendard 서체, 다크 모드가 모두 들어 있습니다. <code className="font-mono">@import "tailwindcss"</code>를 따로 쓰지 않습니다.
+              이 한 줄에 Tailwind, 디자인 토큰, {site.fontName} 서체, 다크 모드가 모두 들어 있습니다. <code className="font-mono">@import "tailwindcss"</code>를 따로 쓰지 않습니다.
               {kits.length > 0 ? ' 키트를 설치했다면 설치한 키트마다 바로 다음 줄에 키트 CSS를 추가합니다.' : null}
             </p>
             {kits.length > 0 ? (
