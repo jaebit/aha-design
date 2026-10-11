@@ -1,0 +1,300 @@
+// design-hub PR 검사 작업 (Jenkins job: design-hub-pr). forgejo-platform D-016과 jenkins/README.md의 "PR CI 계약"을 따른다.
+// PR webhook은 "열린 PR을 다시 보라"는 신호일 뿐이다. 이 job이 열린 PR을 조회해 jenkins/design-hub-pr 상태가 없는 head를 차례로 검사한다.
+// 플랫폼 규칙상 Jenkins job에는 이 파일 내용을 인라인으로 넣는다. PR의 Jenkinsfile은 읽지 않는다. 바꾸면 setup으로 job을 다시 만든다.
+//
+// 실행 경계
+//   신뢰 단계 (TRUSTED_LABEL): PR 조회, PR ref fetch·SHA 확인, changeset 검사(git만 쓴다), 커밋 상태 보고. PR 코드를 실행하지 않는다.
+//   PR 단계 (PR_LABEL): stash로 받은 소스에서 install과 검사. credential을 하나도 바인딩하지 않는다.
+//     이 Agent는 신뢰 단계 Agent와 프로세스·파일·캐시를 공유하지 않아야 한다 (플랫폼이 마련한다, D-016).
+pipeline {
+    agent none
+    options {
+        skipDefaultCheckout(true)
+        disableConcurrentBuilds()
+        timeout(time: 150, unit: 'MINUTES')
+    }
+    environment {
+        FORGEJO_API_URL = 'http://forgejo:3000/api/v1'
+        FORGEJO_REPOSITORY = 'jay/design-hub'
+        REPO_URL = 'http://forgejo:3000/jay/design-hub.git'
+        PR_CONTEXT = 'jenkins/design-hub-pr'
+        READ_CREDENTIAL = 'design-hub-read'
+        STATUS_CREDENTIAL = 'design-hub-status'
+        TRUSTED_LABEL = 'local-linux'
+        PR_LABEL = 'pr-isolated'
+        STORYBOOK_PORT = '6006'
+        // 버전 올리기 PR만 changeset 검사를 면제한다 (정확히 이 브랜치 이름일 때만).
+        VERSION_BRANCH = 'chore/version-packages'
+        STORYBOOK_DISABLE_TELEMETRY = '1'
+        // 에이전트 메모리(4GB, 그중 검사에 약 3GB)에 맞춰 turbo 작업을 하나씩 돌린다.
+        TURBO_CONCURRENCY = '1'
+    }
+    stages {
+        stage('Open PR heads') {
+            steps { script { checkOpenPullRequests() } }
+        }
+    }
+}
+
+// 한 실행에서 검사할 PR head 수의 상한. 남은 head는 다음 webhook이나 수동 실행에서 검사한다.
+def maxHeadsPerRun() { 8 }
+
+def checkOpenPullRequests() {
+    def done = []
+    def failed = []
+    def statusErrors = []
+    while (true) {
+        if (done.size() >= maxHeadsPerRun()) {
+            echo "한 실행의 상한(${maxHeadsPerRun()}개)에 닿았다. 남은 head는 다음 실행에서 검사한다."
+            break
+        }
+        def target = null
+        for (candidate in listTargets()) {
+            if (!done.contains(candidate.sha)) { target = candidate; break }
+        }
+        if (target == null) {
+            echo '검사할 PR head가 없다.'
+            break
+        }
+        done << target.sha
+        def result = checkHead(target)
+        if (result.state == 'failure') { failed << "#${target.number} ${target.sha}" }
+        if (result.statusError) { statusErrors << "#${target.number} ${target.sha}: ${result.statusError}" }
+    }
+    if (statusErrors) {
+        error("커밋 상태 보고 실패: ${statusErrors.join(', ')}")
+    }
+    if (failed) {
+        unstable("검사 실패 PR: ${failed.join(', ')}")
+    }
+}
+
+// 열린 같은 저장소 PR 중 PR_CONTEXT 상태가 없는 head. API 오류·형식 오류는 빈 목록으로 보지 않고 실패한다.
+def listTargets() {
+    def out = ''
+    node(env.TRUSTED_LABEL) {
+        withCredentials([usernamePassword(credentialsId: env.READ_CREDENTIAL, usernameVariable: 'READ_USER', passwordVariable: 'READ_TOKEN')]) {
+            out = sh(returnStdout: true, script: '''set +x
+                node -e '
+                  const api = process.env.FORGEJO_API_URL, repo = process.env.FORGEJO_REPOSITORY, ctx = process.env.PR_CONTEXT;
+                  const headers = { Authorization: `token ${process.env.READ_TOKEN}` };
+                  const get = async (path) => {
+                    const r = await fetch(`${api}${path}`, { headers });
+                    if (!r.ok) throw new Error(`GET ${path} HTTP ${r.status}`);
+                    return r.json();
+                  };
+                  const pages = async (path) => {
+                    const all = [];
+                    for (let page = 1; page <= 100; page++) {
+                      const items = await get(`${path}${path.includes("?") ? "&" : "?"}page=${page}&limit=50`);
+                      if (!Array.isArray(items)) throw new Error(`${path}: 목록 형식이 아님`);
+                      if (items.length === 0) return all;
+                      all.push(...items);
+                    }
+                    throw new Error(`${path}: 페이지가 너무 많음`);
+                  };
+                  const SHA = /^[0-9a-f]{40}$/;
+                  (async () => {
+                    const target = await get(`/repos/${repo}`);
+                    if (!Number.isInteger(target.id)) throw new Error("저장소 id가 없음");
+                    for (const pr of await pages(`/repos/${repo}/pulls?state=open`)) {
+                      const n = pr.number;
+                      if (!Number.isInteger(n) || n <= 0) throw new Error("PR 번호 형식 오류");
+                      if (pr.state !== "open") { console.error(`건너뜀 #${n}: 닫힘`); continue; }
+                      if (pr.head?.repo?.id !== target.id || pr.base?.repo?.id !== target.id) {
+                        console.error(`건너뜀 #${n}: 다른 저장소의 head (fork 또는 삭제됨)`);
+                        continue;
+                      }
+                      const sha = pr.head?.sha;
+                      if (!SHA.test(sha ?? "")) throw new Error(`PR #${n}: head SHA 형식 오류`);
+                      const statuses = await pages(`/repos/${repo}/commits/${sha}/statuses`);
+                      if (statuses.some((s) => s.context === ctx)) { console.error(`건너뜀 #${n} ${sha}: ${ctx} 상태가 이미 있음`); continue; }
+                      console.log(`TARGET ${n} ${sha}`);
+                    }
+                  })().catch((e) => { console.error(`PR 조회 실패: ${e.message}`); process.exit(1); });
+                '
+            ''')
+        }
+    }
+    def targets = []
+    for (line in out.tokenize('\n')) {
+        def parts = line.trim().tokenize(' ')
+        if (parts.size() == 3 && parts[0] == 'TARGET' && parts[1] ==~ /[1-9][0-9]*/ && parts[2] ==~ /[0-9a-f]{40}/) {
+            targets << [number: parts[1], sha: parts[2]]
+        } else if (line.trim()) {
+            error("PR 조회 결과 형식 오류: ${line}")
+        }
+    }
+    return targets
+}
+
+// head 하나를 검사하고 선택한 SHA에 상태를 남긴다. 반환: [state, statusError]
+def checkHead(Map target) {
+    def prep = prepareSource(target)
+    if (prep.skip) {
+        echo "건너뜀 #${target.number} ${target.sha}: ${prep.skip}"
+        return [state: 'skipped']
+    }
+    echo "검사 #${target.number}: head ${target.sha}, base ${prep.baseSha}, checkout ${prep.checkoutSha}, changeset ${prep.changeset}"
+    def pending = reportStatus(target.sha, 'pending', '검사 중')
+    if (pending) {
+        // 상태를 남기지 못하면 검사를 시작하지 않는다.
+        return [state: 'error', statusError: pending]
+    }
+    def state = 'success'
+    def description = '검사 통과'
+    if (!prep.changeset.startsWith('OK')) {
+        state = 'failure'
+        description = "검사 실패: ${prep.changeset.replaceFirst('^FAIL ', '')}"
+    } else {
+        try {
+            stage("PR #${target.number}") {
+                timeout(time: 40, unit: 'MINUTES') {
+                    runChecks(target)
+                }
+            }
+        } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+            // 사용자 중단·시간 초과는 선택한 SHA에 error를 남기고 실행 전체를 멈춘다.
+            reportStatus(target.sha, 'error', '검사 중단 (시간 초과 또는 수동 중단)')
+            throw e
+        } catch (hudson.AbortException e) {
+            // 검사 명령이 0이 아닌 코드로 끝났다.
+            state = 'failure'
+            description = '검사 실패'
+        } catch (e) {
+            echo "PR #${target.number} 실행 오류: ${e}"
+            state = 'error'
+            description = '검사 오류 (인프라)'
+        }
+    }
+    echo "결과 #${target.number} ${target.sha}: ${state} (${description})"
+    return [state: state, statusError: reportStatus(target.sha, state, description)]
+}
+
+// 신뢰 단계: PR을 다시 조회하고 refs/pull/N/head를 받아 SHA를 확인한다. changeset 검사를 하고 소스를 stash한다.
+// PR 코드를 실행하지 않는다. 읽기 토큰은 환경 변수로만 git에 넘기고 설정 파일·URL에 남기지 않는다.
+def prepareSource(Map target) {
+    def result = [:]
+    node(env.TRUSTED_LABEL) {
+        try {
+            deleteDir()
+            withEnv(["PR_NUMBER=${target.number}", "HEAD_SHA=${target.sha}"]) {
+                withCredentials([usernamePassword(credentialsId: env.READ_CREDENTIAL, usernameVariable: 'READ_USER', passwordVariable: 'READ_TOKEN')]) {
+                    sh '''set +x
+                        set -eu
+                        mkdir .pr
+                        node -e '
+                          const fs = require("node:fs");
+                          const { FORGEJO_API_URL: api, FORGEJO_REPOSITORY: repo, PR_NUMBER: n, HEAD_SHA: sha } = process.env;
+                          const write = (name, value) => fs.writeFileSync(`.pr/${name}`, value);
+                          (async () => {
+                            const headers = { Authorization: `token ${process.env.READ_TOKEN}` };
+                            const [rr, pr] = await Promise.all([`/repos/${repo}`, `/repos/${repo}/pulls/${n}`].map(async (path) => {
+                              const r = await fetch(`${api}${path}`, { headers });
+                              if (!r.ok) throw new Error(`GET ${path} HTTP ${r.status}`);
+                              return r.json();
+                            }));
+                            const SHA = /^[0-9a-f]{40}$/;
+                            if (!Number.isInteger(rr.id)) throw new Error("저장소 id가 없음");
+                            if (pr.state !== "open") return write("skip", "다시 조회하니 닫힘");
+                            if (pr.head?.repo?.id !== rr.id || pr.base?.repo?.id !== rr.id) return write("skip", "다시 조회하니 다른 저장소의 head");
+                            if (pr.head?.sha !== sha) return write("skip", `다시 조회하니 head가 바뀜 (${pr.head?.sha})`);
+                            if (!SHA.test(pr.base?.sha ?? "")) throw new Error("base SHA 형식 오류");
+                            if (typeof pr.base?.ref !== "string" || typeof pr.head?.ref !== "string") throw new Error("브랜치 이름 형식 오류");
+                            write("base_sha", pr.base.sha);
+                            write("base_ref", pr.base.ref);
+                            write("head_ref", pr.head.ref);
+                          })().catch((e) => { console.error(`PR 재조회 실패: ${e.message}`); process.exit(1); });
+                        '
+                        [ -e .pr/skip ] && exit 0
+                        BASE_REF=$(cat .pr/base_ref)
+                        git check-ref-format "refs/heads/$BASE_REF" || { echo "base 브랜치 이름이 올바르지 않음" > .pr/skip; exit 0; }
+                        AUTH=$(printf '%s:%s' "$READ_USER" "$READ_TOKEN" | base64 -w0)
+                        git init -q src
+                        GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=http.extraHeader GIT_CONFIG_VALUE_0="Authorization: Basic $AUTH" \
+                            git -C src fetch -q --no-tags "$REPO_URL" \
+                            "+refs/pull/$PR_NUMBER/head:refs/remotes/origin/pr" "+refs/heads/$BASE_REF:refs/remotes/origin/base"
+                        git -C src -c advice.detachedHead=false checkout -q --detach refs/remotes/origin/pr
+                    '''
+                }
+                if (fileExists('.pr/skip')) {
+                    result.skip = readFile('.pr/skip').trim()
+                    return
+                }
+                result.checkoutSha = sh(returnStdout: true, script: 'git -C src rev-parse HEAD').trim()
+                if (result.checkoutSha != target.sha) {
+                    // PR 코드를 실행하기 전에 확인한다. 다른 SHA를 검사하지 않고 다음 조회로 넘긴다.
+                    result.skip = "checkout SHA(${result.checkoutSha})가 선택한 head와 다름"
+                    return
+                }
+                result.baseSha = readFile('.pr/base_sha').trim()
+                withEnv(["BASE_SHA=${result.baseSha}", "HEAD_REF=${readFile('.pr/head_ref')}"]) {
+                    // base...head에서 packages/ 변경이 있으면 head에 남은 .changeset/*.md 추가·수정이 하나 이상 있어야 한다.
+                    result.changeset = sh(returnStdout: true, script: '''set -eu
+                        cd src
+                        if ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then echo "FAIL base 커밋을 받지 못함"; exit 0; fi
+                        if ! MB=$(git merge-base "$BASE_SHA" HEAD); then echo "FAIL base와 공통 조상이 없음"; exit 0; fi
+                        if [ "$HEAD_REF" = "$VERSION_BRANCH" ]; then echo "OK 버전 PR이라 면제"; exit 0; fi
+                        PACKAGES=$(git diff --no-renames --name-only "$MB" HEAD -- packages/ | head -n 1)
+                        if [ -z "$PACKAGES" ]; then echo "OK packages 변경 없음"; exit 0; fi
+                        CHANGESETS=$(git diff --no-renames --name-only --diff-filter=AM "$MB" HEAD -- ':(glob).changeset/*.md' ':(exclude).changeset/README.md')
+                        if [ -n "$CHANGESETS" ]; then echo "OK changeset 있음"; else echo "FAIL changeset 없음 (packages/ 변경에 .changeset/*.md 필요)"; fi
+                    ''').trim()
+                }
+                sh 'git -C src archive --format=tar -o ../src.tar HEAD'
+                stash name: "pr-${target.number}", includes: 'src.tar'
+            }
+        } finally {
+            deleteDir()
+        }
+    }
+    return result
+}
+
+// PR 단계: credential 없이 기존 CI와 같은 검사를 돌린다.
+def runChecks(Map target) {
+    node(env.PR_LABEL) {
+        try {
+            deleteDir()
+            unstash "pr-${target.number}"
+            sh 'tar -xf src.tar && rm src.tar'
+            sh 'pnpm install --frozen-lockfile'
+            sh 'pnpm typecheck --concurrency=1'
+            sh 'pnpm build --concurrency=1'
+            sh 'pnpm check:tokens'
+            sh 'pnpm check:contrast'
+            sh '''
+                (cd packages/ui && pnpm storybook --ci > "$WORKSPACE/storybook.log" 2>&1 &)
+                node -e 'const go=async(n)=>{try{const r=await fetch(`http://localhost:${process.env.STORYBOOK_PORT}/index.json`);if(r.ok)return}catch{}if(n<=0){console.error("Storybook이 뜨지 않았습니다");process.exit(1)}await new Promise(r=>setTimeout(r,2000));return go(n-1)};go(90)'
+                pnpm check:mcp-docs
+            '''
+        } finally {
+            sh 'pkill -f "storybook dev" || true'
+            deleteDir()
+        }
+    }
+}
+
+// Forgejo 커밋 상태. 신뢰 단계 Agent에서만 토큰을 꺼내고 출력하지 않는다. 실패하면 오류 문구를, 성공하면 null을 돌려준다.
+def reportStatus(String sha, String state, String description) {
+    def failure = null
+    node(env.TRUSTED_LABEL) {
+        withCredentials([string(credentialsId: env.STATUS_CREDENTIAL, variable: 'FORGEJO_STATUS_TOKEN')]) {
+            withEnv(["STATUS_SHA=${sha}", "STATUS_STATE=${state}", "STATUS_DESCRIPTION=${description}"]) {
+                def code = sh(returnStatus: true, script: '''set +x
+                    node -e '
+                      const body = JSON.stringify({ state: process.env.STATUS_STATE, context: process.env.PR_CONTEXT,
+                        description: process.env.STATUS_DESCRIPTION, target_url: process.env.BUILD_URL });
+                      fetch(`${process.env.FORGEJO_API_URL}/repos/${process.env.FORGEJO_REPOSITORY}/statuses/${process.env.STATUS_SHA}`, {
+                        method: "POST", body,
+                        headers: { "Content-Type": "application/json", Authorization: `token ${process.env.FORGEJO_STATUS_TOKEN}` },
+                      }).then((r) => { if (!r.ok) { console.error(`커밋 상태 보고 실패 HTTP ${r.status}`); process.exit(1); } },
+                        (e) => { console.error(`커밋 상태 보고 실패: ${e.message}`); process.exit(1); });
+                    '
+                ''')
+                if (code != 0) { failure = "${state} 보고 실패" }
+            }
+        }
+    }
+    return failure
+}
