@@ -12,16 +12,14 @@ import {
   SidebarSection,
   TooltipTerm,
 } from '@aha/ui';
-import {
-  Citation,
-  Composer,
-  ConversationEmptyState,
-  Message,
-  MessageActions,
-  MessageContent,
-  Suggestions,
-  ThinkingIndicator,
-} from '../../index';
+// 패키지 배럴(../../index)은 이 파일도 내보내므로 순환 참조가 생긴다. 부품 파일에서 바로 가져온다.
+import { Citation } from '../../components/citation/citation';
+import { Composer } from '../../components/composer/composer';
+import { ConversationEmptyState } from '../../components/conversation-empty-state/conversation-empty-state';
+import { Message, MessageContent } from '../../components/message/message';
+import { MessageActions } from '../../components/message-actions/message-actions';
+import { Suggestions } from '../../components/suggestions/suggestions';
+import { ThinkingIndicator } from '../../components/thinking-indicator/thinking-indicator';
 
 type NavItems = ComponentProps<typeof NavRail>['items'];
 type Feedback = ComponentProps<typeof MessageActions>['feedback'];
@@ -87,6 +85,7 @@ export interface GuideChatScreenProps {
   onContactDepartment?: (question: string) => void;
   /** 생략하면 계정 메뉴에서 "관리자 설정"을 숨긴다. */
   onAdminSettings?: () => void;
+  /** 계정 메뉴의 "로그아웃". */
   onLogout: () => void;
 }
 
@@ -152,13 +151,14 @@ export function GuideChatScreen({
   const pinned = useMemo(() => conversations.filter((c) => c.pinned), [conversations]);
   const recent = useMemo(() => conversations.filter((c) => !c.pinned), [conversations]);
 
-  // 사이드바 기록은 href 해시로 대화를 바꾼다.
+  // 사이드바 기록은 href 해시로 대화를 바꾼다. 해시가 있는 주소로 처음 열었을 때도 그 대화를 연다.
   useEffect(() => {
     const sync = () => {
       if (window.location.hash.startsWith(HASH_PREFIX)) {
         setActiveId(window.location.hash.slice(HASH_PREFIX.length));
       }
     };
+    sync();
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
   }, []);
@@ -329,7 +329,8 @@ export function GuideChatScreen({
                             </Callout>
                           )}
                           <MessageActions
-                            onCopy={() => navigator.clipboard?.writeText(answerText(turn.answer!))}
+                            // 클립보드를 쓸 수 없으면(HTTP 등) 오류가 나서 "복사됨"을 띄우지 않는다.
+                            onCopy={() => navigator.clipboard.writeText(answerText(turn.answer!))}
                             feedback={turn.feedback ?? null}
                             onFeedbackChange={(feedback) => updateTurn(active.id, turn.id, { feedback })}
                           />

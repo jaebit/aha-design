@@ -21,4 +21,5 @@ export const Filled: Story = { args: { defaultValue: '조직 개편으로 소속
 /** 값이 잘못된 상태. 오류 문구는 폼 항목(FormField)이 보여준다. */
 export const Invalid: Story = { args: { 'aria-invalid': true } };
 
+/** 수정할 수 없는 상태. */
 export const Disabled: Story = { args: { disabled: true, defaultValue: '수정할 수 없는 메모' } };

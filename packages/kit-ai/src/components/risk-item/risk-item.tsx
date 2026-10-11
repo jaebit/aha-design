@@ -8,6 +8,7 @@ export interface RiskItemProps {
   severity: string;
   /** 심각도의 상태색. 높음 → `critical`, 보통 → `serious`, 낮음 → `warning`. 배지 앞에 상태 아이콘이 붙는다. */
   tone?: BadgeTone;
+  /** 리스크 제목. 예: "손해배상 한도 없음". */
   title: string;
   /** 내용과 수정 제안. */
   children: ReactNode;
@@ -21,7 +22,8 @@ export function RiskItem({ severity, tone, title, children, source, className }:
   return (
     <article data-slot="risk-item" className={cn('flex flex-col gap-2 rounded-lg border border-border p-4', className)}>
       <header className="flex items-center gap-2">
-        <Badge tone={tone} aria-label={`심각도 ${severity}`}>
+        <Badge tone={tone}>
+          <span className="sr-only">심각도 </span>
           {severity}
         </Badge>
         <h5 className="text-body font-semibold text-foreground">{title}</h5>

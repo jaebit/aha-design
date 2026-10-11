@@ -22,6 +22,7 @@ export interface StackedColumnChartProps {
   title: string;
   /** 쌓을 시리즈. 순서대로 chart-1~6 색을 받는다. 6개를 넘으면 앞의 5개만 두고 나머지 값을 더해 "기타"로 묶는다. */
   series: ChartSeries[];
+  /** x축 순서대로 정렬한 막대 값. */
   data: StackedColumnDatum[];
   /** 값 표시 형식. 기본은 "1,234건". */
   formatValue?: (value: number) => string;

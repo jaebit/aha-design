@@ -20,6 +20,7 @@ export interface FilterBarProps {
   collapsed?: boolean;
   /** 접힌 상태에서 보일 조건 요약. 예: ["시작일 · 종료일", "전체 서비스군", "전체 서비스"]. */
   collapsedLabels?: string[];
+  /** 접힌 요약 버튼을 눌렀을 때. 보통 `collapsed`를 false로 바꾼다. */
   onExpand?: () => void;
   /** 조회 버튼 문구. 기본 "조회". 예: "보고서 조회". */
   submitLabel?: string;

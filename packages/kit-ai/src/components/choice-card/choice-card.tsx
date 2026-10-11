@@ -3,6 +3,7 @@ import { useId } from 'react';
 import { cn } from '@aha/ui';
 
 export interface ChoiceOption {
+  /** 선택 값. `onValueChange`로 넘어온다. */
   value: string;
   /** 굵은 제목. 예: "핵심 내용 요약", "계약 리스크 검토". */
   label: string;
@@ -13,8 +14,11 @@ export interface ChoiceOption {
 export interface ChoiceCardGroupProps {
   /** 스크린리더가 읽는 묶음 이름. 예: "검토 기준". */
   label: string;
+  /** 고를 수 있는 카드. 2~4개를 권한다. */
   options: ChoiceOption[];
+  /** 고른 카드의 `value`. 생략하면 아무것도 고르지 않은 상태. */
   value?: string;
+  /** 카드를 고를 때. 고른 카드의 `value`를 넘긴다. */
   onValueChange: (value: string) => void;
   className?: string;
 }

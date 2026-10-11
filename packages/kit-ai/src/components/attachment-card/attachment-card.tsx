@@ -10,6 +10,7 @@ export interface AttachmentCardProps {
   meta?: string;
   /** 아이콘 종류. `audio`는 마이크, `document`는 문서 아이콘. 다른 아이콘이 필요하면 `icon`을 쓴다. */
   kind?: 'audio' | 'document';
+  /** `kind` 대신 쓸 lucide-react 아이콘 요소. */
   icon?: ReactNode;
   /** 보내기 전 첨부를 지울 때. 생략하면 삭제 버튼을 숨긴다. */
   onRemove?: () => void;

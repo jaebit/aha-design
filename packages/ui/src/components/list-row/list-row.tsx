@@ -8,7 +8,9 @@ export function List({ className, ...props }: ComponentProps<'ul'>) {
 }
 
 export interface ListRowProps extends Omit<ComponentProps<'a'>, 'title'> {
+  /** 이동할 주소. 키보드로 열 수 있도록 필수다. */
   href: string;
+  /** 첫 줄. 길면 한 줄로 자른다. */
   title: ReactNode;
   /** 제목 아래 한 줄. 예: 첫 질문 미리보기 (2쪽). */
   description?: ReactNode;

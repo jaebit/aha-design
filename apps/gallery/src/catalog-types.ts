@@ -79,6 +79,8 @@ export interface CatalogToken {
   description?: string;
   layer: 'primitive' | 'semantic';
   dark?: { value: string; reference?: string };
+  /** 촘촘한 밀도(data-density="compact")의 값. 간격 단위(space.unit)만 있다. */
+  compact?: { value: string; reference?: string };
 }
 
 export interface Catalog {

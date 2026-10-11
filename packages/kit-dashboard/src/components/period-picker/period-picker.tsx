@@ -13,6 +13,7 @@ export interface Period {
 }
 
 export interface PeriodPickerProps {
+  /** 현재 기간. 처음 값은 `periodOf("7d", 기준일)`처럼 만든다. */
   value: Period;
   /** 프리셋을 누르면 기간을 계산해서, 직접 입력이면 입력한 날짜로 부른다. */
   onChange: (value: Period) => void;

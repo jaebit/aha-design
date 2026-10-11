@@ -22,4 +22,5 @@ type Story = StoryObj<typeof meta>;
 /** 전체 기록 검색 (2쪽). */
 export const Default: Story = {};
 
+/** 검색어가 들어 있는 상태. */
 export const WithValue: Story = { args: { defaultValue: '연차' } };

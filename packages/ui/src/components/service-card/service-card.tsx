@@ -7,11 +7,13 @@ import { cn } from '../../lib/cn';
 export interface ServiceCardProps {
   /** lucide-react 아이콘 요소. NavRail과 같은 아이콘을 쓴다. */
   icon: ReactNode;
+  /** 서비스 이름. 예: "사내 가이드 챗". */
   title: string;
   /** 무엇을 해 주는지 한두 문장. 예: "등록된 사내 가이드에서 답을 찾아드려요." */
   description: string;
   /** 입력 종류 태그. 예: "질문 입력", "녹음 파일", "문서 파일". */
   tag?: string;
+  /** 서비스 화면 주소. 카드 전체가 이 링크다. */
   href: string;
   className?: string;
 }

@@ -32,7 +32,7 @@ export function Avatar({ initials, src, alt, size, className }: AvatarProps) {
   return (
     <AvatarPrimitive.Root data-slot="avatar" className={cn(avatarVariants({ size }), className)}>
       {src ? <AvatarPrimitive.Image src={src} alt={alt ?? initials} className="size-full object-cover" /> : null}
-      <AvatarPrimitive.Fallback aria-label={alt ?? initials}>{initials}</AvatarPrimitive.Fallback>
+      <AvatarPrimitive.Fallback role="img" aria-label={alt ?? initials}>{initials}</AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>
   );
 }

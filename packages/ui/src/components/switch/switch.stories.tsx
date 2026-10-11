@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 /** 구독 중 (14쪽). */
 export const On: Story = {};
 
+/** 구독하지 않음. */
 export const Off: Story = { args: { checked: false } };
 
 /** 누르면 바로 바뀐다. */
@@ -36,4 +37,5 @@ export const Interactive: Story = {
   },
 };
 
+/** 바꿀 수 없는 상태. */
 export const Disabled: Story = { args: { disabled: true } };

@@ -100,7 +100,7 @@ export function HistoryItem({
 }: HistoryItemProps) {
   const metaLine = meta ? (
     <span className="flex items-center gap-1 text-caption text-muted-foreground">
-      {pinned ? <Pin className="size-3" aria-label="고정됨" /> : null}
+      {pinned ? <Pin className="size-3" role="img" aria-label="고정됨" /> : null}
       {meta}
     </span>
   ) : null;
@@ -125,7 +125,9 @@ export function HistoryItem({
 }
 
 export interface SidebarNavItemProps extends Omit<ComponentProps<'a'>, 'children'> {
+  /** 이동할 주소. */
   href: string;
+  /** 메뉴 이름. 예: "사용자 관리". */
   label: string;
   /** lucide-react 아이콘 요소. */
   icon?: ReactNode;

@@ -80,6 +80,7 @@ export const Busy: Story = {
   },
 };
 
+/** 입력을 받을 수 없는 상태. 서비스 점검 중이거나 권한이 없을 때. */
 export const Disabled: Story = {
   args: { variant: 'docked', onAttach: fn(), disabled: true },
 };

@@ -10,6 +10,8 @@ const meta = {
   title: 'Components/DropdownMenu',
   component: DropdownMenuContent,
   tags: ['autodocs'],
+  // defaultOpen으로 연 메뉴가 문서 페이지 전체의 클릭을 막지 않도록 문서에서도 iframe으로 그린다.
+  parameters: { docs: { story: { inline: false, iframeHeight: 280 } } },
   decorators: [
     (Story) => (
       <div className="flex h-64 justify-end p-4">
