@@ -1,6 +1,6 @@
 {
   "name": "@actoz/kit-auth",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "인증 키트: 로그인·2단계 인증·OAuth 동의 화면의 틀(AuthLayout)과 인증 코드 입력(OtpInput), 인증 화면 템플릿 (@actoz/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [

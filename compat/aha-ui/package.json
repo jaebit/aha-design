@@ -1,6 +1,6 @@
 {
   "name": "@aha/ui",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "[폐기 예정] 새 패키지: @actoz/ui. 이 패키지는 새 패키지를 다시 내보내기만 한다. import와 CSS의 패키지 이름을 바꾼다.",
   "type": "module",
   "sideEffects": [

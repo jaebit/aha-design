@@ -1,4 +1,21 @@
-# @aha/kit-ai
+# @actoz/kit-ai
+
+0.3.x까지(토큰은 0.2.x, 키트는 0.1.x) 이름은 `@aha/kit-ai`였다. 예전 이름은 호환 패키지(`compat/aha-kit-ai`)가 `@actoz/kit-ai`를 다시 내보내며 이어 배포한다.
+
+## 0.2.0
+
+### Minor Changes
+
+- d382f3b: 패키지 범위를 `@aha`에서 `@actoz`로 바꿨다 (AHA·IAM 통합 5단계). 레지스트리는 Forgejo `actoz` 조직(`http://localhost:3000/api/packages/actoz/npm/`)이다. 쓰는 프로젝트는 `.npmrc`를 `@actoz:registry=...`로 바꾸고 import와 CSS를 `@actoz/*`로 옮긴다 (`@import "@actoz/ui/styles.css";`). API와 화면은 바뀌지 않는다.
+
+### Patch Changes
+
+- Updated dependencies [919e799]
+- Updated dependencies [8f80509]
+- Updated dependencies [43ed70f]
+- Updated dependencies [d382f3b]
+- Updated dependencies [f5bad9d]
+  - @actoz/ui@0.4.0
 
 ## 0.1.3
 
