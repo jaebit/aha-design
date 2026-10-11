@@ -16,7 +16,7 @@ services:
       PUBLIC_URL: http://localhost:4100
     restart: unless-stopped
   # IAM 갤러리 + iam-design MCP. 같은 이미지를 SITE=iam으로 띄운다.
-  # iam-design 저장소의 compose(4200)가 떠 있으면 먼저 내린다 (통합 6단계에서 저장소를 보관 처리한다).
+  # 예전 iam-design 저장소는 보관됐다 (통합 6단계). IAM 갤러리·MCP는 이 서비스만 띄운다.
   iam-design:
     image: aha-design:latest
     pull_policy: never
