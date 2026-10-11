@@ -148,6 +148,130 @@
         }
       }
     },
+    "brand": {
+      "50": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9373,
+            0.9608,
+            1
+          ],
+          "hex": "#eff5ff"
+        }
+      },
+      "100": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8627,
+            0.9098,
+            0.9961
+          ],
+          "hex": "#dce8fe"
+        }
+      },
+      "200": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.749,
+            0.8353,
+            0.9922
+          ],
+          "hex": "#bfd5fd"
+        }
+      },
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5765,
+            0.7216,
+            0.9843
+          ],
+          "hex": "#93b8fb"
+        }
+      },
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3843,
+            0.5843,
+            0.9647
+          ],
+          "hex": "#6295f6"
+        }
+      },
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2314,
+            0.4471,
+            0.9333
+          ],
+          "hex": "#3b72ee"
+        }
+      },
+      "600": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1412,
+            0.3451,
+            0.8588
+          ],
+          "hex": "#2458db"
+        }
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1137,
+            0.2745,
+            0.7216
+          ],
+          "hex": "#1d46b8"
+        }
+      },
+      "800": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1137,
+            0.2314,
+            0.5765
+          ],
+          "hex": "#1d3b93"
+        }
+      },
+      "900": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1137,
+            0.2039,
+            0.4549
+          ],
+          "hex": "#1d3474"
+        }
+      },
+      "950": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0824,
+            0.1294,
+            0.2784
+          ],
+          "hex": "#152147"
+        }
+      },
+      "$description": "IAM 브랜드 색(파랑). 브랜드 테마(tokens/themes/brand-iam.json)가 semantic 토큰(primary, primary-hover, ring)을 통해서만 쓴다. 컴포넌트에서 직접 참조하지 않는다."
+    },
     "data": {
       "$description": "데이터 시각화 전용 색상. dataviz 기준 팔레트(검증됨)를 임시로 쓴다. 브랜드 색이 정해지면 교체하고 validate_palette로 다시 검증한다.",
       "blue": {

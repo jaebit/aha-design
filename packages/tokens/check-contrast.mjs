@@ -1,6 +1,6 @@
 // 빌드된 manifest로 기본(라이트)과 모든 테마(tokens/themes/*.json)의 대비를 검사한다.
 // 글자/배경은 WCAG AA 4.5:1, 포커스 링 같은 글자 아닌 요소/배경은 WCAG 1.4.11 3:1.
-// 테마가 덮어쓰지 않은 토큰은 기본값으로 검사한다.
+// 테마가 덮어쓰지 않은 토큰은 기본값으로 검사한다. 조합 테마는 함께 쓰는 테마의 값을 먼저 본다.
 // 토큰 값을 바꾸면 pnpm build 후 이 검사를 돌린다. 새 글자색 토큰을 추가하면 아래 pairs에도 추가한다.
 import { readFile } from 'node:fs/promises';
 
@@ -34,7 +34,11 @@ const nonTextPairs = [
 function color(name, mode) {
   const token = manifest.tokens.find((t) => t.name === `color.${name}`);
   if (!token) throw new Error(`토큰 없음: color.${name}`);
-  return token[mode]?.value ?? token.value;
+  // 조합 테마(예: brand-iam-dark)는 덮어쓰지 않은 토큰을 manifest.fallbacks 순서(dark → brand-iam)로 찾는다.
+  for (const m of [mode, ...(manifest.fallbacks?.[mode] ?? [])]) {
+    if (token[m]) return token[m].value;
+  }
+  return token.value;
 }
 
 function luminance(hex) {
