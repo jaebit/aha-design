@@ -6,77 +6,77 @@
  * 사용: @import "tailwindcss"; @import "@aha/tokens/tokens.css"; @import "@aha/tokens/tailwind.css";
  */
 @theme inline {
-  --color-background: var(--aha-color-background);
-  --color-foreground: var(--aha-color-foreground);
-  --color-subtle: var(--aha-color-subtle);
-  --color-muted: var(--aha-color-muted);
-  --color-muted-foreground: var(--aha-color-muted-foreground);
-  --color-primary: var(--aha-color-primary);
-  --color-primary-foreground: var(--aha-color-primary-foreground);
-  --color-primary-hover: var(--aha-color-primary-hover);
-  --color-secondary: var(--aha-color-secondary);
-  --color-secondary-foreground: var(--aha-color-secondary-foreground);
-  --color-accent: var(--aha-color-accent);
-  --color-accent-foreground: var(--aha-color-accent-foreground);
-  --color-destructive: var(--aha-color-destructive);
-  --color-destructive-foreground: var(--aha-color-destructive-foreground);
-  --color-border: var(--aha-color-border);
-  --color-border-strong: var(--aha-color-border-strong);
-  --color-input: var(--aha-color-input);
-  --color-ring: var(--aha-color-ring);
-  --color-card: var(--aha-color-card);
-  --color-card-foreground: var(--aha-color-card-foreground);
-  --color-popover: var(--aha-color-popover);
-  --color-popover-foreground: var(--aha-color-popover-foreground);
-  --color-overlay: var(--aha-color-overlay);
-  --color-tooltip: var(--aha-color-tooltip);
-  --color-tooltip-foreground: var(--aha-color-tooltip-foreground);
+  --color-background: var(--actoz-color-background);
+  --color-foreground: var(--actoz-color-foreground);
+  --color-subtle: var(--actoz-color-subtle);
+  --color-muted: var(--actoz-color-muted);
+  --color-muted-foreground: var(--actoz-color-muted-foreground);
+  --color-primary: var(--actoz-color-primary);
+  --color-primary-foreground: var(--actoz-color-primary-foreground);
+  --color-primary-hover: var(--actoz-color-primary-hover);
+  --color-secondary: var(--actoz-color-secondary);
+  --color-secondary-foreground: var(--actoz-color-secondary-foreground);
+  --color-accent: var(--actoz-color-accent);
+  --color-accent-foreground: var(--actoz-color-accent-foreground);
+  --color-destructive: var(--actoz-color-destructive);
+  --color-destructive-foreground: var(--actoz-color-destructive-foreground);
+  --color-border: var(--actoz-color-border);
+  --color-border-strong: var(--actoz-color-border-strong);
+  --color-input: var(--actoz-color-input);
+  --color-ring: var(--actoz-color-ring);
+  --color-card: var(--actoz-color-card);
+  --color-card-foreground: var(--actoz-color-card-foreground);
+  --color-popover: var(--actoz-color-popover);
+  --color-popover-foreground: var(--actoz-color-popover-foreground);
+  --color-overlay: var(--actoz-color-overlay);
+  --color-tooltip: var(--actoz-color-tooltip);
+  --color-tooltip-foreground: var(--actoz-color-tooltip-foreground);
 
   /* 데이터 시각화: 범주형 chart-1~6은 순서대로 배정한다. 텍스트에는 쓰지 않는다 (마크 전용). */
-  --color-chart-1: var(--aha-color-chart-1);
-  --color-chart-2: var(--aha-color-chart-2);
-  --color-chart-3: var(--aha-color-chart-3);
-  --color-chart-4: var(--aha-color-chart-4);
-  --color-chart-5: var(--aha-color-chart-5);
-  --color-chart-6: var(--aha-color-chart-6);
-  --color-chart-grid: var(--aha-color-chart-grid);
-  --color-chart-axis: var(--aha-color-chart-axis);
+  --color-chart-1: var(--actoz-color-chart-1);
+  --color-chart-2: var(--actoz-color-chart-2);
+  --color-chart-3: var(--actoz-color-chart-3);
+  --color-chart-4: var(--actoz-color-chart-4);
+  --color-chart-5: var(--actoz-color-chart-5);
+  --color-chart-6: var(--actoz-color-chart-6);
+  --color-chart-grid: var(--actoz-color-chart-grid);
+  --color-chart-axis: var(--actoz-color-chart-axis);
 
   /* 상태: status-*는 아이콘·마크용, status-*-foreground는 글자용. 상태는 항상 아이콘 + 라벨과 함께 쓴다. */
-  --color-status-good: var(--aha-color-status-good);
-  --color-status-warning: var(--aha-color-status-warning);
-  --color-status-serious: var(--aha-color-status-serious);
-  --color-status-critical: var(--aha-color-status-critical);
-  --color-status-good-foreground: var(--aha-color-status-good-foreground);
-  --color-status-warning-foreground: var(--aha-color-status-warning-foreground);
-  --color-status-serious-foreground: var(--aha-color-status-serious-foreground);
-  --color-status-critical-foreground: var(--aha-color-status-critical-foreground);
+  --color-status-good: var(--actoz-color-status-good);
+  --color-status-warning: var(--actoz-color-status-warning);
+  --color-status-serious: var(--actoz-color-status-serious);
+  --color-status-critical: var(--actoz-color-status-critical);
+  --color-status-good-foreground: var(--actoz-color-status-good-foreground);
+  --color-status-warning-foreground: var(--actoz-color-status-warning-foreground);
+  --color-status-serious-foreground: var(--actoz-color-status-serious-foreground);
+  --color-status-critical-foreground: var(--actoz-color-status-critical-foreground);
 
-  --font-sans: var(--aha-font-family-sans);
-  --font-mono: var(--aha-font-family-mono);
+  --font-sans: var(--actoz-font-family-sans);
+  --font-mono: var(--actoz-font-family-mono);
 
   /* 의미 기반 글자 크기: text-caption, text-body-sm, text-body, text-heading, text-title, text-display */
-  --text-caption: var(--aha-font-size-caption);
-  --text-caption--line-height: var(--aha-font-line-height-normal);
-  --text-body-sm: var(--aha-font-size-body-sm);
-  --text-body-sm--line-height: var(--aha-font-line-height-normal);
-  --text-body: var(--aha-font-size-body);
-  --text-body--line-height: var(--aha-font-line-height-normal);
-  --text-heading: var(--aha-font-size-heading);
-  --text-heading--line-height: var(--aha-font-line-height-tight);
-  --text-title: var(--aha-font-size-title);
-  --text-title--line-height: var(--aha-font-line-height-tight);
-  --text-display: var(--aha-font-size-display);
-  --text-display--line-height: var(--aha-font-line-height-tight);
+  --text-caption: var(--actoz-font-size-caption);
+  --text-caption--line-height: var(--actoz-font-line-height-normal);
+  --text-body-sm: var(--actoz-font-size-body-sm);
+  --text-body-sm--line-height: var(--actoz-font-line-height-normal);
+  --text-body: var(--actoz-font-size-body);
+  --text-body--line-height: var(--actoz-font-line-height-normal);
+  --text-heading: var(--actoz-font-size-heading);
+  --text-heading--line-height: var(--actoz-font-line-height-tight);
+  --text-title: var(--actoz-font-size-title);
+  --text-title--line-height: var(--actoz-font-line-height-tight);
+  --text-display: var(--actoz-font-size-display);
+  --text-display--line-height: var(--actoz-font-line-height-tight);
 
-  --radius-sm: var(--aha-radius-sm);
-  --radius-md: var(--aha-radius-md);
-  --radius-lg: var(--aha-radius-lg);
-  --radius-xl: var(--aha-radius-xl);
-  --radius-full: var(--aha-radius-full);
+  --radius-sm: var(--actoz-radius-sm);
+  --radius-md: var(--actoz-radius-md);
+  --radius-lg: var(--actoz-radius-lg);
+  --radius-xl: var(--actoz-radius-xl);
+  --radius-full: var(--actoz-radius-full);
 
-  --shadow-popover: var(--aha-shadow-popover);
+  --shadow-popover: var(--actoz-shadow-popover);
 
   /* 간격 단위. 모든 간격·크기 클래스(h-10, px-4, gap-2)가 이 값의 배수다. 밀도 테마(data-density="compact")가 바꾼다. */
-  --spacing: var(--aha-space-unit);
+  --spacing: var(--actoz-space-unit);
 }

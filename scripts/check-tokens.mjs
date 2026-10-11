@@ -22,8 +22,8 @@ const rules = [
     message: '임의값 클래스(bg-[...]) 대신 토큰 기반 클래스를 쓴다',
   },
   {
-    pattern: new RegExp(`--aha-color-(?:${primitiveGroups.join('|')})-`),
-    message: '원시 팔레트 변수 대신 시맨틱 토큰(--aha-color-chart-1 등)을 쓴다',
+    pattern: new RegExp(`--actoz-color-(?:${primitiveGroups.join('|')})-`),
+    message: '원시 팔레트 변수 대신 시맨틱 토큰(--actoz-color-chart-1 등)을 쓴다',
   },
 ];
 

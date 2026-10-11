@@ -33,12 +33,12 @@ export interface StackedColumnChartProps {
 
 // SVG 속성에는 Tailwind 클래스를 쓸 수 없어 토큰 CSS 변수를 직접 참조한다 (Tailwind 테마 변수는 사용 감지 여부에 따라 빠질 수 있다).
 const SERIES_COLORS = [
-  'var(--aha-color-chart-1)',
-  'var(--aha-color-chart-2)',
-  'var(--aha-color-chart-3)',
-  'var(--aha-color-chart-4)',
-  'var(--aha-color-chart-5)',
-  'var(--aha-color-chart-6)',
+  'var(--actoz-color-chart-1)',
+  'var(--actoz-color-chart-2)',
+  'var(--actoz-color-chart-3)',
+  'var(--actoz-color-chart-4)',
+  'var(--actoz-color-chart-5)',
+  'var(--actoz-color-chart-6)',
 ] as const;
 
 const MAX_BAR = 24;
@@ -199,7 +199,7 @@ export function StackedColumnChart({
                     x2={width}
                     y1={y(tick)}
                     y2={y(tick)}
-                    stroke={tick === 0 ? 'var(--aha-color-chart-axis)' : 'var(--aha-color-chart-grid)'}
+                    stroke={tick === 0 ? 'var(--actoz-color-chart-axis)' : 'var(--actoz-color-chart-grid)'}
                     strokeWidth={1}
                     shapeRendering="crispEdges"
                   />
