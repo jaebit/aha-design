@@ -52,12 +52,13 @@ export function DonutChart({ title, items, centerLabel, formatValue = defaultFor
   const stroke = Math.max(14, size * 0.14);
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  // 조각 사이 틈 (배경색). 아주 작은 조각도 보이도록 최소 길이를 둔다.
+  // 조각 사이 틈 (배경색). 값이 0보다 큰 조각은 틈을 빼고도 보이고 포커스할 수 있게 최소 길이를 둔다.
   const gap = grouped.filter((item) => item.value > 0).length > 1 ? 2 : 0;
+  const MIN_ARC = 2;
   let offset = 0;
   const arcs = grouped.map((item, index) => {
     const length = total > 0 ? (item.value / total) * circumference : 0;
-    const arc = { item, color: SERIES_COLORS[index]!, start: offset, length: Math.max(0, length - gap) };
+    const arc = { item, color: SERIES_COLORS[index]!, start: offset, length: item.value > 0 ? Math.max(MIN_ARC, length - gap) : 0 };
     offset += length;
     return arc;
   });
@@ -119,7 +120,7 @@ export function DonutChart({ title, items, centerLabel, formatValue = defaultFor
       ) : (
         <div className="flex justify-center">
           <div className="relative" style={{ width: size, height: size }} onPointerLeave={() => setActive(null)}>
-            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="group" aria-label={title} className="-rotate-90">
+            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="group" aria-label={title} className="-rotate-90 overflow-visible">
               <circle cx={size / 2} cy={size / 2} r={radius} fill="none" className="stroke-muted" strokeWidth={stroke} />
               {arcs.map((arc) =>
                 arc.length > 0 ? (

@@ -31,7 +31,7 @@ export function AccountMenu({ name, team, email, initials, expanded = false, onA
       <DropdownMenuTrigger
         aria-label={`${name} 계정 메뉴`}
         className={cn(
-          'flex cursor-pointer items-center gap-3 rounded-lg text-left outline-none hover:bg-accent data-[state=open]:bg-accent',
+          'flex cursor-pointer items-center gap-3 rounded-lg text-left hover:bg-accent data-[state=open]:bg-accent',
           expanded ? 'w-full p-2' : 'p-1',
         )}
       >

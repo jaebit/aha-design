@@ -1,10 +1,12 @@
-// 빌드된 manifest로 기본(라이트)과 모든 테마(tokens/themes/*.json)의 글자/배경 대비를 검사한다 (WCAG AA 4.5:1).
+// 빌드된 manifest로 기본(라이트)과 모든 테마(tokens/themes/*.json)의 대비를 검사한다.
+// 글자/배경은 WCAG AA 4.5:1, 포커스 링 같은 글자 아닌 요소/배경은 WCAG 1.4.11 3:1.
 // 테마가 덮어쓰지 않은 토큰은 기본값으로 검사한다.
 // 토큰 값을 바꾸면 pnpm build 후 이 검사를 돌린다. 새 글자색 토큰을 추가하면 아래 pairs에도 추가한다.
 import { readFile } from 'node:fs/promises';
 
 const manifest = JSON.parse(await readFile(new URL('./dist/tokens.manifest.json', import.meta.url), 'utf8'));
 const MIN = 4.5;
+const MIN_NON_TEXT = 3;
 
 const pairs = [
   ['foreground', ['background', 'subtle', 'muted', 'card', 'popover']],
@@ -20,7 +22,11 @@ const pairs = [
   ['status-warning-foreground', ['background', 'muted']],
   ['status-serious-foreground', ['background', 'muted']],
   ['status-critical-foreground', ['background', 'muted']],
+  ['destructive-foreground', ['destructive']],
 ];
+
+// 글자가 아닌 요소. 상태 아이콘(status-*)은 라이트 warning·serious가 3:1 미만이라 라벨 글자와 함께 쓰는 규칙으로 대신한다 (AGENTS.md).
+const nonTextPairs = [['ring', ['background', 'subtle', 'muted', 'card', 'popover']]];
 
 function color(name, mode) {
   const token = manifest.tokens.find((t) => t.name === `color.${name}`);
@@ -46,19 +52,24 @@ const colorThemes = manifest.themes.filter(
   (mode) => mode === 'light' || manifest.tokens.some((t) => t.type === 'color' && t[mode]),
 );
 for (const mode of colorThemes) {
-  let min = Infinity;
-  for (const [fg, backgrounds] of pairs) {
-    for (const bg of backgrounds) {
-      const ratio = contrast(color(fg, mode), color(bg, mode));
-      min = Math.min(min, ratio);
-      if (ratio < MIN) failures.push(`[${mode}] ${fg} on ${bg}: ${ratio.toFixed(2)}:1`);
+  const check = (list, threshold) => {
+    let min = Infinity;
+    for (const [fg, backgrounds] of list) {
+      for (const bg of backgrounds) {
+        const ratio = contrast(color(fg, mode), color(bg, mode));
+        min = Math.min(min, ratio);
+        if (ratio < threshold) failures.push(`[${mode}] ${fg} on ${bg}: ${ratio.toFixed(2)}:1 (기준 ${threshold}:1)`);
+      }
     }
-  }
-  console.log(`[${mode}] 최소 대비 ${min.toFixed(2)}:1`);
+    return min;
+  };
+  const text = check(pairs, MIN);
+  const nonText = check(nonTextPairs, MIN_NON_TEXT);
+  console.log(`[${mode}] 최소 대비 글자 ${text.toFixed(2)}:1, 포커스 링 ${nonText.toFixed(2)}:1`);
 }
 
 if (failures.length > 0) {
-  console.error(`\n대비 부족 ${failures.length}건 (기준 ${MIN}:1)\n${failures.join('\n')}`);
+  console.error(`\n대비 부족 ${failures.length}건\n${failures.join('\n')}`);
   process.exit(1);
 }
 console.log('대비 검사 통과');

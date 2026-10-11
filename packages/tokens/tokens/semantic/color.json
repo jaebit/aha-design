@@ -70,7 +70,7 @@
       "$description": "폼 입력 테두리"
     },
     "ring": {
-      "$value": "{color.neutral.400}",
+      "$value": "{color.neutral.500}",
       "$description": "키보드 포커스 링"
     },
     "card": {

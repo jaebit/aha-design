@@ -20,7 +20,7 @@ export interface StackedColumnDatum {
 export interface StackedColumnChartProps {
   /** 스크린리더와 표 보기의 제목. 예: "일별 요청 수". */
   title: string;
-  /** 쌓을 시리즈. 순서대로 chart-1~6 색을 받는다. 최대 6개이며, 넘으면 나머지를 "기타"로 묶어 넘긴다. */
+  /** 쌓을 시리즈. 순서대로 chart-1~6 색을 받는다. 6개를 넘으면 앞의 5개만 두고 나머지 값을 더해 "기타"로 묶는다. */
   series: ChartSeries[];
   data: StackedColumnDatum[];
   /** 값 표시 형식. 기본은 "1,234건". */
@@ -60,6 +60,21 @@ function niceTicks(max: number, count = 4) {
   return ticks;
 }
 
+/** 6개를 넘으면 앞의 5개 + "기타"(나머지 시리즈 값의 합). */
+function groupSeries(series: ChartSeries[], data: StackedColumnDatum[]) {
+  if (series.length <= SERIES_COLORS.length) return { shown: series, data };
+  const head = series.slice(0, SERIES_COLORS.length - 1);
+  const rest = series.slice(SERIES_COLORS.length - 1);
+  const other: ChartSeries = { key: '__other', label: '기타' };
+  return {
+    shown: [...head, other],
+    data: data.map((datum) => ({
+      ...datum,
+      values: { ...datum.values, [other.key]: rest.reduce((sum, s) => sum + (datum.values[s.key] ?? 0), 0) },
+    })),
+  };
+}
+
 /** 위쪽 모서리만 둥근 막대 경로 (기준선 쪽은 각지게). */
 function topRoundedRect(x: number, y: number, width: number, height: number, radius: number) {
   const r = Math.min(radius, width / 2, height);
@@ -69,14 +84,14 @@ function topRoundedRect(x: number, y: number, width: number, height: number, rad
 /**
  * 시리즈별로 쌓은 세로 막대 차트 (20쪽 "일별 요청 추이 · 서비스별 색 구분").
  *
- * - 색: 시리즈 순서대로 chart-1~6. 텍스트에는 시리즈 색을 쓰지 않는다.
+ * - 색: 시리즈 순서대로 chart-1~6. 7개 이상이면 6번째부터 "기타"로 묶는다. 텍스트에는 시리즈 색을 쓰지 않는다.
  * - 범례는 항상 위에 있고, 막대에 마우스를 올리거나 포커스하면 그날의 모든 시리즈 값이 툴팁으로 나온다.
  * - chart-3~5는 흰 배경 대비가 낮아 "표로 보기"를 항상 제공한다. 모든 값은 표에서도 읽을 수 있다.
  */
 export function StackedColumnChart({
   title,
   series,
-  data,
+  data: input,
   formatValue = defaultFormat,
   height = 220,
   className,
@@ -86,7 +101,7 @@ export function StackedColumnChart({
   const [width, setWidth] = useState(0);
   const [view, setView] = useState<'chart' | 'table'>('chart');
   const [active, setActive] = useState<{ index: number; x: number } | null>(null);
-  const shown = series.slice(0, SERIES_COLORS.length);
+  const { shown, data } = groupSeries(series, input);
 
   useEffect(() => {
     const element = containerRef.current;
