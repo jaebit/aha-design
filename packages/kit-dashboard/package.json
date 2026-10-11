@@ -1,6 +1,6 @@
 {
   "name": "@aha/kit-dashboard",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AHA 대시보드 키트: 시계열·도넛·히트맵 차트, 기간 선택, 위젯 그리드와 대시보드 템플릿 (@aha/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [

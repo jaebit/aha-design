@@ -1,6 +1,6 @@
 {
   "name": "@aha/kit-ai",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "AHA AI 서비스 키트: 대화·작업 흐름 부품과 화면 템플릿 (@aha/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [

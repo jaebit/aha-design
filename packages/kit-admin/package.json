@@ -1,6 +1,6 @@
 {
   "name": "@aha/kit-admin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AHA 관리자 키트: 폼·상세·일괄 작업·권한 부품과 관리 화면 템플릿 (@aha/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [
