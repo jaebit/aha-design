@@ -18,3 +18,7 @@ export {
   type PermissionMatrixProps,
   type PermissionResource,
 } from './components/permission-matrix/permission-matrix';
+
+// 세션 · 비밀값
+export { type SessionItem, SessionList, type SessionListProps } from './components/session-list/session-list';
+export { SecretField, type SecretFieldProps } from './components/secret-field/secret-field';
