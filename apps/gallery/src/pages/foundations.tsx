@@ -1,5 +1,6 @@
 import { Badge, Card, cn } from '@aha/ui';
 
+import { site } from '../../site.config';
 import { type CatalogToken, tokenClass } from '../catalog-types';
 import { catalog } from '../lib/catalog';
 import { CopyButton } from '../site/copy-button';
@@ -16,7 +17,7 @@ const colorGroups = [
   },
   {
     title: '행동',
-    description: '주요 버튼은 검정(다크 모드에서는 흰색) 하나만 씁니다. 따로 브랜드 강조색을 두지 않습니다.',
+    description: site.primaryDescription,
     names: ['primary', 'primary-foreground', 'secondary', 'accent', 'destructive', 'ring'],
   },
 ];
@@ -149,7 +150,7 @@ export function FoundationsPage() {
         </div>
       </Section>
 
-      <Section id="type" title="글자" description="서체는 Pretendard입니다. 글자 크기는 숫자 대신 쓰임새 이름으로 고릅니다.">
+      <Section id="type" title="글자" description={`서체는 ${site.fontName}입니다. 글자 크기는 숫자 대신 쓰임새 이름으로 고릅니다.`}>
         <Card padding="none" className="divide-y divide-border">
           {typeScale.map((size) => {
             const token = byName(`font.size.${size}`);
@@ -160,7 +161,7 @@ export function FoundationsPage() {
                   <span className="font-mono text-caption text-muted-foreground">{token?.value}</span>
                 </div>
                 <p className={cn(typeClass[size], size === 'display' || size === 'title' ? 'font-bold' : '')}>
-                  사내 가이드에서 찾아드려요
+                  {site.typeSample}
                 </p>
               </div>
             );

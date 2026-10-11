@@ -46,8 +46,8 @@ export function KitsIndexPage() {
         <h1 className="text-display font-bold tracking-tight">키트</h1>
         <p className="text-body text-muted-foreground">
           모든 사내 시스템은 같은 <strong className="text-foreground">공통 부품</strong>을 쓰고, 화면 종류에 맞는{' '}
-          <strong className="text-foreground">키트</strong>를 하나 더 얹습니다. 관리자 화면이면 관리자 키트, AI 대화 화면이면 AI 서비스
-          키트입니다. 색과 버튼 모양은 어느 키트에서나 같습니다.
+          <strong className="text-foreground">키트</strong>를 하나 더 얹습니다. {site.kitsIntro} 색과 버튼 모양은 어느 키트에서나
+          같습니다.
         </p>
       </header>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

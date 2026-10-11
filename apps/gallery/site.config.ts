@@ -36,6 +36,14 @@ export interface SiteConfig {
   homeIntro: string;
   /** 홈 "디자인 기초" 카드의 한 줄. */
   foundationsSummary: string;
+  /** 서체 이름. 디자인 기초·시작하기·MCP 설치 안내에 쓴다. */
+  fontName: string;
+  /** 디자인 기초 "행동" 색 묶음 설명 (primary를 어떻게 쓰는지). */
+  primaryDescription: string;
+  /** 디자인 기초 글자 크기 예시 문장. */
+  typeSample: string;
+  /** 키트 페이지 소개 문단의 두 번째 문장 (화면 종류별로 어느 키트를 고르는지). */
+  kitsIntro: string;
   /** 컴포넌트 목록 페이지 소개. */
   componentsIntro: string;
   /** 홈에 보여줄 대표 컴포넌트 (slug, 스토리 export 이름). 키트를 고르지 않았을 때. */
@@ -71,6 +79,10 @@ export const site: SiteConfig = {
   homeIntro:
     'AHA의 사내 시스템은 같은 버튼, 같은 입력창, 같은 색을 씁니다. 마음에 드는 화면을 고르면 에이전트가 똑같은 디자인으로 만들어 줍니다.',
   foundationsSummary: 'Pretendard 서체, 검정 기본색, 접근성 대비 4.5:1 이상. 다크 모드는 자동으로 따라옵니다.',
+  fontName: 'Pretendard',
+  primaryDescription: '주요 버튼은 검정(다크 모드에서는 흰색) 하나만 씁니다. 따로 브랜드 강조색을 두지 않습니다.',
+  typeSample: '사내 가이드에서 찾아드려요',
+  kitsIntro: '관리자 화면이면 관리자 키트, AI 대화 화면이면 AI 서비스 키트, 지표 화면이면 대시보드 키트입니다.',
   componentsIntro: 'AHA 사내 시스템 화면을 이루는 부품입니다. 카드를 누르면 쓰임새, 변형별 예제, 에이전트용 프롬프트를 볼 수 있습니다.',
   featuredComponents: [
     { slug: 'badge', story: 'StatusTones' },
