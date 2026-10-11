@@ -25,6 +25,24 @@ const catalogPath = path(process.env.CATALOG_PATH, '../generated/catalog.json');
 const galleryDir = path(process.env.GALLERY_DIR, '../dist');
 const storybookDir = path(process.env.STORYBOOK_DIR, '../../../packages/ui/storybook-static');
 
+// DNS rebinding 방어: 인증 없는 /mcp는 Host가 이 서버 이름일 때만 받는다 (포트는 보지 않는다).
+// localhost와 PUBLIC_URL의 호스트는 기본으로 받고, 다른 이름(IP 등)으로도 접속하면 MCP_ALLOWED_HOSTS에 쉼표로 적는다.
+const allowedHosts = new Set([
+  'localhost',
+  '127.0.0.1',
+  '[::1]',
+  new URL(publicUrl).hostname,
+  ...(process.env.MCP_ALLOWED_HOSTS ?? '').split(',').map((host) => host.trim().toLowerCase()).filter(Boolean),
+]);
+const isAllowedHost = (host: string | undefined) => {
+  if (!host) return false;
+  try {
+    return allowedHosts.has(new URL(`http://${host}`).hostname);
+  } catch {
+    return false;
+  }
+};
+
 const catalog = JSON.parse(readFileSync(catalogPath, 'utf8')) as Catalog;
 const ctx = { catalog, publicUrl, registry };
 
@@ -45,6 +63,11 @@ const server = createServer(async (req, res) => {
       // stateless 서버라 GET(SSE 구독)과 DELETE(세션 종료)는 지원하지 않는다.
       res.writeHead(405, { Allow: 'POST', 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ jsonrpc: '2.0', error: { code: -32000, message: 'Method not allowed.' }, id: null }));
+      return;
+    }
+    if (!isAllowedHost(req.headers.host)) {
+      res.writeHead(403, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ jsonrpc: '2.0', error: { code: -32000, message: 'Host not allowed.' }, id: null }));
       return;
     }
     const mcp = createMcpServer(ctx);
