@@ -1,7 +1,7 @@
 {
-  "name": "@aha/kit-dashboard",
+  "name": "@actoz/kit-dashboard",
   "version": "0.1.2",
-  "description": "AHA 대시보드 키트: 시계열·도넛·히트맵 차트, 기간 선택, 위젯 그리드와 대시보드 템플릿 (@aha/ui 위에 얹는다)",
+  "description": "AHA 대시보드 키트: 시계열·도넛·히트맵 차트, 기간 선택, 위젯 그리드와 대시보드 템플릿 (@actoz/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -14,7 +14,7 @@
     "dist"
   ],
   "publishConfig": {
-    "registry": "http://localhost:3000/api/packages/aha/npm/",
+    "registry": "http://localhost:3000/api/packages/actoz/npm/",
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -29,13 +29,13 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "@aha/ui": "workspace:^",
+    "@actoz/ui": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
-    "@aha/ui": "workspace:*",
+    "@actoz/ui": "workspace:*",
     "@storybook/react-vite": "^10.6.1",
     "@types/node": "^24.19.1",
     "@types/react": "^19.3.0",

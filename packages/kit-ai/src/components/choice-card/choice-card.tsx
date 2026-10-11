@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface ChoiceOption {
   /** 선택 값. `onValueChange`로 넘어온다. */

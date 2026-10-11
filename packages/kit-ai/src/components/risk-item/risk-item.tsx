@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Badge, type BadgeTone, cn } from '@aha/ui';
+import { Badge, type BadgeTone, cn } from '@actoz/ui';
 import { Citation } from '../citation/citation';
 
 export interface RiskItemProps {

@@ -1,4 +1,4 @@
-import { Badge, Button, Callout } from '@aha/ui';
+import { Badge, Button, Callout } from '@actoz/ui';
 import { ChevronRight, Code, ExternalLink, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 

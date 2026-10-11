@@ -1,5 +1,5 @@
 {
-  "name": "@aha/gallery",
+  "name": "@actoz/gallery",
   "version": "0.1.0",
   "private": true,
   "description": "AHA 디자인 시스템 갤러리 사이트 + MCP 서버",
@@ -18,12 +18,12 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@aha/kit-admin": "workspace:*",
-    "@aha/kit-ai": "workspace:*",
-    "@aha/kit-auth": "workspace:*",
-    "@aha/kit-dashboard": "workspace:*",
-    "@aha/tokens": "workspace:*",
-    "@aha/ui": "workspace:*",
+    "@actoz/kit-admin": "workspace:*",
+    "@actoz/kit-ai": "workspace:*",
+    "@actoz/kit-auth": "workspace:*",
+    "@actoz/kit-dashboard": "workspace:*",
+    "@actoz/tokens": "workspace:*",
+    "@actoz/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.19.1",
     "@types/react": "^19.3.0",

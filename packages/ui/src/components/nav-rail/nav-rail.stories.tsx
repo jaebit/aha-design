@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { AccountMenu } from '@aha/ui';
+import { AccountMenu } from '@actoz/ui';
 
 import { NavRail } from './nav-rail';
 

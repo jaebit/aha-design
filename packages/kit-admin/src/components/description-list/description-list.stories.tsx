@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Badge } from '@aha/ui';
+import { Badge } from '@actoz/ui';
 
 import { DescriptionList } from './description-list';
 

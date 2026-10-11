@@ -1,6 +1,6 @@
 import { Check, Minus } from 'lucide-react';
 
-import { Checkbox, cn } from '@aha/ui';
+import { Checkbox, cn } from '@actoz/ui';
 
 export interface PermissionAction {
   /** 권한 키. 예: "read", "write", "delete". */

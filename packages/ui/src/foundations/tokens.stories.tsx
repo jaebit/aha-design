@@ -1,4 +1,4 @@
-import manifest from '@aha/tokens/manifest.json';
+import manifest from '@actoz/tokens/manifest.json';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 interface TokenEntry {

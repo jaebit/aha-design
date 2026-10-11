@@ -18,7 +18,7 @@
 
 1. Forgejo 관리자로 전용 비관리자 계정 `ci-design-hub`를 만든다.
 2. `jay/aha-design` 저장소 설정 → 협업자에 `ci-design-hub`를 **쓰기** 권한으로 추가한다 (커밋 상태 보고에 필요).
-3. `aha` 조직에 `ci-design-hub`가 들어간 팀을 만들고 **패키지 쓰기** 권한을 준다.
+3. `actoz` 조직에 `ci-design-hub`가 들어간 팀을 만들고 **패키지 쓰기** 권한을 준다.
 4. `ci-design-hub`로 로그인해 PAT 3개를 만든다 (설정 → 애플리케이션). 이름은 아래와 같게, 권한은 하나씩만.
    - `aha-design-read` — `read:repository`
    - `aha-design-status` — `write:repository`
@@ -35,6 +35,16 @@ done
 chmod 600 secrets/aha-design/*
 wc -c secrets/aha-design/*.token   # 0이 아니면 됨 (값은 출력하지 않음)
 ```
+
+## `@actoz` 범위로 옮길 때 (AHA·IAM 통합 5단계, 한 번만, 사람이 한다)
+
+패키지 범위를 `@aha`에서 `@actoz`로 바꿨다. 첫 배포 전에 레지스트리 조직을 만든다. 토큰은 새로 만들지 않는다 (`write:package` PAT는 계정 단위라, `ci-design-hub`가 조직 팀에 들어가면 그대로 쓴다).
+
+1. Forgejo 관리자로 조직 `actoz`를 만든다 (오른쪽 위 `+` → 새 조직). 공개 범위는 `aha`와 같게 둔다. release job의 Verify 단계가 인증 없이 조회하므로 비공개로 두지 않는다.
+2. 위 3번처럼 `actoz` 조직에 `ci-design-hub`가 들어간 팀을 만들고 **패키지 쓰기** 권한을 준다. `aha` 조직의 팀은 그대로 둔다 (`@aha` 호환 패키지를 배포한다).
+3. `Jenkinsfile.release`가 바뀌었으므로 아래 `--update-jobs`로 job에 반영한다.
+4. 직접 배포하는 사람은 `~/.npmrc`의 토큰 줄을 `//localhost:3000/api/packages/actoz/npm/:_authToken=...`으로 바꾼다.
+5. 쓰는 프로젝트는 `.npmrc`를 `@actoz:registry=http://localhost:3000/api/packages/actoz/npm/`으로 바꾸고 import를 `@actoz/*`로 옮긴다.
 
 ## 연결
 

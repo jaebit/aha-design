@@ -1,4 +1,4 @@
-import { Badge, Button, cn } from '@aha/ui';
+import { Badge, Button, cn } from '@actoz/ui';
 import { Monitor, Smartphone, Tablet } from 'lucide-react';
 import type { ReactNode } from 'react';
 

@@ -1,4 +1,4 @@
-import { Card, Chip, cn, SearchInput } from '@aha/ui';
+import { Card, Chip, cn, SearchInput } from '@actoz/ui';
 
 import { type CatalogComponent, inKit } from '../catalog-types';
 import { site } from '../../site.config';

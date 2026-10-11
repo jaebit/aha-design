@@ -10,8 +10,8 @@ import {
   ServiceSidebar,
   SidebarNavItem,
   SidebarSection,
-} from '@aha/ui';
-import type { PermissionAction, PermissionResource, SessionItem } from '@aha/kit-admin';
+} from '@actoz/ui';
+import type { PermissionAction, PermissionResource, SessionItem } from '@actoz/kit-admin';
 
 export const adminMenus: NavRailItem[] = [
   { id: 'dashboard', label: '대시보드', icon: <LayoutGrid />, href: '#dashboard' },

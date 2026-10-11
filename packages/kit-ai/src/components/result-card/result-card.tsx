@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { Card, cn } from '@aha/ui';
+import { Card, cn } from '@actoz/ui';
 
 export interface ResultCardProps extends Omit<ComponentProps<'div'>, 'title'> {
   /** 결과 제목. 예: "[주간 회의] 회의록". 생략 가능. */

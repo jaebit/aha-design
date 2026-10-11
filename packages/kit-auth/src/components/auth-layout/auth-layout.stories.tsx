@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ShieldCheck } from 'lucide-react';
 
-import { Button, Checkbox, FormField, Input, ScopeList } from '@aha/ui';
-import { OtpInput } from '@aha/kit-auth';
+import { Button, Checkbox, FormField, Input, ScopeList } from '@actoz/ui';
+import { OtpInput } from '@actoz/kit-auth';
 
 import { AuthLayout } from './auth-layout';
 

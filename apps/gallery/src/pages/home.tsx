@@ -1,4 +1,4 @@
-import { Badge, Button, Card } from '@aha/ui';
+import { Badge, Button, Card } from '@actoz/ui';
 import { ArrowRight, Bot, ClipboardCopy, LayoutTemplate, MousePointerClick } from 'lucide-react';
 
 import { catalog, storyFrameUrl } from '../lib/catalog';

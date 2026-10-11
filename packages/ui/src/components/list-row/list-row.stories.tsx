@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChevronRight } from 'lucide-react';
 
-import { Badge, List } from '@aha/ui';
+import { Badge, List } from '@actoz/ui';
 
 import { ListRow } from './list-row';
 

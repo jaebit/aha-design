@@ -1,7 +1,7 @@
 // 스토리 전용 예시 데이터. 대시보드 템플릿의 내비게이션과 30일치 사용량.
 import { ChartColumn, Coins, LayoutGrid, Settings, Users } from 'lucide-react';
 
-import { AccountMenu, NavRail, type NavRailItem } from '@aha/ui';
+import { AccountMenu, NavRail, type NavRailItem } from '@actoz/ui';
 
 export const dashboardMenus: NavRailItem[] = [
   { id: 'overview', label: '사용 현황', icon: <LayoutGrid />, href: '#overview' },

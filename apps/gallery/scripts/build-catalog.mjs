@@ -44,7 +44,7 @@ for (const dir of dirs) {
   });
   if (config) configs.push({ ...config, dir: base, pkg: await readJson(new URL('package.json', base)) });
 }
-// 키트마다 설치할 패키지를 붙인다 (core → @aha/ui, ai → @aha/kit-ai).
+// 키트마다 설치할 패키지를 붙인다 (core → @actoz/ui, ai → @actoz/kit-ai).
 const kits = configs.flatMap((c) => (c.kits ?? []).map((kit) => ({ ...kit, package: { name: c.pkg.name, version: c.pkg.version } })));
 const categories = configs.flatMap((c) => c.categories ?? []);
 const templateMeta = Object.assign({}, ...configs.map((c) => c.templates ?? {}));

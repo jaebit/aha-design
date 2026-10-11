@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface FormActionsProps {
   /** 버튼들. 오른쪽 끝에 주요 버튼(저장)이 오도록 [취소, 저장] 순서로 둔다. */

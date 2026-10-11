@@ -1,7 +1,7 @@
 // 스토리 전용 예시 데이터. 와이어프레임 v0.2.0의 서비스 구성을 따른다.
 import { ChartColumn, FileSearch, History, Mail, MessageSquareText, Mic, ReceiptText, Wallet } from 'lucide-react';
 
-import { AccountMenu, NavRail, type NavRailItem } from '@aha/ui';
+import { AccountMenu, NavRail, type NavRailItem } from '@actoz/ui';
 
 export const ahaServices: NavRailItem[] = [
   { id: 'guide-chat', label: '사내 가이드 챗', icon: <MessageSquareText />, href: '#guide-chat' },

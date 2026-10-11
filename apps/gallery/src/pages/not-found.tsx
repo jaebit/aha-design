@@ -1,4 +1,4 @@
-import { Button } from '@aha/ui';
+import { Button } from '@actoz/ui';
 
 import { Link } from '../lib/router';
 import { SiteLogo } from '../site/logo';

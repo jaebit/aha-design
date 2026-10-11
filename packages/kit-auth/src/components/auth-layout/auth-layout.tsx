@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface AuthLayoutProps {
   /** 화면 제목. 예: "로그인", "2단계 인증", "앱 접근 허용". */

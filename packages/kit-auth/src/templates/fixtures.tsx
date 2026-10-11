@@ -1,7 +1,7 @@
 // 스토리 전용 예시 데이터. 인증 화면 템플릿(로그인, 2단계 인증, 동의)이 함께 쓰는 IAM 로고와 권한 목록.
 import { ShieldCheck } from 'lucide-react';
 
-import type { ScopeItem } from '@aha/ui';
+import type { ScopeItem } from '@actoz/ui';
 
 /** IAM 로고. AuthLayout의 기본 로고는 AHA라서 IAM 화면은 이 로고를 넘긴다. */
 export const iamLogo = (

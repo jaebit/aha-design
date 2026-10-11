@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface DescriptionItem {
   /** 항목 이름. 예: "가입일", "클라이언트 ID". */

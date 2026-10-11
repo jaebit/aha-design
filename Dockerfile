@@ -15,11 +15,11 @@ ENV VITE_NPM_REGISTRY=$NPM_REGISTRY \
     STORYBOOK_DISABLE_TELEMETRY=1
 RUN pnpm build-storybook \
  && for site in aha iam; do \
-      SITE=$site pnpm --filter @aha/gallery build \
+      SITE=$site pnpm --filter @actoz/gallery build \
       && mkdir -p /sites/$site && cp -r apps/gallery/dist apps/gallery/generated /sites/$site/ || exit 1; \
     done
 # 서버 실행에 필요한 것만 모은다 (prod 의존성: MCP SDK, sirv, zod).
-RUN pnpm --filter @aha/gallery deploy --prod --legacy /out \
+RUN pnpm --filter @actoz/gallery deploy --prod --legacy /out \
  && cp -r /sites /out/sites \
  && cp -r packages/ui/storybook-static /out/storybook
 

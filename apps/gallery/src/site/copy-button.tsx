@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from '@aha/ui';
+import { Button, type ButtonProps } from '@actoz/ui';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 

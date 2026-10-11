@@ -1,5 +1,5 @@
 // JSDoc 설명을 화면에 옮긴다. `코드`, - 목록, 빈 줄 문단만 처리한다.
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 import { Fragment, type ReactNode } from 'react';
 
 function inline(text: string): ReactNode[] {

@@ -1,5 +1,5 @@
 {
-  "name": "@aha/tokens",
+  "name": "@actoz/tokens",
   "version": "0.2.3",
   "description": "AHA 디자인 토큰 (W3C DTCG 2025.10 → CSS 변수, JS 상수, 에이전트용 manifest)",
   "type": "module",
@@ -25,6 +25,6 @@
     "style-dictionary": "^5.6.0"
   },
   "publishConfig": {
-    "registry": "http://localhost:3000/api/packages/aha/npm/"
+    "registry": "http://localhost:3000/api/packages/actoz/npm/"
   }
 }

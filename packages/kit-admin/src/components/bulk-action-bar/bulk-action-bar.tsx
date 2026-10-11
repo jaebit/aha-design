@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Button, cn } from '@aha/ui';
+import { Button, cn } from '@actoz/ui';
 
 export interface BulkActionBarProps {
   /** 고른 항목 수. 0이면 줄을 숨긴다 (선택 수 알림 영역은 남는다). */

@@ -3,7 +3,7 @@
  * 색상 이름은 shadcn/ui 규약(background, primary, muted ...)을 따른다.
  * 그래서 shadcn CLI나 AI Elements로 가져온 컴포넌트가 수정 없이 AHA 토큰을 쓴다.
  *
- * 사용: @import "tailwindcss"; @import "@aha/tokens/tokens.css"; @import "@aha/tokens/tailwind.css";
+ * 사용: @import "tailwindcss"; @import "@actoz/tokens/tokens.css"; @import "@actoz/tokens/tailwind.css";
  */
 @theme inline {
   --color-background: var(--actoz-color-background);

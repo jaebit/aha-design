@@ -1,4 +1,4 @@
-import { cn } from '@aha/ui';
+import { cn } from '@actoz/ui';
 
 export interface ThinkingIndicatorProps {
   /** 진행 상황 문구. 작업마다 구체적으로 쓴다. 예: "사내 가이드에서 찾고 있어요", "음성 원문을 만들고 있어요". */

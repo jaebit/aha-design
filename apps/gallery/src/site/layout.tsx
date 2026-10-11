@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@aha/ui';
+} from '@actoz/ui';
 import { BookOpen, Boxes, ChevronDown, Menu, Monitor, Moon, Sun } from 'lucide-react';
 import type { ReactNode } from 'react';
 

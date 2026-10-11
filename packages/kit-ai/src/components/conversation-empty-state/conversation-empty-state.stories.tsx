@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Callout, TooltipTerm } from '@aha/ui';
-import { Composer, Suggestions } from '@aha/kit-ai';
+import { Callout, TooltipTerm } from '@actoz/ui';
+import { Composer, Suggestions } from '@actoz/kit-ai';
 
 import { ConversationEmptyState } from './conversation-empty-state';
 

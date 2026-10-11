@@ -1,7 +1,7 @@
 import { Check, Copy, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 
-import { Button, cn, Tooltip, TooltipContent, TooltipTrigger } from '@aha/ui';
+import { Button, cn, Tooltip, TooltipContent, TooltipTrigger } from '@actoz/ui';
 
 export type MessageFeedback = 'up' | 'down' | null;
 

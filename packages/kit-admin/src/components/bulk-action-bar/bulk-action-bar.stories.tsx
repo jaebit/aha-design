@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import { Button } from '@aha/ui';
+import { Button } from '@actoz/ui';
 
 import { BulkActionBar } from './bulk-action-bar';
 

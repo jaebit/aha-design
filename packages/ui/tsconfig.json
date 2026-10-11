@@ -3,8 +3,8 @@
   "compilerOptions": {
     "types": ["node", "vite/client"],
     "paths": {
-      "@aha/ui": ["./src/index.ts"],
-      "@aha/kit-*": ["../kit-*/src/index.ts"]
+      "@actoz/ui": ["./src/index.ts"],
+      "@actoz/kit-*": ["../kit-*/src/index.ts"]
     }
   },
   // 키트 소스도 넣는다. Storybook은 이 패키지에서 키트 스토리까지 함께 그리고,

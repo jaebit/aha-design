@@ -1,4 +1,4 @@
-import { Badge, Card, cn } from '@aha/ui';
+import { Badge, Card, cn } from '@actoz/ui';
 
 import { site } from '../../site.config';
 import { type CatalogToken, tokenClass } from '../catalog-types';

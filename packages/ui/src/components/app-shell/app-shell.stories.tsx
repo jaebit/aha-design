@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { History, Mail, MessageSquareText, Mic } from 'lucide-react';
 import { fn } from 'storybook/test';
 
-import { AccountMenu, HistoryItem, NavRail, PageHeader, ServiceSidebar, SidebarSection } from '@aha/ui';
+import { AccountMenu, HistoryItem, NavRail, PageHeader, ServiceSidebar, SidebarSection } from '@actoz/ui';
 
 import { AppShell } from './app-shell';
 

@@ -1,4 +1,4 @@
-// 대시보드 키트. 공통 부품(@aha/ui)의 StatCard·BarList·StackedColumnChart 위에 시계열·비율·분포 차트와 위젯 배치를 둔다.
+// 대시보드 키트. 공통 부품(@actoz/ui)의 StatCard·BarList·StackedColumnChart 위에 시계열·비율·분포 차트와 위젯 배치를 둔다.
 
 // 차트
 export { DonutChart, type DonutChartItem, type DonutChartProps } from './components/donut-chart/donut-chart';

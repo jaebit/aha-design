@@ -2,7 +2,7 @@
 // 색은 chart-1부터 순서대로 6개까지, 범례는 항상 보이고, 모든 값은 "표로 보기"에서도 읽을 수 있다.
 import { useEffect, useRef, useState } from 'react';
 
-import { Button } from '@aha/ui';
+import { Button } from '@actoz/ui';
 
 // SVG 속성에는 Tailwind 클래스를 쓸 수 없어 토큰 CSS 변수를 직접 참조한다.
 export const SERIES_COLORS = [

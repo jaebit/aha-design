@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Card, cn } from '@aha/ui';
+import { Card, cn } from '@actoz/ui';
 
 export interface WidgetGridProps {
   /** Widget 목록. 왼쪽 위부터 채운다. */

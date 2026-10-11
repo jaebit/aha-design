@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Bot } from 'lucide-react';
 
-import { Avatar, Button, type ScopeItem, ScopeList } from '@aha/ui';
-import { AuthLayout } from '@aha/kit-auth';
+import { Avatar, Button, type ScopeItem, ScopeList } from '@actoz/ui';
+import { AuthLayout } from '@actoz/kit-auth';
 
 import { iamLogo, requestedScopes } from './fixtures';
 import { withLinkActions } from './link-actions';

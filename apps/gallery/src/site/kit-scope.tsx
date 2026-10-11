@@ -1,4 +1,4 @@
-import { Button } from '@aha/ui';
+import { Button } from '@actoz/ui';
 import { X } from 'lucide-react';
 
 import { kitById, useKit } from '../lib/kit';

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type FormEvent, useState } from 'react';
 
-import { Button, FormField } from '@aha/ui';
-import { AuthLayout, OtpInput } from '@aha/kit-auth';
+import { Button, FormField } from '@actoz/ui';
+import { AuthLayout, OtpInput } from '@actoz/kit-auth';
 
 import { iamLogo } from './fixtures';
 import { withLinkActions } from './link-actions';

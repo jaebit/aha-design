@@ -18,7 +18,7 @@ import {
   StackedColumnChart,
   StatCard,
   type YearMonth,
-} from '@aha/ui';
+} from '@actoz/ui';
 
 import { ahaRail } from './fixtures';
 import { withLinkActions } from './link-actions';

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { BarList, Button, StatCard } from '@aha/ui';
-import { Widget } from '@aha/kit-dashboard';
+import { BarList, Button, StatCard } from '@actoz/ui';
+import { Widget } from '@actoz/kit-dashboard';
 
 import { WidgetGrid } from './widget-grid';
 
