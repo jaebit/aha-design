@@ -3,11 +3,11 @@ import type { ReactNode } from 'react';
 import { cn } from '@aha/ui';
 
 export interface DescriptionItem {
-  /** 항목 이름. 예: "가입일". */
+  /** 항목 이름. 예: "가입일", "클라이언트 ID". */
   label: string;
-  /** 값. 글자, Badge, 링크 등. 값이 없으면 "—"를 넣는다. */
+  /** 값. 글자, Badge, 링크 등. 값이 없으면 "—"를 넣는다. 예: `<Badge tone="good">활성</Badge>`. */
   value: ReactNode;
-  /** 한 줄 전체를 쓰는 긴 값(메모, 주소)이면 true. */
+  /** 한 줄 전체를 쓰는 긴 값(메모, 주소, 리디렉션 URI 목록)이면 true. */
   wide?: boolean;
 }
 
@@ -16,6 +16,7 @@ export interface DescriptionListProps {
   items: DescriptionItem[];
   /** 넓은 화면의 열 수. 기본 2. 좁은 화면에서는 항상 1열. */
   columns?: 1 | 2 | 3;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 

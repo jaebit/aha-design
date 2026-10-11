@@ -16,7 +16,7 @@ export interface PermissionResource {
   label: string;
   /** 행 이름 아래 보조 설명. 예: "사용자 목록, 역할 변경". */
   description?: string;
-  /** 이 대상에 없는 권한 키. 해당 칸은 비워 둔다. 예: 통계는 ["delete"]. */
+  /** 이 대상에 없는 권한 키. 해당 칸은 비워 둔다. 예: 통계는 ["delete"], 감사 로그는 ["create", "update", "delete"] (보기만 있다). */
   unavailable?: string[];
 }
 
@@ -33,11 +33,12 @@ export interface PermissionMatrixProps {
   onValueChange?: (value: Record<string, string[]>) => void;
   /** 읽기 전용. 체크 대신 ✓ / – 표시. 권한을 바꿀 수 없는 사용자에게 보여줄 때. */
   readOnly?: boolean;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
 /**
- * 역할의 권한 표 (대상 × 권한). 관리자 화면의 역할 편집, 사용자 상세의 권한 보기에 쓴다.
+ * 역할의 권한 표 (대상 × 권한). 관리 화면의 역할 편집, 사용자 상세의 권한 보기에 쓴다.
  * 편집 모드는 체크박스, 읽기 전용은 ✓ / – 로 보여준다. 색만으로 허용 여부를 알리지 않는다.
  */
 export function PermissionMatrix({
