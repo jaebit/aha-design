@@ -264,12 +264,14 @@ def runChecks(Map target) {
             sh 'pnpm check:tokens'
             sh 'pnpm check:contrast'
             sh '''
-                (cd packages/ui && pnpm storybook --ci > "$WORKSPACE/storybook.log" 2>&1 &)
+                # Storybook은 자기 프로세스 그룹으로 띄우고 이 단계가 끝날 때 그룹째 끈다. 다음 PR 검사에 남지 않게 한다 (pr-isolated에는 pkill이 없다).
+                setsid sh -c 'cd packages/ui && exec pnpm storybook --ci' > "$WORKSPACE/storybook.log" 2>&1 &
+                STORYBOOK_PID=$!
+                trap 'kill -TERM -$STORYBOOK_PID 2>/dev/null || true' EXIT
                 node -e 'const go=async(n)=>{try{const r=await fetch(`http://localhost:${process.env.STORYBOOK_PORT}/index.json`);if(r.ok)return}catch{}if(n<=0){console.error("Storybook이 뜨지 않았습니다");process.exit(1)}await new Promise(r=>setTimeout(r,2000));return go(n-1)};go(90)'
                 pnpm check:mcp-docs
             '''
         } finally {
-            sh 'pkill -f "storybook dev" || true'
             deleteDir()
         }
     }
