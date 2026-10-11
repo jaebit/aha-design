@@ -11,9 +11,9 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 | `packages/ui` | 공통 React 컴포넌트(`@aha/ui`) + Storybook 10 (`@storybook/addon-mcp`). Storybook은 여기 하나만 두고 키트 스토리까지 함께 싣는다. `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
 | `packages/kit-*` | 도메인 키트 패키지. `kit-ai`(`@aha/kit-ai`): AI 대화 부품과 화면 템플릿. `kit-admin`(`@aha/kit-admin`): 관리 화면의 폼·상세·일괄 작업·권한·세션·비밀값 부품과 템플릿. AHA 관리자와 IAM 관리 콘솔(`Templates/Console…`, `parameters.brand: 'iam'`) 템플릿을 함께 둔다. `kit-auth`(`@aha/kit-auth`): 로그인·2단계 인증·OAuth 동의 화면의 틀(AuthLayout)과 인증 코드 입력(OtpInput), 인증 화면 템플릿. 동의 화면의 ScopeList는 관리 화면도 쓰므로 core에 있다. `kit-dashboard`(`@aha/kit-dashboard`): 선·도넛·히트맵 차트, 기간 선택, 위젯 그리드와 대시보드 템플릿. 키트 차트도 공통 차트 규칙(chart-1부터, 범례, 표로 보기)을 따른다. 빌드 방식은 `packages/ui`와 같고, `@aha/ui`를 peer 의존성으로 둔다 |
 | `packages/*/catalog.config.json` | 갤러리·MCP 카탈로그 메타데이터: 키트 목록, 분류(Storybook 제목 첫 단계 → 갤러리 분류), 템플릿 이름·설명 |
-| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). 상단 키트 메뉴로 목록을 "공통 + 고른 키트"로 좁히고, `/kits/<id>`에 키트 소개가 있다. MCP의 `list_kits`와 `kit` 인자도 같은 카탈로그의 키트 정보를 쓴다. Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다. 디자인 시스템 이름·로고·npm 범위·MCP 이름·레지스트리·포트·화면 문구는 `apps/gallery/site.config.ts` 한 곳에 둔다. 다른 디자인 시스템(iam-design)은 이 갤러리 코드를 가져가 이 파일만 바꿔 쓰므로, 갤러리·MCP 코드에 AHA 문구를 직접 쓰지 않는다 |
+| `apps/gallery` | 갤러리 사이트(Vite + React, `@aha/ui`로 만든다) + MCP 서버(`server/`). 상단 키트 메뉴로 목록을 "공통 + 고른 키트"로 좁히고, `/kits/<id>`에 키트 소개가 있다. MCP의 `list_kits`와 `kit` 인자도 같은 카탈로그의 키트 정보를 쓴다. Storybook manifest와 토큰 manifest를 `generated/catalog.json`으로 모아 둘 다 이 파일을 읽는다. 브랜드마다 사이트를 하나씩 띄운다: AHA(4100, aha-design MCP)와 IAM(4200, iam-design MCP). 사이트별 이름·로고·브랜드·보여줄 키트·npm 범위·MCP 이름·레지스트리·포트·화면 문구는 `apps/gallery/site.config.ts` 한 곳에 두고, 환경변수 `SITE`(aha | iam)로 고른다. 카탈로그는 사이트의 키트와 같은 브랜드의 템플릿(catalog.config.json `templates[].brand`, 없으면 aha)만 담고 토큰 값도 사이트 브랜드 값으로 쓴다. 미리보기는 스토리의 `parameters.brand`, 없으면 사이트 브랜드로 그린다. 갤러리·MCP 코드에 브랜드 문구를 직접 쓰지 않는다 |
 | `ci/jenkins/` | 로컬 Jenkins 파이프라인 원본(`Jenkinsfile.ci` main 검사, `Jenkinsfile.pr` PR 검사(D-016, 격리 Agent 준비 뒤 켬), `Jenkinsfile.release` 수동 배포). job에는 인라인으로 들어가므로 바꾸면 forgejo-platform의 `setup-design-hub.py --update-jobs`로 반영한다 |
-| `Dockerfile`, `compose.yaml` | 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 띄운다 (포트 4100) |
+| `Dockerfile`, `compose.yaml` | 두 사이트의 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 만들고, compose가 `SITE=aha`(4100)와 `SITE=iam`(4200) 두 서비스로 띄운다 |
 | `scripts/check-tokens.mjs` | 하드코딩 색상 검사 |
 | `docs/` | 와이어프레임 원본 (aha.actoz.com v0.2.0) |
 
@@ -28,8 +28,8 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm check:mcp-docs` — Storybook을 띄운 상태에서, MCP가 내보내는 예제 코드의 import와 설명을 검사
 - `pnpm check:contrast` — 토큰을 빌드하고 라이트·다크의 글자/배경 대비(4.5:1)를 검사. 토큰 값을 바꾸면 반드시 돌린다
 - `pnpm build-storybook` — Storybook 정적 빌드 (갤러리 카탈로그의 원본)
-- `pnpm gallery` — Storybook 정적 빌드 후 갤러리 개발 서버 http://localhost:5180
-- `pnpm docker:up` — 갤러리 + MCP를 Docker로 http://localhost:4100 에 띄운다. MCP는 `/mcp`
+- `pnpm gallery` — Storybook 정적 빌드 후 AHA 갤러리 개발 서버 http://localhost:5180. IAM 갤러리는 `pnpm gallery:iam` (http://localhost:5280)
+- `pnpm docker:up` — 갤러리 + MCP를 Docker로 띄운다. AHA http://localhost:4100, IAM http://localhost:4200. MCP는 각각 `/mcp`
 - `pnpm version-packages` / `pnpm release` — Changesets로 버전을 올리고, 레지스트리(`aha` 조직)에 없는 버전만 배포한다. `packages/*`를 바꾸는 PR에는 `.changeset/<이름>.md` 변경 기록을 넣는다 (형식과 흐름은 `.changeset/README.md`). `package.json`의 `version`을 손으로 올리지 않는다. `@aha/ui`가 minor로 오르면 키트는 Changesets가 patch로 올려 peer 범위를 맞춘다
 
 ## 테마와 기본 결정 (2026-10-09 확정)

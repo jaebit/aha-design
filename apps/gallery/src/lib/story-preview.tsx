@@ -2,6 +2,7 @@
 // 전체 화면 레이아웃(layout: 'fullscreen') 스토리는 Storybook iframe으로 보여준다.
 import { Component, type ComponentType, type ReactNode, createElement, useEffect, useMemo, useState } from 'react';
 
+import { site } from '../../site.config';
 import { storyFrameUrl } from './catalog';
 import { useTheme } from './theme';
 
@@ -64,6 +65,16 @@ function compose(meta: StoryModule['default'], story: StoryAnnotations, theme: s
   );
 }
 
+/**
+ * 스토리를 그릴 브랜드. 스토리·meta의 parameters.brand가 있으면 그것, 없으면 사이트 브랜드.
+ * 예: AHA 사이트의 Button IamBrand 스토리는 iam, IAM 사이트의 일반 스토리는 iam.
+ */
+function storyBrand(module: StoryModule, exportName: string) {
+  const story = module[exportName] as StoryAnnotations | undefined;
+  const brand = story?.parameters?.brand ?? module.default.parameters?.brand;
+  return typeof brand === 'string' ? brand : site.brand;
+}
+
 export function isFullscreen(module: StoryModule | undefined, exportName: string) {
   const story = module?.[exportName] as StoryAnnotations | undefined;
   const layout = story?.parameters?.layout ?? module?.default.parameters?.layout;
@@ -108,11 +119,14 @@ export function StoryPreview({ storyFile, exportName, storyId, frameHeight = 420
 
   if (!module) return <div className="h-24 animate-pulse rounded-md bg-muted" aria-hidden />;
 
-  if ((isolate || isFullscreen(module, exportName)) && storyId) {
+  const brand = storyBrand(module, exportName);
+  // aha는 속성이 없는 기본값이라, 다른 브랜드 페이지 안의 일부 요소만 aha로 되돌릴 수 없다. 이때는 iframe에 가둔다.
+  const needsFrame = brand !== site.brand && brand === 'aha';
+  if ((isolate || needsFrame || isFullscreen(module, exportName)) && storyId) {
     return (
       <iframe
         title={`${title} 미리보기`}
-        src={storyFrameUrl(storyId, resolved, density)}
+        src={storyFrameUrl(storyId, resolved, density, brand)}
         loading="lazy"
         className="block w-full rounded-md border border-border bg-background"
         style={{ height: frameHeight }}
@@ -121,9 +135,11 @@ export function StoryPreview({ storyFile, exportName, storyId, frameHeight = 420
   }
 
   if (!Story) return null;
-  return (
+  const preview = (
     <PreviewBoundary>
       <Story />
     </PreviewBoundary>
   );
+  // 사이트와 다른 브랜드의 스토리(예: AHA 사이트의 IAM 예시)는 감싸는 요소에 브랜드를 건다. 레이아웃에는 끼어들지 않는다.
+  return brand === site.brand ? preview : <div data-brand={brand} className="contents">{preview}</div>;
 }

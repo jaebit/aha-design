@@ -226,7 +226,9 @@ for (const theme of themes) {
   css += await readFile(`${tmpDir}${theme.name}.css`, 'utf8');
   for (const t of JSON.parse(await readFile(`${tmpDir}${theme.name}.json`, 'utf8'))) {
     const entry = byName.get(t.name);
-    if (entry) entry[theme.name] = { value: t.value, ...(t.reference ? { reference: t.reference } : {}) };
+    // 테마 파일이 설명을 따로 적었으면 함께 싣는다 (예: brand-iam의 primary는 "IAM 주요 버튼 배경").
+    const description = t.description && t.description !== entry?.description ? { description: t.description } : {};
+    if (entry) entry[theme.name] = { value: t.value, ...(t.reference ? { reference: t.reference } : {}), ...description };
   }
 }
 

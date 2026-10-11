@@ -44,6 +44,8 @@ export interface CatalogTemplate extends Omit<CatalogComponent, 'category'> {
   source: string;
   /** 이 템플릿의 권장 밀도. catalog.config.json의 templates에 적는다. 없으면 키트의 밀도를 따른다. */
   density?: Density;
+  /** 이 템플릿의 브랜드. catalog.config.json의 templates에 적고, 없으면 aha. 같은 브랜드의 사이트에만 실린다. */
+  brand: string;
 }
 
 /** 공통(core) 또는 도메인 키트. 각 패키지의 catalog.config.json에 정의한다. */
@@ -85,6 +87,8 @@ export interface CatalogToken {
 
 export interface Catalog {
   generatedAt: string;
+  /** 이 카탈로그를 만든 사이트 (site.config.ts). 키트·템플릿·토큰 값이 이 사이트에 맞춰져 있다. */
+  site?: { id: string; brand: string };
   packages: Record<'ui' | 'tokens', { name: string; version: string }>;
   kits: CatalogKit[];
   categories: CatalogCategory[];

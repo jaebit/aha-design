@@ -53,13 +53,13 @@ function Showcase() {
     <div className="grid gap-4 lg:grid-cols-3">
       <Link href={`/templates/${main.slug}`} className="group lg:col-span-2 lg:row-span-2" aria-label={`${main.label} 템플릿 보기`}>
         <Card padding="none" className="overflow-hidden transition-shadow group-hover:shadow-popover">
-          <ScaledFrame src={storyFrameUrl(storyId(main), resolved)} title={`${main.label} 미리보기`} />
+          <ScaledFrame src={storyFrameUrl(storyId(main), resolved, undefined, main.brand)} title={`${main.label} 미리보기`} />
         </Card>
       </Link>
       {rest.map((t) => (
         <Link key={t.slug} href={`/templates/${t.slug}`} className="group" aria-label={`${t.label} 템플릿 보기`}>
           <Card padding="none" className="overflow-hidden transition-shadow group-hover:shadow-popover">
-            <ScaledFrame src={storyFrameUrl(storyId(t), resolved)} title={`${t.label} 미리보기`} />
+            <ScaledFrame src={storyFrameUrl(storyId(t), resolved, undefined, t.brand)} title={`${t.label} 미리보기`} />
           </Card>
         </Link>
       ))}

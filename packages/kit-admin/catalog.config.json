@@ -1,5 +1,5 @@
 {
-  "$comment": "관리자 키트의 갤러리·MCP 카탈로그 메타데이터. 형식은 packages/ui/catalog.config.json과 같다. templateFixtures는 템플릿 스토리가 쓰는 예시 데이터 파일이다.",
+  "$comment": "관리자 키트의 갤러리·MCP 카탈로그 메타데이터. 형식은 packages/ui/catalog.config.json과 같다. templateFixtures는 템플릿 스토리가 쓰는 예시 데이터 파일이다. 템플릿의 brand(없으면 aha)는 그 브랜드의 갤러리에만 보인다 (apps/gallery/site.config.ts).",
   "kits": [
     { "id": "admin", "label": "관리자", "description": "사내 시스템의 관리 화면(목록 · 상세 · 편집 · 권한 · 세션 · 비밀값) 부품과 템플릿. AHA 관리자와 IAM 관리 콘솔이 함께 쓴다. 촘촘한 밀도(data-density=\"compact\")와 함께 쓴다.", "density": "compact" }
   ],
@@ -10,10 +10,10 @@
   "templates": {
     "templates-usermanagement": { "label": "사용자 관리", "group": "관리", "description": "조건 검색, 여러 명 골라 일괄 작업, 되돌리기 어려운 작업 확인이 있는 목록 화면." },
     "templates-useredit": { "label": "사용자 편집", "group": "관리", "description": "읽기 전용 요약, 묶음별 편집 폼, 역할 권한 표, 고정 저장 줄이 있는 편집 화면." },
-    "templates-consoleusermanagement": { "label": "사용자 관리 (IAM 관리 콘솔)", "group": "관리 콘솔", "description": "사용자 목록. 이름·상태·역할 검색, 여러 명 골라 잠금 해제·초대 재전송·비활성화, 비활성화 전 확인." },
-    "templates-consoleuserdetail": { "label": "사용자 상세 (IAM 관리 콘솔)", "group": "관리 콘솔", "description": "요약 정보, 역할, 로그인 세션 끊기, 계정 잠그기·비활성화 위험 영역." },
-    "templates-consoleclientdetail": { "label": "OAuth 클라이언트 상세", "group": "관리 콘솔", "description": "클라이언트 ID·비밀값(가림, 재발급 확인, 새 값 한 번만 보기), 리디렉션 URI, 허용 scope." },
-    "templates-consoleroleedit": { "label": "역할 편집", "group": "관리 콘솔", "description": "역할 이름·설명 폼, 리소스별 권한 표, 화면 아래에 붙은 저장 줄." },
-    "templates-consoleauditlog": { "label": "감사 로그", "group": "관리 콘솔", "description": "기간·이벤트·결과·사용자로 걸러 보는 읽기 전용 기록. 이벤트 코드와 요약, 결과 배지." }
+    "templates-consoleusermanagement": { "brand": "iam", "label": "사용자 관리 (IAM 관리 콘솔)", "group": "관리 콘솔", "description": "사용자 목록. 이름·상태·역할 검색, 여러 명 골라 잠금 해제·초대 재전송·비활성화, 비활성화 전 확인." },
+    "templates-consoleuserdetail": { "brand": "iam", "label": "사용자 상세 (IAM 관리 콘솔)", "group": "관리 콘솔", "description": "요약 정보, 역할, 로그인 세션 끊기, 계정 잠그기·비활성화 위험 영역." },
+    "templates-consoleclientdetail": { "brand": "iam", "label": "OAuth 클라이언트 상세", "group": "관리 콘솔", "description": "클라이언트 ID·비밀값(가림, 재발급 확인, 새 값 한 번만 보기), 리디렉션 URI, 허용 scope." },
+    "templates-consoleroleedit": { "brand": "iam", "label": "역할 편집", "group": "관리 콘솔", "description": "역할 이름·설명 폼, 리소스별 권한 표, 화면 아래에 붙은 저장 줄." },
+    "templates-consoleauditlog": { "brand": "iam", "label": "감사 로그", "group": "관리 콘솔", "description": "기간·이벤트·결과·사용자로 걸러 보는 읽기 전용 기록. 이벤트 코드와 요약, 결과 배지." }
   }
 }

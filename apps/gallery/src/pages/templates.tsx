@@ -22,7 +22,7 @@ export function TemplateCard({ template }: { template: CatalogTemplate }) {
     <Link href={`/templates/${template.slug}`} className="group">
       <Card padding="none" className="flex h-full flex-col overflow-hidden transition-shadow group-hover:shadow-popover">
         <div className="border-b border-border">
-          {storyId ? <ScaledFrame src={storyFrameUrl(storyId, resolved)} title={`${template.label} 미리보기`} /> : null}
+          {storyId ? <ScaledFrame src={storyFrameUrl(storyId, resolved, undefined, template.brand)} title={`${template.label} 미리보기`} /> : null}
         </div>
         <div className="flex flex-1 flex-col gap-2 p-5">
           <div className="flex flex-wrap items-center gap-2">
@@ -94,7 +94,7 @@ export function TemplateDetailPage({ slug }: { slug: string }) {
 
   const story = template.stories[storyIndex] ?? template.stories[0];
   const width = viewports.find((v) => v.id === viewport)!.width;
-  const src = story?.storyId ? storyFrameUrl(story.storyId, resolved, density) : '';
+  const src = story?.storyId ? storyFrameUrl(story.storyId, resolved, density, template.brand) : '';
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 sm:px-6">
