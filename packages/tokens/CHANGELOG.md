@@ -1,5 +1,11 @@
 # @aha/tokens
 
+## 0.2.3
+
+### Patch Changes
+
+- 6ca3a19: 입력 테두리(`input`)를 바탕과 3:1 이상(WCAG 1.4.11)으로 올렸다. 라이트는 새 원시 색 `neutral.450`(#8a8883), 다크는 `neutral.500`. 입력칸·선택칸·검색창 테두리와 꺼진 스위치 트랙이 조금 진해진다. `check:contrast`가 입력 테두리도 검사한다.
+
 ## 0.2.2
 
 ### Patch Changes
