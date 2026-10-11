@@ -1,5 +1,8 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "STORYBOOK_DISABLE_TELEMETRY"
+  ],
   "tasks": {
     "build": {
       "dependsOn": [
@@ -65,6 +68,9 @@
       "dependsOn": [
         "^build",
         "@aha/ui#build-storybook"
+      ],
+      "outputs": [
+        "generated/**"
       ]
     }
   }

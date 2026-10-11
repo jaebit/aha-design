@@ -11,8 +11,8 @@ export const categoryLabel = (id: string) => catalog.categories.find((c) => c.id
 /** MCP 엔드포인트. 갤러리와 같은 서버에서 제공한다. */
 export const mcpUrl = () => `${window.location.origin}/mcp`;
 
-/** 패키지 npm 레지스트리. 빌드할 때 VITE_NPM_REGISTRY로 바꾼다. */
-export const registryUrl: string = import.meta.env.VITE_NPM_REGISTRY ?? site.registry;
+/** 패키지 npm 레지스트리. 빌드할 때 VITE_NPM_REGISTRY로 바꾼다 (Docker는 빌드 인자 NPM_REGISTRY). 비어 있으면 site.config. */
+export const registryUrl: string = import.meta.env.VITE_NPM_REGISTRY || site.registry;
 
 /**
  * Storybook iframe 주소. 전체 화면 미리보기에 쓴다.

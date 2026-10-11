@@ -12,6 +12,8 @@ pipeline {
         string(name: 'RELEASE_TAG', defaultValue: '', description: 'main에 있는 커밋을 가리키는 release-YYYYMMDD-N 형식의 tag')
     }
     environment {
+        FORGEJO_API_URL = 'http://forgejo:3000/api/v1'
+        FORGEJO_REPOSITORY = 'jay/design-hub'
         STORYBOOK_DISABLE_TELEMETRY = '1'
         TURBO_CONCURRENCY = '1'
     }
@@ -35,6 +37,28 @@ pipeline {
                 sh 'git merge-base --is-ancestor "$GIT_COMMIT" origin/main'
             }
         }
+        stage('CI passed') {
+            steps {
+                // design-hub-ci가 이 커밋을 검사해 통과했는지 Forgejo 커밋 상태로 확인한다. 검사 없이 배포하지 않는다.
+                withCredentials([string(credentialsId: 'design-hub-status', variable: 'FORGEJO_STATUS_TOKEN')]) {
+                    sh '''set +x
+                        node -e '
+                          fetch(`${process.env.FORGEJO_API_URL}/repos/${process.env.FORGEJO_REPOSITORY}/commits/${process.env.GIT_COMMIT}/status`, {
+                            headers: { Authorization: `token ${process.env.FORGEJO_STATUS_TOKEN}` },
+                          }).then(async (r) => {
+                            if (!r.ok) { console.error(`커밋 상태 조회 실패 HTTP ${r.status}`); process.exit(1); }
+                            const { state } = await r.json();
+                            if (state !== "success") {
+                              console.error(`CI_NOT_PASSED: 이 커밋의 검사 상태가 "${state}"입니다. design-hub-ci가 통과한 main 커밋에 tag를 다세요.`);
+                              process.exit(1);
+                            }
+                            console.log("CI 통과 확인");
+                          });
+                        '
+                    '''
+                }
+            }
+        }
         stage('Build without publish credentials') {
             steps {
                 sh 'pnpm install --frozen-lockfile'
@@ -48,6 +72,7 @@ pipeline {
                     sh '''set +x
                         socat TCP-LISTEN:3000,bind=127.0.0.1,fork,reuseaddr TCP:forgejo:3000 &
                         SOCAT_PID=$!
+                        sleep 1; kill -0 $SOCAT_PID 2>/dev/null || { echo 'socat을 띄우지 못했습니다 (127.0.0.1:3000 사용 중?)' >&2; exit 1; }
                         trap 'kill $SOCAT_PID 2>/dev/null; rm -f "$NPMRC"' EXIT
                         NPMRC=$(mktemp) && chmod 600 "$NPMRC"
                         printf '%s\\n' "@aha:registry=http://localhost:3000/api/packages/aha/npm/" \
@@ -66,6 +91,7 @@ pipeline {
                 sh '''
                     socat TCP-LISTEN:3000,bind=127.0.0.1,fork,reuseaddr TCP:forgejo:3000 &
                     SOCAT_PID=$!
+                    sleep 1; kill -0 $SOCAT_PID 2>/dev/null || { echo 'socat을 띄우지 못했습니다 (127.0.0.1:3000 사용 중?)' >&2; exit 1; }
                     trap 'kill $SOCAT_PID 2>/dev/null' EXIT
                     for dir in packages/*/; do
                       name=$(node -p "require('./${dir}package.json').name")

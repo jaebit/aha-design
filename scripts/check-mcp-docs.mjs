@@ -4,7 +4,7 @@
 // - 컴포넌트 문서에 설명과 props가 있는지
 // 사용: pnpm dev 로 Storybook을 띄운 상태에서 pnpm check:mcp-docs
 const endpoint = process.env.STORYBOOK_MCP_URL ?? 'http://localhost:6006/mcp';
-const allowedSources = /from '(@aha\/ui|@aha\/kit-[a-z0-9-]+|react|storybook\/test|lucide-react)'/;
+const allowedSources = /^(@aha\/ui|@aha\/kit-[a-z0-9-]+|react|storybook\/test|lucide-react)$/;
 
 async function call(name, args) {
   const response = await fetch(endpoint, {
@@ -12,8 +12,12 @@ async function call(name, args) {
     headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
     body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }),
   });
-  const line = (await response.text()).split('\n').find((l) => l.startsWith('data: '));
-  return JSON.parse(line.slice(6)).result.content.map((c) => c.text).join('\n');
+  // 응답은 SSE(data: 줄) 또는 JSON 하나다.
+  const body = await response.text();
+  const line = body.split('\n').find((l) => l.startsWith('data: '));
+  const message = JSON.parse(line ? line.slice(6) : body);
+  if (!message.result) throw new Error(`${name}: ${JSON.stringify(message.error ?? message)}`);
+  return message.result.content.map((c) => c.text).join('\n');
 }
 
 let list;
@@ -25,14 +29,19 @@ try {
 }
 
 const ids = [...list.matchAll(/^- \w+ \(([\w-]+)\)/gm)].map((m) => m[1]);
+if (ids.length === 0) {
+  console.error(`docs-list에서 문서 id를 하나도 찾지 못했습니다. Storybook MCP 출력 형식이 바뀌었는지 확인하세요.\n\n${list.slice(0, 500)}`);
+  process.exit(1);
+}
 const problems = [];
 for (const id of ids) {
   const doc = await call('docs-show', { id });
   const isComponent = !id.startsWith('templates-') && !id.startsWith('foundations-');
-  const badImports = [...new Set([...doc.matchAll(/^import .* from '[^']+';$/gm)].map((m) => m[0]))].filter(
-    (line) => !allowedSources.test(line),
-  );
-  for (const line of badImports) problems.push(`${id}: 패키지 밖 import → ${line}`);
+  // 여러 줄 import와 side-effect import('./x')까지 잡는다.
+  const sources = [...doc.matchAll(/^import\s+(?:[^;]*?\s+from\s+)?'([^']+)'/gm)].map((m) => m[1]);
+  for (const source of new Set(sources)) {
+    if (!allowedSources.test(source)) problems.push(`${id}: 패키지 밖 import → '${source}'`);
+  }
   const blocks = doc.split('```');
   for (let i = 1; i < blocks.length; i += 2) {
     const packages = [...blocks[i].matchAll(/from '(@aha\/[a-z0-9-]+)'/g)].map((m) => m[1]);

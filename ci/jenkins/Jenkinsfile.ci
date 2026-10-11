@@ -12,7 +12,7 @@ pipeline {
         FORGEJO_API_URL = 'http://forgejo:3000/api/v1'
         FORGEJO_REPOSITORY = 'jay/design-hub'
         STORYBOOK_DISABLE_TELEMETRY = '1'
-        // 에이전트 메모리(3GB)에 맞춰 turbo 작업을 하나씩 돌린다.
+        // 에이전트 메모리(4GB, 그중 검사에 약 3GB)에 맞춰 turbo 작업을 하나씩 돌린다.
         TURBO_CONCURRENCY = '1'
     }
     stages {
@@ -59,6 +59,8 @@ pipeline {
     post {
         success { script { reportStatus('success', '검사 통과') } }
         failure { script { if (env.GIT_COMMIT) { reportStatus('failure', '검사 실패') } } }
+        // 시간 초과·수동 중단이면 커밋 상태가 pending으로 남지 않게 한다.
+        aborted { script { if (env.GIT_COMMIT) { reportStatus('error', '검사 중단 (시간 초과 또는 수동 중단)') } } }
     }
 }
 

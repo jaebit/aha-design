@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 
 import { cn } from '../../lib/cn';
 
@@ -30,7 +30,18 @@ const buttonVariants = cva(
   },
 );
 
+// 네이티브 button 속성은 모두 그대로 받는다. 아래에 다시 적은 속성은 문서(Storybook MCP)에 보이도록 한 것이다.
+// docgen은 react 타입에서 온 속성을 문서에서 빼기 때문에, 자주 쓰는 속성은 여기서 직접 선언한다.
 export interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
+  /** 버튼 글자와 아이콘. 아이콘만 두면 `aria-label`을 준다. */
+  children?: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  /** 누를 수 없게 한다. 흐리게 보인다. */
+  disabled?: boolean;
+  /** 기본 `button`. 폼 제출 버튼이면 `submit`. */
+  type?: 'button' | 'submit' | 'reset';
+  /** 화면에 글자가 없을 때(아이콘만 있는 `icon`, `icon-round`) 스크린리더용 이름. 필수다. 예: "대화 메뉴". */
+  'aria-label'?: string;
   /** true면 자식 요소(예: `<a>`)에 버튼 스타일을 입힌다. 링크를 버튼처럼 보이게 할 때 쓴다. */
   asChild?: boolean;
 }

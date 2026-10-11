@@ -11,6 +11,8 @@ export interface CitationProps extends Omit<ComponentProps<'a'>, 'children'> {
    * - `inline`: 카드 안의 밑줄 링크 (13쪽 리스크 항목).
    */
   variant?: 'chip' | 'inline';
+  /** 근거 문서 주소. 주면 링크가 되고, 없으면 텍스트로만 표시된다. */
+  href?: string;
 }
 
 /**

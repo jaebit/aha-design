@@ -3,6 +3,7 @@
 //   /mcp         MCP Streamable HTTP (stateless)
 //   /storybook/  개발자용 Storybook 정적 빌드
 //   /catalog.json  갤러리·MCP가 쓰는 데이터
+//   /healthz     컨테이너 상태 검사
 import { existsSync, readFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { fileURLToPath } from 'node:url';
@@ -16,7 +17,8 @@ import { createMcpServer } from './mcp.ts';
 
 const port = Number(process.env.PORT ?? site.port);
 const publicUrl = (process.env.PUBLIC_URL ?? `http://localhost:${port}`).replace(/\/$/, '');
-const registry = process.env.NPM_REGISTRY ?? site.registry;
+// 빈 값(Docker 빌드 인자를 주지 않음)이면 site.config의 기본값.
+const registry = process.env.NPM_REGISTRY || site.registry;
 const path = (env: string | undefined, fallback: string) => env ?? fileURLToPath(new URL(fallback, import.meta.url));
 
 const catalogPath = path(process.env.CATALOG_PATH, '../generated/catalog.json');
@@ -64,6 +66,12 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  if (url.pathname === '/healthz') {
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('ok');
+    return;
+  }
+
   if (url.pathname === '/catalog.json') {
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify(catalog));
@@ -88,3 +96,12 @@ server.listen(port, () => {
   console.log(`${site.title} 갤러리: ${publicUrl}`);
   console.log(`MCP: ${publicUrl}/mcp`);
 });
+
+// docker stop(SIGTERM)과 Ctrl+C에 바로 끝낸다. 진행 중인 요청은 마무리하고, 5초가 지나면 강제로 끝낸다.
+const shutdown = () => {
+  server.close(() => process.exit(0));
+  server.closeIdleConnections();
+  setTimeout(() => process.exit(0), 5000).unref();
+};
+process.once('SIGTERM', shutdown);
+process.once('SIGINT', shutdown);
