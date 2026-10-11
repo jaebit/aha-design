@@ -6,6 +6,7 @@ import { Button, cn } from '@aha/ui';
 export interface ConfirmDialogProps {
   /** 열림 상태. `onOpenChange`와 함께 쓴다. `trigger`를 주면 생략해도 된다. */
   open?: boolean;
+  /** 열림 상태가 바뀔 때. 확인·취소·Esc로 닫으면 false로 부른다. */
   onOpenChange?: (open: boolean) => void;
   /** 비제어 모드에서 처음부터 열어 둘지. 예제와 미리보기용. */
   defaultOpen?: boolean;

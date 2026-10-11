@@ -6,7 +6,7 @@ import { Button, cn, Tooltip, TooltipContent, TooltipTrigger } from '@aha/ui';
 export type MessageFeedback = 'up' | 'down' | null;
 
 export interface MessageActionsProps {
-  /** 복사 버튼을 누르면 호출된다. 생략하면 복사 버튼을 숨긴다. */
+  /** 복사 버튼을 누르면 호출된다. 생략하면 복사 버튼을 숨긴다. 실패하면 오류를 던지거나 reject한다 ("복사됨"을 띄우지 않는다). */
   onCopy?: () => void | Promise<void>;
   /** 현재 피드백. 같은 버튼을 다시 누르면 `null`로 취소된다. */
   feedback?: MessageFeedback;
@@ -33,8 +33,12 @@ export function MessageActions({ onCopy, feedback = null, onFeedbackChange, clas
         <ActionButton
           label={copied ? '복사됨' : '복사'}
           onClick={async () => {
-            await onCopy();
-            setCopied(true);
+            try {
+              await onCopy();
+              setCopied(true);
+            } catch (error) {
+              console.error('복사하지 못했습니다', error);
+            }
           }}
         >
           {copied ? <Check /> : <Copy />}

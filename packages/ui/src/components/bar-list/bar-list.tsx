@@ -8,6 +8,7 @@ export interface BarListItem {
 export interface BarListProps {
   /** 스크린리더용 목록 이름. 예: "서비스별 이용 건수". */
   label: string;
+  /** 막대 항목. 큰 값부터 정렬해서 넘긴다. */
   items: BarListItem[];
   /** 값 표시 형식. 기본은 "1,234건". */
   formatValue?: (value: number) => string;

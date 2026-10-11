@@ -143,4 +143,5 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** 관리자 대시보드: 통계 카드, 일별 요청 차트, 승인 대기 목록 (20쪽). */
 export const Default: Story = {};

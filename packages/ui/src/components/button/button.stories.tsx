@@ -78,6 +78,7 @@ export const AsLink: Story = {
   },
 };
 
+/** 크기: `sm`(표·툴바), `md`(기본), `lg`(화면의 큰 주요 액션). */
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">
@@ -94,6 +95,7 @@ export const Sizes: Story = {
   ),
 };
 
+/** 누를 수 없는 상태. 흐리게 보이고 포인터 이벤트를 받지 않는다. */
 export const Disabled: Story = {
   args: { disabled: true, children: '메일 보내기' },
 };

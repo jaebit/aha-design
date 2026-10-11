@@ -51,6 +51,7 @@ function findByName<T extends { name: string; slug: string; component?: string; 
 
 function suggest(items: { name: string }[], name: string) {
   const key = normalize(name);
+  if (!key) return '';
   const close = items.filter((item) => normalize(item.name).includes(key) || key.includes(normalize(item.name)));
   return close.length > 0 ? ` 비슷한 이름: ${close.map((c) => c.name).join(', ')}` : '';
 }
@@ -122,11 +123,19 @@ const tokenGroups = {
   status: (t: CatalogToken) => t.name.startsWith('color.status'),
   typography: (t: CatalogToken) => t.name.startsWith('font.'),
   radius: (t: CatalogToken) => t.name.startsWith('radius.'),
+  space: (t: CatalogToken) => t.name.startsWith('space.'),
 } as const;
 
 function tokensDoc(catalog: Catalog, group: keyof typeof tokenGroups | 'all') {
   const groups = group === 'all' ? (Object.keys(tokenGroups) as (keyof typeof tokenGroups)[]) : [group];
   const sections = groups.map((g) => {
+    // 간격은 테마가 아니라 밀도(compact)에 따라 바뀐다. 클래스로 쓰지 않고 모든 간격·크기 클래스의 단위가 된다.
+    if (g === 'space') {
+      const rows = catalog.tokens
+        .filter(tokenGroups.space)
+        .map((t) => `| \`${t.name}\` | \`${t.value}\` | ${t.compact ? `\`${t.compact.value}\`` : ''} | ${escapeCell(t.description ?? '')} |`);
+      return [`## space`, '', '| 토큰 | 기본 | 촘촘함 (compact) | 용도 |', '| --- | --- | --- | --- |', ...rows].join('\n');
+    }
     const rows = catalog.tokens
       .filter((t) => t.layer === 'semantic' || g === 'typography' || g === 'radius')
       .filter(tokenGroups[g])
@@ -196,7 +205,7 @@ ${
 5. 상태는 \`tone\`으로 표시한다 (${site.statusExample}). 상태를 색만으로 전달하지 않는다.
 6. 차트 색은 \`chart-1\`부터 순서대로, 6개까지. 범례와 표 보기를 함께 둔다.
 7. 아이콘은 \`lucide-react\`. 아이콘만 있는 버튼에는 \`aria-label\`을 준다.
-8. 텍스트 입력에서 한글 조합 중 Enter(\`event.nativeEvent.isComposing\`)를 제출로 처리하지 않는다.
+8. 텍스트 입력에서 한글 조합 중 Enter(\`event.nativeEvent.isComposing\`, Safari는 \`event.keyCode === 229\`)를 제출로 처리하지 않는다.
 
 ${extra ? `${extra}\n\n` : ''}갤러리: ${ctx.publicUrl}`;
 }
@@ -306,6 +315,7 @@ export function createMcpServer(ctx: McpContext) {
           const pkg = items[0] ? kitOf(catalog, items[0])?.package.name : undefined;
           return [`## ${c.label} (${c.id})${pkg ? ` · ${pkg}` : ''}`, c.description, ...items.map((comp) => `- **${comp.name}** — ${comp.summary}`)].join('\n');
         });
+      if (sections.length === 0) return text(`조건에 맞는 컴포넌트가 없습니다.${kit ? ' kit 없이 부르거나 다른 category를 고른다.' : ''}`);
       return text(`${sections.join('\n\n')}\n\n자세한 props와 예제는 get_component(name)으로 본다.`);
     },
   );
@@ -378,7 +388,7 @@ export function createMcpServer(ctx: McpContext) {
     {
       title: '디자인 토큰',
       description: '색, 차트, 상태, 글자, 모서리 토큰과 대응하는 Tailwind 클래스, 라이트·다크 값을 돌려준다.',
-      inputSchema: { group: z.enum(['all', 'color', 'chart', 'status', 'typography', 'radius']).default('all') },
+      inputSchema: { group: z.enum(['all', 'color', 'chart', 'status', 'typography', 'radius', 'space']).default('all') },
       annotations: readOnly,
     },
     ({ group }) => text(tokensDoc(catalog, group)),

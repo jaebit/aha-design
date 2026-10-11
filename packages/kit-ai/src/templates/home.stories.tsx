@@ -78,4 +78,5 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** 로그인 후 첫 화면: 서비스 카드와 이어서 하기 목록 (1쪽). */
 export const Default: Story = {};

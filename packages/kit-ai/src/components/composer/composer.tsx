@@ -26,10 +26,13 @@ export interface ComposerProps {
   variant?: 'hero' | 'docked' | 'compact';
   /** 제어 모드 값. 생략하면 내부 상태를 쓴다. */
   value?: string;
+  /** 비제어 모드 초깃값. 예: 추천 질문을 눌러 미리 채울 때. */
   defaultValue?: string;
+  /** 입력이 바뀔 때. 제어 모드에서 `value`와 함께 쓴다. */
   onValueChange?: (value: string) => void;
   /** 보내기(Enter 또는 전송 버튼). 앞뒤 공백을 제거한 텍스트를 넘긴다. 성공하면 입력이 비워진다. */
   onSubmit?: (text: string) => void;
+  /** 입력 전 안내 문구. 화면 라벨이 없으므로 스크린리더 이름(aria-label)으로도 쓴다. 예: "사내 가이드에 대해 물어보세요". */
   placeholder?: string;
   /** 첨부 버튼 클릭. 생략하면 첨부 버튼을 표시하지 않는다. */
   onAttach?: () => void;
@@ -39,6 +42,7 @@ export interface ComposerProps {
   helper?: ReactNode;
   /** AI가 응답을 만드는 중이면 true. 전송을 막는다. */
   busy?: boolean;
+  /** 입력과 전송을 모두 막는다. 응답 중에는 `busy`를 쓴다. */
   disabled?: boolean;
   className?: string;
 }
@@ -88,7 +92,8 @@ export function Composer({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     // 한글 IME 조합 중 Enter는 글자 확정용이므로 보내지 않는다.
-    if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing) return;
+    // Safari는 조합을 끝내는 Enter에 isComposing=false, keyCode 229를 보낸다. 둘 다 조합 중으로 본다.
+    if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return;
     event.preventDefault();
     submit();
   };

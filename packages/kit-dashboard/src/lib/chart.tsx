@@ -67,19 +67,24 @@ export function ChartHeader({
 }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <ul aria-label="범례" className="flex flex-wrap gap-x-4 gap-y-1">
-        {items.map((item) => (
-          <li key={item.key} className="flex items-center gap-1.5 text-body-sm text-muted-foreground">
-            <span
-              aria-hidden
-              className={shape === 'line' ? 'h-0.5 w-3 rounded-full' : 'size-2.5 rounded-sm'}
-              style={{ background: item.color }}
-            />
-            {item.label}
-            {item.detail ? <span className="text-foreground tabular-nums">{item.detail}</span> : null}
-          </li>
-        ))}
-      </ul>
+      {/* 범례가 따로 없는 차트(Heatmap)는 빈 "범례" 목록을 그리지 않는다. 빈 자리로 표로 보기 버튼을 오른쪽에 둔다. */}
+      {items.length === 0 ? (
+        <span />
+      ) : (
+        <ul aria-label="범례" className="flex flex-wrap gap-x-4 gap-y-1">
+          {items.map((item) => (
+            <li key={item.key} className="flex items-center gap-1.5 text-body-sm text-muted-foreground">
+              <span
+                aria-hidden
+                className={shape === 'line' ? 'h-0.5 w-3 rounded-full' : 'size-2.5 rounded-sm'}
+                style={{ background: item.color }}
+              />
+              {item.label}
+              {item.detail ? <span className="text-foreground tabular-nums">{item.detail}</span> : null}
+            </li>
+          ))}
+        </ul>
+      )}
       <Button
         variant="link"
         size="sm"

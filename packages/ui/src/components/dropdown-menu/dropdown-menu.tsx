@@ -45,10 +45,10 @@ export function DropdownMenuItem({ className, destructive, ...props }: DropdownM
 }
 
 export function DropdownMenuSeparator({ className, ...props }: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
-  return <DropdownMenuPrimitive.Separator className={cn('mx-1.5 my-1.5 h-px bg-border', className)} {...props} />;
+  return <DropdownMenuPrimitive.Separator data-slot="dropdown-menu-separator" className={cn('mx-1.5 my-1.5 h-px bg-border', className)} {...props} />;
 }
 
 /** 메뉴 맨 위의 정보 영역. 계정 메뉴의 이름·팀·이메일 (19쪽). */
 export function DropdownMenuLabel({ className, ...props }: ComponentProps<typeof DropdownMenuPrimitive.Label>) {
-  return <DropdownMenuPrimitive.Label className={cn('px-3 py-2', className)} {...props} />;
+  return <DropdownMenuPrimitive.Label data-slot="dropdown-menu-label" className={cn('px-3 py-2', className)} {...props} />;
 }

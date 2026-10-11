@@ -12,6 +12,7 @@ export interface DescriptionItem {
 }
 
 export interface DescriptionListProps {
+  /** 보여줄 항목. 화면에 보이는 순서대로 넘긴다. */
   items: DescriptionItem[];
   /** 넓은 화면의 열 수. 기본 2. 좁은 화면에서는 항상 1열. */
   columns?: 1 | 2 | 3;

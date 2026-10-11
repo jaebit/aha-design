@@ -46,7 +46,8 @@ export function Heatmap({
   const [view, setView] = useState<'chart' | 'table'>('chart');
   const [active, setActive] = useState<{ row: number; column: number } | null>(null);
   const max = Math.max(0, ...values.flat());
-  const level = (value: number) => (value <= 0 || max <= 0 ? -1 : Math.min(LEVELS.length - 1, Math.floor((value / max) * LEVELS.length)));
+  // 단계 k는 (max·k/L, max·(k+1)/L] 구간. 범례의 "a ~ b" 글자(bound)와 같은 경계를 쓴다.
+  const level = (value: number) => (value <= 0 || max <= 0 ? -1 : Math.min(LEVELS.length - 1, Math.ceil((value / max) * LEVELS.length) - 1));
   const every = columnLabelEvery ?? (columns.length > 12 ? Math.ceil(columns.length / 6) : 1);
   const bound = (index: number) => Math.round((max * (index + 1)) / LEVELS.length);
   const activeValue = active ? values[active.row]?.[active.column] ?? 0 : 0;

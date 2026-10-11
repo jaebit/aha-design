@@ -71,7 +71,8 @@ export function ConversationHeader({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.nativeEvent.isComposing) return;
+    // Safari는 조합을 끝내는 Enter에 isComposing=false, keyCode 229를 보낸다. 둘 다 조합 중으로 본다.
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
     if (event.key === 'Enter') {
       event.preventDefault();
       commit();

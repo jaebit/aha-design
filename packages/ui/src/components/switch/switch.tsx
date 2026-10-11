@@ -3,7 +3,9 @@ import { useId } from 'react';
 import { cn } from '../../lib/cn';
 
 export interface SwitchProps {
+  /** 켜짐 여부. `onCheckedChange`와 함께 쓰는 제어 컴포넌트다. */
   checked: boolean;
+  /** 눌렀을 때. 바뀐 값을 넘긴다. */
   onCheckedChange: (checked: boolean) => void;
   /** 스크린리더용 이름. 무엇을 켜고 끄는지. 예: "AI 소식 구독". */
   label: string;

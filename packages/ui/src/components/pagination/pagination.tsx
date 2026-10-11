@@ -4,7 +4,9 @@ import { cn } from '../../lib/cn';
 export interface PaginationProps {
   /** 현재 페이지 (1부터). */
   page: number;
+  /** 전체 페이지 수. 0이면 1로 본다. */
   pageCount: number;
+  /** 페이지를 고를 때. 1부터 시작하는 페이지 번호를 넘긴다. */
   onPageChange: (page: number) => void;
   className?: string;
 }

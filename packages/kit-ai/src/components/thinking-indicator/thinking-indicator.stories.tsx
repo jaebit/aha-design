@@ -11,6 +11,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** 기본 문구. 답변을 만드는 동안 메시지 자리에 보여준다. */
 export const Default: Story = {};
 
 /** 작업별로 구체적인 문구를 쓴다. */

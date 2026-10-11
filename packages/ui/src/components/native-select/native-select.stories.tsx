@@ -31,4 +31,5 @@ type Story = StoryObj<typeof meta>;
 /** 서비스군 필터 (15쪽). */
 export const Default: Story = {};
 
+/** 고를 수 없는 상태. */
 export const Disabled: Story = { args: { disabled: true } };

@@ -15,6 +15,7 @@ type Story = StoryObj<typeof meta>;
 /** 이니셜 아바타. 내비 레일 하단 (1쪽). */
 export const Initials: Story = {};
 
+/** 크기: `sm`, `md`(기본), `lg`. */
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">

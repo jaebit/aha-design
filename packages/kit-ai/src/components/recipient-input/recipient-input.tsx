@@ -8,6 +8,7 @@ export interface RecipientInputProps {
   label: string;
   /** 받는 사람 목록 (이름 또는 이메일). */
   value: string[];
+  /** 받는 사람을 더하거나 뺄 때. 바뀐 전체 목록을 넘긴다. */
   onValueChange: (value: string[]) => void;
   /** 추가 입력칸의 안내 문구. */
   placeholder?: string;
@@ -31,7 +32,8 @@ export function RecipientInput({ label, value, onValueChange, placeholder = '이
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.nativeEvent.isComposing) return;
+    // Safari는 조합을 끝내는 Enter에 isComposing=false, keyCode 229를 보낸다. 둘 다 조합 중으로 본다.
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
     if (event.key === 'Enter' || event.key === ',') {
       event.preventDefault();
       add();

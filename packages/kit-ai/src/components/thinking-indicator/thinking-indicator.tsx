@@ -19,9 +19,9 @@ export function ThinkingIndicator({ label = '답변을 만들고 있어요', cla
       className={cn('flex items-center gap-2 text-body-sm text-muted-foreground', className)}
     >
       <span aria-hidden className="flex gap-1">
-        <span className="size-1.5 animate-pulse rounded-full bg-muted-foreground" />
-        <span className="size-1.5 animate-pulse rounded-full bg-muted-foreground [animation-delay:150ms]" />
-        <span className="size-1.5 animate-pulse rounded-full bg-muted-foreground [animation-delay:300ms]" />
+        <span className="size-1.5 animate-pulse rounded-full motion-reduce:animate-none bg-muted-foreground" />
+        <span className="size-1.5 animate-pulse rounded-full motion-reduce:animate-none bg-muted-foreground [animation-delay:150ms]" />
+        <span className="size-1.5 animate-pulse rounded-full motion-reduce:animate-none bg-muted-foreground [animation-delay:300ms]" />
       </span>
       <span>{label}</span>
     </div>

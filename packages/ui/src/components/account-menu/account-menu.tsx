@@ -12,8 +12,11 @@ import {
 import { cn } from '../../lib/cn';
 
 export interface AccountMenuProps {
+  /** 사용자 이름. 예: "김하마". */
   name: string;
+  /** 소속 팀. 예: "팀아하". */
   team: string;
+  /** 메뉴 맨 위에 보이는 회사 이메일. */
   email: string;
   /** 아바타에 보일 짧은 이름. 예: "하마". */
   initials: string;
@@ -21,6 +24,7 @@ export interface AccountMenuProps {
   expanded?: boolean;
   /** 생략하면 "관리자 설정" 항목을 숨긴다. 관리자에게만 넘긴다. */
   onAdminSettings?: () => void;
+  /** "로그아웃"을 눌렀을 때. */
   onLogout: () => void;
 }
 

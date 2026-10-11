@@ -39,7 +39,7 @@ export function Stepper({ steps, current, className }: StepperProps) {
                 state === 'todo' && 'border border-border text-muted-foreground',
               )}
             >
-              {state === 'done' ? <Check className="size-3" aria-label="완료" /> : index + 1}
+              {state === 'done' ? <Check className="size-3" role="img" aria-label="완료" /> : index + 1}
             </span>
             {step}
           </li>

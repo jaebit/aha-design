@@ -45,4 +45,5 @@ export const Group: Story = {
   },
 };
 
+/** 바꿀 수 없는 상태. */
 export const Disabled: Story = { args: { disabled: true, defaultChecked: true } };

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
 export interface PageHeaderProps {
+  /** 페이지 제목 (h1). 예: "전체 기록". */
   title: string;
   /** 제목 아래 한 줄 설명. 예: "모든 서비스에서 나눈 대화를 한곳에서 찾아보세요." */
   description?: string;

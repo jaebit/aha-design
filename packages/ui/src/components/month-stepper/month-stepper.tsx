@@ -10,7 +10,9 @@ export interface YearMonth {
 }
 
 export interface MonthStepperProps {
+  /** 보고 있는 달. 예: `{ year: 2026, month: 10 }`. */
   value: YearMonth;
+  /** 이전·다음 달로 옮길 때. 새 달을 넘긴다. */
   onValueChange: (value: YearMonth) => void;
   /** 이 달보다 앞으로는 갈 수 없다. */
   min?: YearMonth;

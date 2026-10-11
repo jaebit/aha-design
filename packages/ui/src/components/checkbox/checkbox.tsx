@@ -21,7 +21,9 @@ export interface CheckboxProps {
   disabled?: boolean;
   /** 폼 전송용 이름과 값. */
   name?: string;
+  /** 폼 전송 값. */
   value?: string;
+  /** `<label htmlFor>`와 잇는 id. `label`을 주면 생략해도 된다. */
   id?: string;
   className?: string;
 }

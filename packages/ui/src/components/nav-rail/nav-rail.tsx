@@ -33,7 +33,7 @@ export interface NavRailProps {
   className?: string;
 }
 
-/** 왼쪽 글로벌 내비게이션 레일. 모든 화면에 있다. */
+/** 왼쪽 글로벌 내비게이션 레일. 모든 화면에 있다. 좁은 레일은 라벨을 툴팁으로 보여주므로 `TooltipProvider`(AppShell에 포함) 안에서 쓴다. */
 export function NavRail({
   items,
   bottomItems = [],

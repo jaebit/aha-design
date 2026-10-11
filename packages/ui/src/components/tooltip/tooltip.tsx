@@ -14,6 +14,7 @@ export const TooltipTrigger = TooltipPrimitive.Trigger;
 /**
  * 어두운 툴팁 (3쪽 "사내 가이드" 용어 설명).
  * 한두 문장의 보충 설명에만 쓴다. 꼭 알아야 하는 정보는 툴팁에 숨기지 않는다.
+ * `TooltipProvider`(AppShell에 포함) 안에서 쓴다. 밖에서 쓰면 오류가 난다.
  */
 export function TooltipContent({ className, sideOffset = 6, children, ...props }: ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
@@ -41,7 +42,7 @@ export interface TooltipTermProps {
   children: ReactNode;
 }
 
-/** 문장 속 용어에 점선 밑줄을 긋고, 포커스·호버 시 설명을 보여준다 (3쪽 입력창 아래 안내 문구). */
+/** 문장 속 용어에 점선 밑줄을 긋고, 포커스·호버 시 설명을 보여준다 (3쪽 입력창 아래 안내 문구). `TooltipProvider`(AppShell에 포함) 안에서 쓴다. */
 export function TooltipTerm({ term, children }: TooltipTermProps) {
   return (
     <Tooltip>

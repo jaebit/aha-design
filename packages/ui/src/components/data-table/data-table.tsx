@@ -19,8 +19,11 @@ export interface DataTableColumn<Row> {
 export interface DataTableProps<Row> {
   /** 스크린리더용 표 제목. 예: "일일 오류 보고서 목록". */
   caption: string;
+  /** 열 정의. 화면에 보이는 순서대로 넘긴다. */
   columns: DataTableColumn<Row>[];
+  /** 행 데이터. 정렬·페이지 나누기는 바깥에서 한다. */
   rows: Row[];
+  /** 행마다 바뀌지 않는 고유 id. React key와 `selectedRowId` 비교에 쓴다. */
   getRowId: (row: Row) => string;
   /** 강조할 행. 옆 대화 패널에서 이야기하는 행 (16쪽 10/03). */
   selectedRowId?: string;
@@ -164,7 +167,7 @@ export interface CellTextProps {
 /** 두 줄 셀 (15쪽 대상 날짜 · 생성 시각). */
 export function CellText({ primary, secondary, strong = false }: CellTextProps) {
   return (
-    <span className="flex flex-col gap-0.5">
+    <span data-slot="cell-text" className="flex flex-col gap-0.5">
       <span className={cn('text-body text-foreground', strong && 'font-semibold')}>{primary}</span>
       {secondary ? <span className="text-body-sm text-muted-foreground">{secondary}</span> : null}
     </span>

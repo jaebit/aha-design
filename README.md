@@ -51,7 +51,9 @@ pnpm release           # 패키지를 빌드하고 레지스트리에 없는 버
 
 CI와 배포는 로컬 Jenkins가 한다 (main 푸시마다 검사, 배포는 tag를 넣어 수동 실행). 준비와 사용법은 [ci/jenkins/README.md](ci/jenkins/README.md). 직접 배포할 때는 배포하는 쪽의 `~/.npmrc`에 `//localhost:3000/api/packages/aha/npm/:_authToken=<write:package 권한 토큰>`이 있어야 한다. 사용하는 프로젝트는 `.npmrc`에 `@aha:registry=http://localhost:3000/api/packages/aha/npm/`를 두고 `@import "@aha/ui/styles.css";` 한 줄로 시작한다. 키트를 쓰면 다음 줄에 `@import "@aha/kit-ai/styles.css";`처럼 키트 CSS를 더한다.
 
-## 현재 상태 (@aha/tokens 0.2.1 · @aha/ui 0.3.1 · @aha/kit-admin 0.1.0 · @aha/kit-ai 0.1.1 · @aha/kit-dashboard 0.1.0)
+## 현재 상태
+
+패키지 버전은 각 패키지의 `CHANGELOG.md`와 레지스트리에서 본다 (Changesets가 올리므로 여기에 적지 않는다).
 
 - 대시보드 키트 `@aha/kit-dashboard`: LineChart, DonutChart, Heatmap, PeriodPicker, WidgetGrid·Widget + 템플릿 `ServiceUsage`(서비스 사용 현황). 숫자 카드·막대 목록·쌓은 막대는 공통(StatCard, BarList, StackedColumnChart)을 쓴다. Wiki와 CMS는 AHA 키트가 아니라 별도 시스템으로 나중에 진행한다.
 
@@ -64,6 +66,9 @@ CI와 배포는 로컬 Jenkins가 한다 (main 푸시마다 검사, 배포는 ta
 - 컴포넌트: P0 24개 완료 (범용 9 · AI 대화 9 · 앱 셸 6). 링크는 `Button variant="link"`, 담당 부서 연결은 `Callout` + `action`으로 쓴다.
 - 컴포넌트: P1 16개 완료 (Stepper, SidePanel, AttachmentCard, ChoiceCardGroup, Card, ResultCard, RiskItem, PreviewCard, RecipientInput, SearchInput, NativeSelect, ServiceCard, ListRow, FilterBar, DataTable, Pagination). 날짜 입력은 `Input type="date"`를 쓴다.
 - 컴포넌트: P2 6개 완료 (StatCard, BarList, StackedColumnChart, Switch, MonthStepper, InfoSummary) + SidebarNavItem. 차트 색 `chart-1~6`은 dataviz 기준 팔레트(라이트·다크 검증 통과).
-- 템플릿: `GuideChat`(3–9쪽, `GuideChatScreen` export), `Home`(1쪽), `AllHistory`(2쪽), `TaskConversation`(회의록 10–11쪽 · 문서 검토 12–13쪽), `IthReport`(15–16쪽), `Newsletter`(14쪽), `AdminDashboard`(20쪽)
+- 템플릿:
+  - AI 서비스 키트: `GuideChat`(3–9쪽, `GuideChatScreen` export), `Home`(1쪽), `AllHistory`(2쪽), `TaskConversation`(회의록 10–11쪽 · 문서 검토 12–13쪽), `IthReport`(15–16쪽), `Newsletter`(14쪽), `AdminDashboard`(20쪽)
+  - 관리자 키트: `UserManagement`(사용자 관리), `UserEdit`(사용자 편집)
+  - 대시보드 키트: `ServiceUsage`(서비스 사용 현황)
 
 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)를 본다.
