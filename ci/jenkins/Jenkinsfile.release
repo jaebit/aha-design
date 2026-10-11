@@ -64,7 +64,8 @@ pipeline {
         stage('Build without publish credentials') {
             steps {
                 sh 'pnpm install --frozen-lockfile'
-                sh 'pnpm turbo run build --filter="./packages/*" --concurrency=1'
+                // compat/*: 예전 범위(@aha)의 호환 패키지. @actoz 패키지를 다시 내보낸다 (AHA·IAM 통합 5단계).
+                sh 'pnpm turbo run build --filter="./packages/*" --filter="./compat/*" --concurrency=1'
             }
         }
         stage('Publish') {
@@ -77,8 +78,11 @@ pipeline {
                         sleep 1; kill -0 $SOCAT_PID 2>/dev/null || { echo 'socat을 띄우지 못했습니다 (127.0.0.1:3000 사용 중?)' >&2; exit 1; }
                         trap 'kill $SOCAT_PID 2>/dev/null; rm -f "$NPMRC"' EXIT
                         NPMRC=$(mktemp) && chmod 600 "$NPMRC"
+                        # 새 범위(actoz 조직)와 호환 패키지의 예전 범위(aha 조직). 같은 토큰을 쓴다 (ci-design-hub가 두 조직 팀에 있다).
                         printf '%s\\n' "@actoz:registry=http://localhost:3000/api/packages/actoz/npm/" \
-                          "//localhost:3000/api/packages/actoz/npm/:_authToken=${PACKAGE_TOKEN}" > "$NPMRC"
+                          "@aha:registry=http://localhost:3000/api/packages/aha/npm/" \
+                          "//localhost:3000/api/packages/actoz/npm/:_authToken=${PACKAGE_TOKEN}" \
+                          "//localhost:3000/api/packages/aha/npm/:_authToken=${PACKAGE_TOKEN}" > "$NPMRC"
                         export NPM_CONFIG_USERCONFIG="$NPMRC"
                         unset PACKAGE_TOKEN
                         pnpm changeset publish-plan
@@ -95,10 +99,11 @@ pipeline {
                     SOCAT_PID=$!
                     sleep 1; kill -0 $SOCAT_PID 2>/dev/null || { echo 'socat을 띄우지 못했습니다 (127.0.0.1:3000 사용 중?)' >&2; exit 1; }
                     trap 'kill $SOCAT_PID 2>/dev/null' EXIT
-                    for dir in packages/*/; do
+                    for dir in packages/*/ compat/*/; do
                       name=$(node -p "require('./${dir}package.json').name")
                       version=$(node -p "require('./${dir}package.json').version")
-                      npm view "${name}@${version}" version --registry http://localhost:3000/api/packages/actoz/npm/
+                      registry=$(node -p "require('./${dir}package.json').publishConfig.registry")
+                      npm view "${name}@${version}" version --registry "$registry"
                     done
                 '''
             }

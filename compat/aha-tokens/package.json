@@ -1,0 +1,30 @@
+{
+  "name": "@aha/tokens",
+  "version": "0.2.3",
+  "description": "[폐기 예정] 새 패키지: @actoz/tokens. 이 패키지는 새 패키지를 다시 내보내기만 한다. import와 CSS의 패키지 이름을 바꾼다. CSS 변수(--aha-*)와 JS 상수(Aha*)는 예전 이름의 별칭을 함께 준다.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./aliases.css": "./dist/aliases.css",
+    "./tailwind.css": "./tailwind.css",
+    "./manifest.json": "./dist/tokens.manifest.json"
+  },
+  "files": [
+    "dist",
+    "tailwind.css",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:3000/api/packages/aha/npm/"
+  },
+  "dependencies": {
+    "@actoz/tokens": "workspace:^"
+  }
+}

@@ -1,0 +1,4 @@
+/* [폐기 예정] 새 패키지: @actoz/ui. 이 파일은 새 패키지의 CSS를 불러오기만 한다. */
+@import "@actoz/ui/styles.css";
+/* 앱 CSS가 예전 변수 이름(--aha-*)을 쓰고 있어도 동작하도록 별칭을 함께 불러온다. */
+@import "@aha/tokens/aliases.css";
