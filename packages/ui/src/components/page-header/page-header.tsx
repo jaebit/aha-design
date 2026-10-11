@@ -3,16 +3,17 @@ import type { ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
 export interface PageHeaderProps {
-  /** 페이지 제목 (h1). 예: "전체 기록". */
+  /** 페이지 제목 (h1). 예: "전체 기록", "사용자". */
   title: string;
   /** 제목 아래 한 줄 설명. 예: "모든 서비스에서 나눈 대화를 한곳에서 찾아보세요." */
   description?: string;
-  /** 오른쪽 영역. 예: 시간대 표시 (15쪽), 월 이동 (20쪽). */
+  /** 오른쪽 영역. 예: 시간대 표시 (15쪽), 월 이동 (20쪽), 주요 버튼("사용자 초대"). */
   aside?: ReactNode;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
-/** 대화형이 아닌 페이지의 머리말: 전체 기록(2쪽), 뉴스레터(14쪽), ITH 보고서(15쪽), 관리자(20쪽). */
+/** 대화형이 아닌 페이지의 머리말: 전체 기록(2쪽), 뉴스레터(14쪽), ITH 보고서(15쪽), 관리자(20쪽), 계정 설정, 관리 콘솔. */
 export function PageHeader({ title, description, aside, className }: PageHeaderProps) {
   return (
     <header data-slot="page-header" className={cn('flex items-end justify-between gap-6', className)}>

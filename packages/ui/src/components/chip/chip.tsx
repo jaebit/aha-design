@@ -12,7 +12,7 @@ export interface ChipProps extends ComponentProps<'button'> {
   /** 누를 수 없게 한다. */
   disabled?: boolean;
   /**
-   * 필터처럼 켜고 끄는 칩이면 지정한다. 지정하면 `aria-pressed`가 붙고, true일 때 검정으로 채워진다.
+   * 필터처럼 켜고 끄는 칩이면 지정한다. 지정하면 `aria-pressed`가 붙고, true일 때 primary 색으로 채워진다.
    * 추천 질문처럼 누르면 바로 동작하는 칩은 생략한다.
    */
   selected?: boolean;
@@ -24,6 +24,7 @@ export interface ChipProps extends ComponentProps<'button'> {
  * - 필터 칩 (2쪽 전체 기록의 서비스 필터): `selected` 지정.
  * - 선택지 칩 (11쪽 템플릿 선택, 13쪽 결과 언어): `selected` 지정.
  * - 추천 질문 칩 (3, 5쪽): `selected` 생략. AI 영역에서는 Suggestions를 쓴다.
+ * - 관리 화면: 사용자 상태 필터(전체 · 활성 · 잠김), 2단계 인증 방법 선택.
  */
 export function Chip({ className, selected, type = 'button', ...props }: ChipProps) {
   return (

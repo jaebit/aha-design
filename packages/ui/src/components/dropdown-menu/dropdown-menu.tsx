@@ -3,11 +3,14 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '../../lib/cn';
 
+/** 메뉴 묶음의 루트. 트리거와 패널(`DropdownMenuContent`)을 감싼다. */
 export const DropdownMenu = DropdownMenuPrimitive.Root;
+/** 메뉴를 여는 버튼. `asChild`로 Button을 넘기고, 아이콘만 있으면 `aria-label`을 준다. */
 export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
+/** 관련 항목 묶음. 구분선(`DropdownMenuSeparator`)과 함께 쓴다. */
 export const DropdownMenuGroup = DropdownMenuPrimitive.Group;
 
-/** 메뉴 패널. 대화 더보기 메뉴(8쪽), 계정 메뉴(19쪽). */
+/** 메뉴 패널. 대화 더보기 메뉴(8쪽), 계정 메뉴(19쪽), 표 행의 더보기 메뉴. */
 export function DropdownMenuContent({ className, sideOffset = 6, ...props }: ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   return (
     <DropdownMenuPrimitive.Portal>
@@ -25,7 +28,7 @@ export function DropdownMenuContent({ className, sideOffset = 6, ...props }: Com
 }
 
 export interface DropdownMenuItemProps extends ComponentProps<typeof DropdownMenuPrimitive.Item> {
-  /** 삭제처럼 되돌릴 수 없는 항목. 빨간 글자로 표시하고 구분선 아래 마지막에 둔다. */
+  /** 삭제, 세션 종료처럼 되돌릴 수 없는 항목. 빨간 글자로 표시하고 구분선 아래 마지막에 둔다. */
   destructive?: boolean;
 }
 
@@ -44,6 +47,7 @@ export function DropdownMenuItem({ className, destructive, ...props }: DropdownM
   );
 }
 
+/** 항목 묶음 사이 구분선. 되돌릴 수 없는 항목(삭제, 로그아웃) 앞에 둔다. */
 export function DropdownMenuSeparator({ className, ...props }: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return <DropdownMenuPrimitive.Separator data-slot="dropdown-menu-separator" className={cn('mx-1.5 my-1.5 h-px bg-border', className)} {...props} />;
 }

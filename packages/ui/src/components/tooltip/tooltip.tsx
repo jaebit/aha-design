@@ -8,11 +8,13 @@ export function TooltipProvider({ delayDuration = 200, ...props }: ComponentProp
   return <TooltipPrimitive.Provider delayDuration={delayDuration} {...props} />;
 }
 
+/** 툴팁 하나의 루트. 트리거와 `TooltipContent`를 감싼다. */
 export const Tooltip = TooltipPrimitive.Root;
+/** 툴팁을 띄우는 요소. `asChild`로 버튼을 넘긴다. 포커스로도 열리도록 포커스 가능한 요소여야 한다. */
 export const TooltipTrigger = TooltipPrimitive.Trigger;
 
 /**
- * 어두운 툴팁 (3쪽 "사내 가이드" 용어 설명).
+ * 어두운 툴팁 (3쪽 "사내 가이드" 용어 설명, 아이콘 버튼의 이름).
  * 한두 문장의 보충 설명에만 쓴다. 꼭 알아야 하는 정보는 툴팁에 숨기지 않는다.
  * `TooltipProvider`(AppShell에 포함) 안에서 쓴다. 밖에서 쓰면 오류가 난다.
  */
@@ -42,13 +44,14 @@ export interface TooltipTermProps {
   children: ReactNode;
 }
 
-/** 문장 속 용어에 점선 밑줄을 긋고, 포커스·호버 시 설명을 보여준다 (3쪽 입력창 아래 안내 문구). `TooltipProvider`(AppShell에 포함) 안에서 쓴다. */
+/** 문장 속 용어에 점선 밑줄을 긋고, 포커스·호버 시 설명을 보여준다 (3쪽 입력창 아래 안내 문구, 동의 화면의 "scope"). `TooltipProvider`(AppShell에 포함) 안에서 쓴다. */
 export function TooltipTerm({ term, children }: TooltipTermProps) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <button
           type="button"
+          data-slot="tooltip-term"
           className="cursor-help font-semibold text-foreground underline decoration-dotted underline-offset-4"
         >
           {term}

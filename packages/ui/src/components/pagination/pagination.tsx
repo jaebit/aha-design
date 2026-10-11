@@ -8,6 +8,7 @@ export interface PaginationProps {
   pageCount: number;
   /** 페이지를 고를 때. 1부터 시작하는 페이지 번호를 넘긴다. */
   onPageChange: (page: number) => void;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 

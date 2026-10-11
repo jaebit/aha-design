@@ -28,3 +28,9 @@ export const Member: Story = { args: { expanded: true } };
 
 /** 좁은 레일에서는 아바타만 보인다. */
 export const Compact: Story = { args: { onAdminSettings: fn() } };
+
+/** 관리자 메뉴 이름 바꾸기. IAM은 "관리 콘솔"을 쓴다. */
+export const AdminLabel: Story = {
+  args: { team: '보안플랫폼팀', expanded: true, onAdminSettings: fn(), adminLabel: '관리 콘솔' },
+  parameters: { brand: 'iam' },
+};

@@ -7,20 +7,24 @@ import { cn } from '../../lib/cn';
 export interface InputProps extends ComponentProps<'input'> {
   /**
    * 입력 종류. 기본 `text`.
-   * 날짜는 `date`를 쓴다 (15쪽 시작일·종료일). 검색은 SearchInput, 여러 줄이나 AI 질문은 Composer를 쓴다.
+   * 날짜는 `date`(15쪽 시작일·종료일), 로그인은 `email`·`password`를 쓴다.
+   * 검색은 SearchInput, 여러 줄은 Textarea, AI 질문은 AI 키트의 Composer를 쓴다.
    */
   type?: 'text' | 'email' | 'number' | 'date' | 'password' | 'tel' | 'url' | (string & {});
   /** 제어 모드 값. `onChange`와 함께 쓴다. */
   value?: string | number;
   /** 비제어 모드 초깃값. */
   defaultValue?: string | number;
+  /** 값이 바뀔 때. 새 값은 `event.target.value`. */
   onChange?: ChangeEventHandler<HTMLInputElement>;
   /** 입력 전 안내 문구. 라벨을 대신하지 않는다. */
   placeholder?: string;
-  /** 화면에 라벨이 없을 때 스크린리더용 이름. 라벨이 있으면 `<label>`로 감싸거나 FilterField를 쓴다. */
+  /** 화면에 라벨이 없을 때 스크린리더용 이름. 라벨이 있으면 FormField나 FilterField로 감싼다. */
   'aria-label'?: string;
   /** 값이 잘못됐으면 true. 테두리가 destructive 색으로 바뀐다. 오류 문구는 따로 보여준다. */
   'aria-invalid'?: boolean;
+  /** 브라우저 자동 완성 힌트. 로그인은 `username`·`current-password`, 비밀번호 변경은 `new-password`. */
+  autoComplete?: string;
   disabled?: boolean;
   /** 높이·너비 조정용. 예: 필터 바에서는 `h-12 w-44`. 색상 클래스는 넣지 않는다. */
   className?: string;
@@ -28,7 +32,7 @@ export interface InputProps extends ComponentProps<'input'> {
 
 /**
  * 한 줄 텍스트 입력.
- * 대화 이름 변경(8쪽), 필터 바의 날짜(15쪽)처럼 짧은 값을 받는다. 긴 글이나 AI 질문은 Composer를 쓴다.
+ * 대화 이름 변경(8쪽), 필터 바의 날짜(15쪽), 이메일·비밀번호처럼 짧은 값을 받는다. 여러 줄은 Textarea, AI 질문은 Composer를 쓴다.
  * 라벨이 화면에 없으면 `aria-label`을 준다.
  */
 export function Input({ className, type = 'text', ...props }: InputProps) {

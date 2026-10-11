@@ -3,15 +3,17 @@ import { Check } from 'lucide-react';
 import { cn } from '../../lib/cn';
 
 export interface StepperProps {
-  /** 단계 이름. 예: ["음성 원문", "회의록", "메일 발송"] (11쪽), ["문서 읽기", "검토 결과"] (13쪽). */
+  /** 단계 이름. 예: ["음성 원문", "회의록", "메일 발송"] (11쪽), ["문서 읽기", "검토 결과"] (13쪽), MFA 등록 ["앱 설치", "QR 스캔", "코드 확인"]. */
   steps: string[];
   /** 현재 단계의 0부터 시작하는 번호. 앞 단계는 완료, 뒤 단계는 대기로 표시된다. `steps.length`면 모두 완료. */
   current: number;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
 /**
- * 여러 단계로 진행되는 AI 작업의 진행 표시. 대화 머리말 오른쪽(ConversationHeader `trailing`)에 둔다.
+ * 여러 단계로 진행되는 작업의 진행 표시. AI 작업은 대화 머리말 오른쪽(ConversationHeader `trailing`)에,
+ * 인증 절차(MFA 등록, 비밀번호 재설정)는 카드 제목 위나 PageHeader `aside`에 둔다.
  * 완료는 체크 원, 현재는 번호가 있는 외곽선 원과 굵은 이름, 대기는 흐린 번호로 표시한다.
  */
 export function Stepper({ steps, current, className }: StepperProps) {

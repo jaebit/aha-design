@@ -50,8 +50,23 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    // 브랜드 전환. <html data-brand="iam">이면 primary·ring이 IAM 파랑이 된다 (tokens/themes/brand-iam.json).
+    // "스토리 기본값"은 스토리의 parameters.brand를 따른다. 컴포넌트는 브랜드를 몰라야 하므로, 모든 스토리를 두 브랜드로 볼 수 있다.
+    brand: {
+      description: '브랜드',
+      toolbar: {
+        title: '브랜드',
+        icon: 'paintbrush',
+        items: [
+          { value: 'auto', title: '스토리 기본값' },
+          { value: 'aha', title: 'AHA' },
+          { value: 'iam', title: 'IAM' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
-  initialGlobals: { theme: 'system', density: 'auto' },
+  initialGlobals: { theme: 'system', density: 'auto', brand: 'auto' },
   decorators: [
     (Story, context) => {
       const theme = context.globals.theme as 'system' | 'light' | 'dark';
@@ -67,6 +82,14 @@ const preview: Preview = {
         if (density === 'compact') root.dataset.density = 'compact';
         else delete root.dataset.density;
       }, [density]);
+      const chosenBrand = context.globals.brand as 'auto' | 'aha' | 'iam' | undefined;
+      const brand = !chosenBrand || chosenBrand === 'auto' ? (context.parameters.brand as string | undefined) : chosenBrand;
+      useEffect(() => {
+        const root = document.documentElement;
+        // AHA는 기본값이라 속성을 달지 않는다.
+        if (brand && brand !== 'aha') root.dataset.brand = brand;
+        else delete root.dataset.brand;
+      }, [brand]);
       return (
         <TooltipProvider>
           <Story />

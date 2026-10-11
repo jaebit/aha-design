@@ -12,12 +12,12 @@ export interface DataTableColumn<Row> {
   cell: (row: Row) => ReactNode;
   /** 숫자 열은 `end`. */
   align?: 'start' | 'end';
-  /** 좁은 화면에서 숨길 열이면 true. 옆 대화 패널이 열려 폭이 좁을 때 생성 시각 같은 보조 열을 숨긴다 (16쪽). */
+  /** 좁은 화면에서 숨길 열이면 true. 옆 패널(SidePanel)이 열려 폭이 좁을 때 생성 시각, 마지막 로그인 같은 보조 열을 숨긴다 (16쪽). */
   secondary?: boolean;
 }
 
 export interface DataTableProps<Row> {
-  /** 스크린리더용 표 제목. 예: "일일 오류 보고서 목록". */
+  /** 스크린리더용 표 제목. 예: "일일 오류 보고서 목록", "사용자 목록". */
   caption: string;
   /** 열 정의. 화면에 보이는 순서대로 넘긴다. */
   columns: DataTableColumn<Row>[];
@@ -25,11 +25,11 @@ export interface DataTableProps<Row> {
   rows: Row[];
   /** 행마다 바뀌지 않는 고유 id. React key와 `selectedRowId` 비교에 쓴다. */
   getRowId: (row: Row) => string;
-  /** 강조할 행. 옆 대화 패널에서 이야기하는 행 (16쪽 10/03). */
+  /** 강조할 행. 옆 패널에서 이야기하거나 상세를 보고 있는 행 (16쪽 10/03). */
   selectedRowId?: string;
   /**
    * 체크박스로 고른 행 id. `onSelectedIdsChange`와 함께 주면 맨 앞에 선택 열이 생긴다.
-   * 일괄 작업(삭제, 권한 변경)이 있는 목록에 쓴다. 고른 행이 있으면 관리자 키트의 BulkActionBar를 표 위에 둔다.
+   * 일괄 작업(삭제, 권한 변경, 잠금 해제)이 있는 목록에 쓴다. 고른 행이 있으면 관리자 키트의 BulkActionBar를 표 위에 둔다.
    */
   selectedIds?: string[];
   /** 선택이 바뀔 때. 머리글 체크박스는 현재 `rows` 전체를 고르거나 푼다. */
@@ -42,6 +42,7 @@ export interface DataTableProps<Row> {
   emptyMessage?: string;
   /** 표 아래 영역. 안내 문구와 Pagination. */
   footer?: ReactNode;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
@@ -123,7 +124,8 @@ export function DataTable<Row>({
                   <tr
                     key={id}
                     aria-current={selected ? 'true' : undefined}
-                    aria-selected={selectable ? checked : undefined}
+                    // 일반 table의 행은 aria-selected를 지원하지 않는다(grid 전용). 선택은 행의 체크박스가 알린다.
+                    data-state={checked ? 'selected' : undefined}
                     className={cn('border-b border-border', checked && 'bg-subtle', selected && 'bg-muted')}
                   >
                     {selectable ? (
@@ -158,7 +160,7 @@ export function DataTable<Row>({
 export interface CellTextProps {
   /** 첫 줄. 링크가 필요하면 `<a>`를 넘긴다. */
   primary: ReactNode;
-  /** 둘째 줄 보조 정보. 예: "일일 · 1차 생성", "Korea Standard Time". */
+  /** 둘째 줄 보조 정보. 예: "일일 · 1차 생성", "Korea Standard Time", 이름 아래 이메일. */
   secondary?: ReactNode;
   /** 첫 줄을 굵게. 건수처럼 눈에 띄어야 하는 값. */
   strong?: boolean;

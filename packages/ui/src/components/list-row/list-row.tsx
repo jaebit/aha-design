@@ -12,9 +12,9 @@ export interface ListRowProps extends Omit<ComponentProps<'a'>, 'title'> {
   href: string;
   /** 첫 줄. 길면 한 줄로 자른다. */
   title: ReactNode;
-  /** 제목 아래 한 줄. 예: 첫 질문 미리보기 (2쪽). */
+  /** 제목 아래 한 줄. 예: 첫 질문 미리보기 (2쪽), IP 주소와 위치. */
   description?: ReactNode;
-  /** 왼쪽. 보통 서비스 태그 `<Badge>`. */
+  /** 왼쪽. 보통 서비스 태그나 상태를 말하는 `<Badge>`. */
   leading?: ReactNode;
   /** 오른쪽. 시간("오늘 09:40") 또는 건수("3건 ›"). */
   trailing?: ReactNode;
@@ -22,7 +22,7 @@ export interface ListRowProps extends Omit<ComponentProps<'a'>, 'title'> {
 
 /**
  * 링크 한 줄. `List` 안에 넣는다.
- * 홈의 이어서 하기(1쪽), 전체 기록(2쪽), 관리자의 확인할 일(20쪽)에 쓴다.
+ * 홈의 이어서 하기(1쪽), 전체 기록(2쪽), 관리자의 확인할 일(20쪽), 계정 설정의 로그인 세션 목록에 쓴다.
  */
 export function ListRow({ href, title, description, leading, trailing, className, ...props }: ListRowProps) {
   return (
