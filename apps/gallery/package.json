@@ -20,6 +20,7 @@
   "devDependencies": {
     "@aha/kit-admin": "workspace:*",
     "@aha/kit-ai": "workspace:*",
+    "@aha/kit-auth": "workspace:*",
     "@aha/kit-dashboard": "workspace:*",
     "@aha/tokens": "workspace:*",
     "@aha/ui": "workspace:*",

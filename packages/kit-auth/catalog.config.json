@@ -1,0 +1,36 @@
+{
+  "$comment": "인증 키트의 갤러리·MCP 카탈로그 메타데이터. 형식은 packages/ui/catalog.config.json과 같다. templateFixtures는 템플릿 스토리가 쓰는 예시 데이터 파일이다.",
+  "kits": [
+    {
+      "id": "auth",
+      "label": "인증",
+      "description": "로그인·2단계 인증·OAuth 동의처럼 앱 밖에서 보이는 인증 화면의 틀과 입력, 템플릿. IAM이 쓴다. 기본 밀도로 쓴다."
+    }
+  ],
+  "categories": [
+    {
+      "id": "auth",
+      "storybook": "Auth",
+      "label": "인증",
+      "description": "로그인, 2단계 인증, OAuth 동의 화면의 틀과 입력"
+    }
+  ],
+  "templateFixtures": "src/templates/fixtures.tsx",
+  "templates": {
+    "templates-login": {
+      "label": "로그인",
+      "group": "인증",
+      "description": "이메일·비밀번호 로그인. 실패 문구 하나, 잠금 정책 안내, 계정 잠김 상태가 있다."
+    },
+    "templates-twofactor": {
+      "label": "2단계 인증",
+      "group": "인증",
+      "description": "인증 앱 6자리 코드를 다 넣으면 자동으로 확인한다. 복구 코드와 다른 인증 방법 링크."
+    },
+    "templates-consent": {
+      "label": "앱 접근 동의",
+      "group": "인증",
+      "description": "OAuth 동의 화면. 앱, 로그인한 계정, 요청 권한 목록, 거부·허용."
+    }
+  }
+}
