@@ -17,7 +17,7 @@ AHA 사내 디자인 시스템. 토큰, React 컴포넌트, Storybook 갤러리�
 pnpm docker:up         # = docker compose up -d --build → http://localhost:4100
 ```
 
-이미지 하나에 갤러리, MCP 서버, Storybook 정적 빌드가 들어 있다. 사내 서버로 옮길 때는 `compose.yaml`의 `PUBLIC_URL`, `NPM_REGISTRY`(와 빌드 인자 `VITE_NPM_REGISTRY`)만 바꾼다.
+이미지 하나에 갤러리, MCP 서버, Storybook 정적 빌드가 들어 있다. 사내 서버로 옮길 때는 `compose.yaml`의 `PUBLIC_URL`과 빌드 인자 `NPM_REGISTRY`만 바꾼다 (레지스트리는 갤러리 화면에도 들어가므로 바꾸면 다시 빌드한다).
 
 ## 개발
 

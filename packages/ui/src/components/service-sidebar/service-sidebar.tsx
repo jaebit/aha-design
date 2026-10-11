@@ -1,5 +1,5 @@
 import { ExternalLink, PanelLeftClose, Pin, Plus } from 'lucide-react';
-import type { ComponentProps, ReactNode } from 'react';
+import type { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 
 import { Button } from '../button/button';
 import { cn } from '../../lib/cn';
@@ -69,6 +69,7 @@ export function SidebarSection({ title, action, children }: SidebarSectionProps)
 }
 
 export interface HistoryItemProps extends Omit<ComponentProps<'a'>, 'title' | 'href'> {
+  /** 기록 제목. 예: "연차 이월 규정 문의". 길면 한 줄로 자른다. */
   title: string;
   /** 기록 주소. 키보드로 열 수 있도록 필수다. 클라이언트 라우터를 쓰면 `onClick`에서 기본 이동을 막고 처리한다. */
   href: string;
@@ -83,6 +84,8 @@ export interface HistoryItemProps extends Omit<ComponentProps<'a'>, 'title' | 'h
    * 회의록·문서 검토·ITH는 상태를 아래에(`bottom`, 10쪽) 둔다.
    */
   metaPosition?: 'top' | 'bottom';
+  /** 누르면 실행할 동작. 클라이언트 라우터로 옮길 때 `event.preventDefault()` 후 이동한다. */
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 /** 사이드바의 기록 한 줄. `SidebarSection` 안에 넣는다. */
