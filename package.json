@@ -15,6 +15,7 @@
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:mcp-docs": "node scripts/check-mcp-docs.mjs",
     "check:contrast": "pnpm --filter @actoz/tokens build && pnpm --filter @actoz/tokens check:contrast",
+    "test:codemods": "node --test scripts/codemods/iam-to-actoz.test.mjs",
     "gallery": "pnpm build-storybook && pnpm --filter @actoz/gallery dev",
     "gallery:iam": "pnpm build-storybook && SITE=iam pnpm --filter @actoz/gallery dev",
     "docker:up": "docker compose up -d --build",
