@@ -55,8 +55,31 @@ const staticDir = (dir: string, options: Parameters<typeof sirv>[1]) => (existsS
 const gallery = staticDir(galleryDir, { single: true, etag: true });
 const storybook = staticDir(storybookDir, { etag: true });
 
-const server = createServer(async (req, res) => {
-  const url = new URL(req.url ?? '/', 'http://localhost');
+// sirv 3은 역순 범위와 안전한 정수 범위를 넘는 값을 createReadStream에 그대로 넘긴다.
+// 파일 크기에 따른 416 처리는 sirv에 맡기고, 스트림 생성 전에 범위 문법·숫자를 검사한다.
+function validByteRanges(value: string) {
+  return value.split(',').every((part) => {
+    const match = /^(\d*)-(\d*)$/.exec(part.trim());
+    if (!match || (!match[1] && !match[2])) return false;
+    const start = match[1] ? Number(match[1]) : undefined;
+    const end = match[2] ? Number(match[2]) : undefined;
+    return (
+      (start === undefined || Number.isSafeInteger(start)) &&
+      (end === undefined || Number.isSafeInteger(end)) &&
+      (start === undefined || end === undefined || start <= end)
+    );
+  });
+}
+
+async function handleRequest(req: IncomingMessage, res: ServerResponse) {
+  let url: URL;
+  try {
+    url = new URL(req.url ?? '/', 'http://localhost');
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Bad request');
+    return;
+  }
 
   if (url.pathname === '/mcp') {
     if (req.method !== 'POST') {
@@ -73,19 +96,12 @@ const server = createServer(async (req, res) => {
     const mcp = createMcpServer(ctx);
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
     res.on('close', () => {
-      void transport.close();
-      void mcp.close();
+      void Promise.all([transport.close(), mcp.close()]).catch((error) => {
+        console.error('MCP 연결 정리 실패', error);
+      });
     });
-    try {
-      await mcp.connect(transport);
-      await transport.handleRequest(req, res);
-    } catch (error) {
-      console.error('MCP 요청 처리 실패', error);
-      if (!res.headersSent) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ jsonrpc: '2.0', error: { code: -32603, message: 'Internal server error' }, id: null }));
-      }
-    }
+    await mcp.connect(transport);
+    await transport.handleRequest(req, res);
     return;
   }
 
@@ -106,6 +122,20 @@ const server = createServer(async (req, res) => {
     res.end();
     return;
   }
+
+  if (req.headers.range) {
+    const bytes = /^bytes=(.*)$/i.exec(req.headers.range);
+    if (!bytes) {
+      // 지원하지 않는 범위 단위는 무시하고 전체 응답을 보낸다.
+      delete req.headers.range;
+    } else if (!validByteRanges(bytes[1]!)) {
+      res.writeHead(416, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Range not satisfiable');
+      return;
+    } else {
+      req.headers.range = `bytes=${bytes[1]}`;
+    }
+  }
   if (url.pathname.startsWith('/storybook/')) {
     req.url = req.url!.slice('/storybook'.length);
     storybook(req, res, () => notFound(req, res));
@@ -113,6 +143,20 @@ const server = createServer(async (req, res) => {
   }
 
   gallery(req, res);
+}
+
+const server = createServer((req, res) => {
+  // HTTP 이벤트는 async 콜백의 Promise를 처리하지 않는다. 모든 라우트의 실패를 여기서 받는다.
+  void handleRequest(req, res).catch((error) => {
+    console.error('HTTP 요청 처리 실패', error);
+    if (res.destroyed) return;
+    if (res.headersSent) {
+      res.destroy();
+      return;
+    }
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ jsonrpc: '2.0', error: { code: -32603, message: 'Internal server error' }, id: null }));
+  });
 });
 
 server.listen(port, () => {
