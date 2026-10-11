@@ -1,7 +1,11 @@
 // Storybook manifest + 토큰 manifest → generated/catalog.json.
 // 갤러리 화면과 MCP 서버가 같은 파일을 읽는다. Storybook을 먼저 빌드해야 한다 (pnpm build-storybook).
+// 사이트(환경변수 SITE, site.config.ts)마다 그 사이트의 키트와 브랜드 템플릿만 담고, 토큰 값은 사이트 브랜드의 값으로 쓴다.
+// id 중복·누락 검사는 사이트와 상관없이 모든 패키지에 대해 한다.
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+
+import { site } from '../site.config.ts';
 
 const root = new URL('../../../', import.meta.url);
 const ui = new URL('packages/ui/', root);
@@ -146,6 +150,7 @@ for (const component of Object.values(manifest.components)) {
       group: meta.group,
       summary: meta.description,
       ...(meta.density ? { density: meta.density } : {}),
+      brand: meta.brand ?? 'aha',
       source,
     });
     continue;
@@ -163,20 +168,52 @@ assertUnique('slug (컴포넌트·템플릿)', [...components, ...templates].map
 components.sort((a, b) => a.name.localeCompare(b.name));
 templates.sort((a, b) => Object.keys(templateMeta).indexOf(a.id) - Object.keys(templateMeta).indexOf(b.id));
 
+// ── 사이트별로 거른다 ──
+const unknownKits = site.kits.filter((id) => !kits.some((k) => k.id === id));
+if (unknownKits.length > 0) throw new Error(`site.config.ts(${site.id}) kits에 없는 키트: ${unknownKits.join(', ')}`);
+const siteKitIds = new Set(['core', ...site.kits]);
+const siteComponents = components.filter((c) => siteKitIds.has(c.kit));
+const siteTemplates = templates.filter((t) => siteKitIds.has(t.kit) && t.brand === site.brand);
+// 사이트에 보이는 컴포넌트가 하나도 없는 분류는 뺀다 (예: IAM 사이트의 AI·대시보드 분류).
+const usedCategories = new Set(siteComponents.map((c) => c.category));
+
+/**
+ * 토큰 값을 사이트 브랜드의 값으로 바꾼다. 갤러리 디자인 기초와 MCP get_tokens가 value(라이트)·dark를 그대로 보여주기 때문이다.
+ * 브랜드 테마(brand-<브랜드>)와 그 다크 조합(fallbacks에서 brand-<브랜드>와 dark를 함께 쓰는 테마)이 덮어쓴 값만 바뀐다.
+ */
+function brandTokens(manifest) {
+  if (site.brand === 'aha') return manifest.tokens;
+  const light = `brand-${site.brand}`;
+  const dark = Object.entries(manifest.fallbacks ?? {}).find(([, chain]) => chain.includes('dark') && chain.includes(light))?.[0];
+  if (!manifest.themes.includes(light)) throw new Error(`토큰 manifest에 ${light} 테마가 없습니다 (packages/tokens/tokens/themes)`);
+  return manifest.tokens.map((token) => {
+    const darkValue = (dark && token[dark]) ?? token.dark;
+    if (!token[light]) return darkValue === token.dark ? token : { ...token, dark: darkValue };
+    return {
+      ...token,
+      value: token[light].value,
+      reference: token[light].reference,
+      description: token[light].description ?? token.description,
+      ...(darkValue ? { dark: darkValue } : {}),
+    };
+  });
+}
+
 const catalog = {
   generatedAt: new Date().toISOString(),
+  site: { id: site.id, brand: site.brand },
   packages: { ui: { name: uiPkg.name, version: uiPkg.version }, tokens: { name: tokensPkg.name, version: tokensPkg.version } },
-  kits,
-  categories: categories.map(({ storybook, ...c }) => c),
-  components,
-  templates,
+  kits: kits.filter((k) => siteKitIds.has(k.id)),
+  categories: categories.filter((c) => usedCategories.has(c.id)).map(({ storybook, ...c }) => c),
+  components: siteComponents,
+  templates: siteTemplates,
   // 템플릿 스토리가 쓰는 예시 데이터. 에이전트가 템플릿을 옮겨 쓸 때 함께 본다.
-  templateFixtures,
-  tokens: tokenManifest.tokens,
+  templateFixtures: Object.fromEntries(Object.entries(templateFixtures).filter(([kit]) => siteKitIds.has(kit))),
+  tokens: brandTokens(tokenManifest),
 };
 
 await mkdir(new URL('.', out), { recursive: true });
 await writeFile(out, JSON.stringify(catalog, null, 2));
 console.log(
-  `catalog: 컴포넌트 ${components.length}개, 템플릿 ${templates.length}개, 토큰 ${catalog.tokens.length}개 → ${fileURLToPath(out)}`,
+  `catalog(${site.id}): 컴포넌트 ${catalog.components.length}개, 템플릿 ${catalog.templates.length}개, 토큰 ${catalog.tokens.length}개 → ${fileURLToPath(out)}`,
 );

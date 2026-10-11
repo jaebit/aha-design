@@ -1,4 +1,4 @@
-# 파일럿: 이 PC에서 갤러리 + MCP를 띄운다. 사내 서버로 옮길 때는 PUBLIC_URL과 NPM_REGISTRY만 바꾼다.
+# 파일럿: 이 PC에서 브랜드별 갤러리 + MCP(AHA 4100, IAM 4200)를 띄운다. 사내 서버로 옮길 때는 PUBLIC_URL과 NPM_REGISTRY만 바꾼다.
 # NPM_REGISTRY는 갤러리 화면에도 들어가므로 빌드 인자로 넘긴다. 바꾸면 다시 빌드한다 (docker compose up -d --build).
 name: aha-design
 services:
@@ -12,5 +12,21 @@ services:
     ports:
       - "4100:4100"
     environment:
+      SITE: aha
       PUBLIC_URL: http://localhost:4100
+    restart: unless-stopped
+  # IAM 갤러리 + iam-design MCP. 같은 이미지를 SITE=iam으로 띄운다.
+  # iam-design 저장소의 compose(4200)가 떠 있으면 먼저 내린다 (통합 6단계에서 저장소를 보관 처리한다).
+  iam-design:
+    image: aha-design:latest
+    pull_policy: never
+    depends_on:
+      - aha-design
+    init: true
+    ports:
+      - "4200:4200"
+    environment:
+      SITE: iam
+      PORT: 4200
+      PUBLIC_URL: http://localhost:4200
     restart: unless-stopped

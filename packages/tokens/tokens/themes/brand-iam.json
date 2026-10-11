@@ -9,7 +9,7 @@
   },
   "color": {
     "$type": "color",
-    "primary": { "$value": "{color.brand.600}", "$description": "IAM 주요 버튼 배경 (로그인, 허용, 저장)" },
+    "primary": { "$value": "{color.brand.600}", "$description": "IAM 주요 액션(로그인, 허용, 저장) 배경. 화면당 주요 버튼은 하나만 둔다" },
     "primary-hover": { "$value": "{color.brand.700}" },
     "ring": { "$value": "{color.brand.500}" }
   }

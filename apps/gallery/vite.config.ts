@@ -7,6 +7,8 @@ import { defineConfig, type Plugin } from 'vite';
 import { site } from './site.config.ts';
 
 const uiRoot = fileURLToPath(new URL('../../packages/ui/', import.meta.url));
+// 갤러리 번들도 서버와 같은 사이트를 고르도록 SITE를 VITE_SITE로 넘긴다 (site.config.ts).
+process.env.VITE_SITE = site.id;
 
 // 개발 서버에서도 운영 서버(server/index.ts)처럼 /storybook/에 Storybook 정적 빌드를 붙인다.
 // 템플릿과 전체 화면 컴포넌트 미리보기가 Storybook iframe을 쓴다.
@@ -23,7 +25,9 @@ function siteHead(): Plugin {
       html
         .replace('%SITE_TITLE%', escape(site.title))
         .replace('%SITE_DESCRIPTION%', escape(site.description))
-        .replace('%SITE_ICON%', `data:image/svg+xml,${icon}`),
+        .replace('%SITE_ICON%', `data:image/svg+xml,${icon}`)
+        // 갤러리 화면도 사이트 브랜드로 그린다. aha는 기본값이라 속성을 달지 않는다.
+        .replace('<html', site.brand === 'aha' ? '<html' : `<html data-brand="${site.brand}"`),
   };
 }
 

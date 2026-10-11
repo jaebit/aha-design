@@ -21,8 +21,11 @@ const publicUrl = (process.env.PUBLIC_URL ?? `http://localhost:${port}`).replace
 const registry = process.env.NPM_REGISTRY || site.registry;
 const path = (env: string | undefined, fallback: string) => env ?? fileURLToPath(new URL(fallback, import.meta.url));
 
-const catalogPath = path(process.env.CATALOG_PATH, '../generated/catalog.json');
-const galleryDir = path(process.env.GALLERY_DIR, '../dist');
+// 사이트(SITE)마다 갤러리 빌드와 카탈로그가 다르다. Docker 이미지는 SITES_DIR/<사이트>/{dist,generated}에 사이트별로 둔다.
+// 로컬에서는 마지막으로 빌드한 dist·generated를 쓴다 (SITE=iam pnpm --filter @aha/gallery build 뒤 SITE=iam으로 실행).
+const siteDir = process.env.SITES_DIR ? `${process.env.SITES_DIR.replace(/\/$/, '')}/${site.id}` : undefined;
+const catalogPath = path(process.env.CATALOG_PATH ?? (siteDir && `${siteDir}/generated/catalog.json`), '../generated/catalog.json');
+const galleryDir = path(process.env.GALLERY_DIR ?? (siteDir && `${siteDir}/dist`), '../dist');
 const storybookDir = path(process.env.STORYBOOK_DIR, '../../../packages/ui/storybook-static');
 
 // DNS rebinding 방어: 인증 없는 /mcp는 Host가 이 서버 이름일 때만 받는다 (포트는 보지 않는다).
@@ -44,6 +47,11 @@ const isAllowedHost = (host: string | undefined) => {
 };
 
 const catalog = JSON.parse(readFileSync(catalogPath, 'utf8')) as Catalog;
+// 다른 사이트로 만든 카탈로그를 내보내면 MCP가 다른 브랜드의 키트·템플릿·토큰 값을 알려 준다. 시작하지 않는다.
+if (catalog.site && catalog.site.id !== site.id) {
+  console.error(`${catalogPath}는 SITE=${catalog.site.id}로 만든 카탈로그입니다. SITE=${site.id}로 다시 만드세요.`);
+  process.exit(1);
+}
 const ctx = { catalog, publicUrl, registry };
 
 const notFound = (_req: IncomingMessage, res: ServerResponse) => {

@@ -1,5 +1,6 @@
-# AHA 디자인 갤러리 + MCP 서버 + Storybook 정적 빌드를 한 이미지로 만든다.
-#   docker compose up -d --build   →  http://localhost:4100 (갤러리), /mcp (MCP), /storybook/
+# 브랜드별 갤러리 + MCP 서버 + Storybook 정적 빌드를 한 이미지로 만든다 (AHA·IAM 통합 4단계).
+# 갤러리와 카탈로그는 사이트(apps/gallery/site.config.ts)마다 따로 빌드해 /app/sites/<사이트>/에 둔다. 실행할 때 SITE로 고른다.
+#   docker compose up -d --build   →  AHA http://localhost:4100, IAM http://localhost:4200 (각각 /mcp, /storybook/)
 FROM node:24-bookworm-slim AS build
 WORKDIR /repo
 RUN corepack enable
@@ -12,21 +13,25 @@ RUN pnpm install --frozen-lockfile --offline
 ARG NPM_REGISTRY=
 ENV VITE_NPM_REGISTRY=$NPM_REGISTRY \
     STORYBOOK_DISABLE_TELEMETRY=1
-RUN pnpm build-storybook && pnpm --filter @aha/gallery build
+RUN pnpm build-storybook \
+ && for site in aha iam; do \
+      SITE=$site pnpm --filter @aha/gallery build \
+      && mkdir -p /sites/$site && cp -r apps/gallery/dist apps/gallery/generated /sites/$site/ || exit 1; \
+    done
 # 서버 실행에 필요한 것만 모은다 (prod 의존성: MCP SDK, sirv, zod).
 RUN pnpm --filter @aha/gallery deploy --prod --legacy /out \
- && cp -r apps/gallery/dist apps/gallery/generated /out/ \
+ && cp -r /sites /out/sites \
  && cp -r packages/ui/storybook-static /out/storybook
 
 FROM node:24-bookworm-slim
 WORKDIR /app
 ARG NPM_REGISTRY=
 ENV NODE_ENV=production \
+    SITE=aha \
     PORT=4100 \
     NPM_REGISTRY=$NPM_REGISTRY \
-    GALLERY_DIR=/app/dist \
-    STORYBOOK_DIR=/app/storybook \
-    CATALOG_PATH=/app/generated/catalog.json
+    SITES_DIR=/app/sites \
+    STORYBOOK_DIR=/app/storybook
 COPY --from=build /out /app
 USER node
 EXPOSE 4100

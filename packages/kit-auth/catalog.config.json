@@ -18,16 +18,19 @@
   "templateFixtures": "src/templates/fixtures.tsx",
   "templates": {
     "templates-login": {
+      "brand": "iam",
       "label": "로그인",
       "group": "인증",
       "description": "이메일·비밀번호 로그인. 실패 문구 하나, 잠금 정책 안내, 계정 잠김 상태가 있다."
     },
     "templates-twofactor": {
+      "brand": "iam",
       "label": "2단계 인증",
       "group": "인증",
       "description": "인증 앱 6자리 코드를 다 넣으면 자동으로 확인한다. 복구 코드와 다른 인증 방법 링크."
     },
     "templates-consent": {
+      "brand": "iam",
       "label": "앱 접근 동의",
       "group": "인증",
       "description": "OAuth 동의 화면. 앱, 로그인한 계정, 요청 권한 목록, 거부·허용."
