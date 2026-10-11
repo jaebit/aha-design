@@ -2,12 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
-import { AppShell, Badge, Button, Checkbox, Input, NativeSelect, PageHeader, Textarea } from '@aha/ui';
+import { AppShell, Badge, Button, Checkbox, FormField, Input, NativeSelect, PageHeader, Textarea } from '@aha/ui';
 import {
   ConfirmDialog,
   DescriptionList,
   FormActions,
-  FormField,
   FormSection,
   PermissionMatrix,
 } from '@aha/kit-admin';

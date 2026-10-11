@@ -2,7 +2,8 @@
 
 // 폼
 export { FormActions, type FormActionsProps } from './components/form-actions/form-actions';
-export { FormField, type FormFieldProps } from './components/form-field/form-field';
+/** @deprecated FormField는 공통 부품으로 옮겼다. `@aha/ui`에서 import한다. 다음 minor에서 뺀다. */
+export { FormField, type FormFieldProps } from '@aha/ui';
 export { FormSection, type FormSectionProps } from './components/form-section/form-section';
 
 // 상세 · 목록

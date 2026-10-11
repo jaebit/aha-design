@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Input, NativeSelect, Textarea } from '@aha/ui';
+import { Button, Input, NativeSelect, Textarea } from '@aha/ui';
 
 import { FormField } from './form-field';
 
 const meta = {
-  title: 'Admin/FormField',
+  title: 'Components/FormField',
   component: FormField,
-  tags: ['autodocs', 'kit:admin'],
+  tags: ['autodocs'],
   args: { label: '이메일', children: <Input type="email" defaultValue="hama@actoz.com" /> },
   decorators: [
     (Story) => (
@@ -52,4 +52,19 @@ export const Select: Story = {
 /** 여러 줄 입력. */
 export const Multiline: Story = {
   args: { label: '메모', description: '관리자만 볼 수 있어요.', children: <Textarea placeholder="변경 사유나 참고 사항" /> },
+};
+
+/** 라벨 오른쪽 보조 링크. 로그인 화면의 비밀번호 칸. */
+export const WithLabelAction: Story = {
+  args: {
+    label: '비밀번호',
+    required: true,
+    labelAction: (
+      <Button variant="link" size="sm">
+        비밀번호 찾기
+      </Button>
+    ),
+    children: <Input type="password" autoComplete="current-password" />,
+  },
+  parameters: { brand: 'iam' },
 };
