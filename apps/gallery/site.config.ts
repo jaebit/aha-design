@@ -73,7 +73,7 @@ export const site: SiteConfig = {
   scope: '@aha',
   mcpName: 'aha-design',
   registry: 'http://localhost:3000/api/packages/aha/npm/',
-  repoUrl: 'http://localhost:3000/jay/design-hub',
+  repoUrl: 'http://localhost:3000/jay/aha-design',
   port: 4100,
   devPort: 5180,
   homeIntro:

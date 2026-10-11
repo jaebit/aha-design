@@ -1,5 +1,6 @@
 # 파일럿: 이 PC에서 갤러리 + MCP를 띄운다. 사내 서버로 옮길 때는 PUBLIC_URL과 NPM_REGISTRY만 바꾼다.
 # NPM_REGISTRY는 갤러리 화면에도 들어가므로 빌드 인자로 넘긴다. 바꾸면 다시 빌드한다 (docker compose up -d --build).
+name: aha-design
 services:
   aha-design:
     build:

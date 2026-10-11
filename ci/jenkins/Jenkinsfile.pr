@@ -1,5 +1,5 @@
-// design-hub PR 검사 작업 (Jenkins job: design-hub-pr). forgejo-platform D-016과 jenkins/README.md의 "PR CI 계약"을 따른다.
-// PR webhook은 "열린 PR을 다시 보라"는 신호일 뿐이다. 이 job이 열린 PR을 조회해 jenkins/design-hub-pr 상태가 없는 head를 차례로 검사한다.
+// aha-design PR 검사 작업 (Jenkins job: aha-design-pr). forgejo-platform D-016과 jenkins/README.md의 "PR CI 계약"을 따른다.
+// PR webhook은 "열린 PR을 다시 보라"는 신호일 뿐이다. 이 job이 열린 PR을 조회해 jenkins/aha-design-pr 상태가 없는 head를 차례로 검사한다.
 // 플랫폼 규칙상 Jenkins job에는 이 파일 내용을 인라인으로 넣는다. PR의 Jenkinsfile은 읽지 않는다. 바꾸면 setup으로 job을 다시 만든다.
 //
 // 실행 경계
@@ -15,11 +15,11 @@ pipeline {
     }
     environment {
         FORGEJO_API_URL = 'http://forgejo:3000/api/v1'
-        FORGEJO_REPOSITORY = 'jay/design-hub'
-        REPO_URL = 'http://forgejo:3000/jay/design-hub.git'
-        PR_CONTEXT = 'jenkins/design-hub-pr'
-        READ_CREDENTIAL = 'design-hub-read'
-        STATUS_CREDENTIAL = 'design-hub-status'
+        FORGEJO_REPOSITORY = 'jay/aha-design'
+        REPO_URL = 'http://forgejo:3000/jay/aha-design.git'
+        PR_CONTEXT = 'jenkins/aha-design-pr'
+        READ_CREDENTIAL = 'aha-design-read'
+        STATUS_CREDENTIAL = 'aha-design-status'
         TRUSTED_LABEL = 'local-linux'
         PR_LABEL = 'pr-isolated'
         STORYBOOK_PORT = '6006'

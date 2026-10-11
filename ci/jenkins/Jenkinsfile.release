@@ -1,4 +1,4 @@
-// design-hub 배포 작업 (Jenkins job: design-hub-release). 사람이 RELEASE_TAG를 넣어 수동으로 실행한다.
+// aha-design 배포 작업 (Jenkins job: aha-design-release). 사람이 RELEASE_TAG를 넣어 수동으로 실행한다.
 // main에 포함된 tag만 배포하고, 배포 credential은 Publish 단계에서만 꺼낸다 (forgejo-platform D-013).
 // 버전은 PR에서 pnpm version-packages로 이미 올라가 있어야 한다. 여기서는 레지스트리에 없는 버전만 올린다.
 pipeline {
@@ -13,7 +13,7 @@ pipeline {
     }
     environment {
         FORGEJO_API_URL = 'http://forgejo:3000/api/v1'
-        FORGEJO_REPOSITORY = 'jay/design-hub'
+        FORGEJO_REPOSITORY = 'jay/aha-design'
         STORYBOOK_DISABLE_TELEMETRY = '1'
         TURBO_CONCURRENCY = '1'
     }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 deleteDir()
                 checkout([$class: 'GitSCM', branches: [[name: "refs/tags/${env.TAG}"]],
-                    userRemoteConfigs: [[url: 'http://forgejo:3000/jay/design-hub.git', credentialsId: 'design-hub-read',
+                    userRemoteConfigs: [[url: 'http://forgejo:3000/jay/aha-design.git', credentialsId: 'aha-design-read',
                         refspec: '+refs/heads/main:refs/remotes/origin/main +refs/tags/*:refs/tags/*']]])
                 script { env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim() }
                 sh 'git merge-base --is-ancestor "$GIT_COMMIT" origin/main'
@@ -41,8 +41,8 @@ pipeline {
         }
         stage('CI passed') {
             steps {
-                // design-hub-ci가 이 커밋을 검사해 통과했는지 Forgejo 커밋 상태로 확인한다. 검사 없이 배포하지 않는다.
-                withCredentials([string(credentialsId: 'design-hub-status', variable: 'FORGEJO_STATUS_TOKEN')]) {
+                // aha-design-ci가 이 커밋을 검사해 통과했는지 Forgejo 커밋 상태로 확인한다. 검사 없이 배포하지 않는다.
+                withCredentials([string(credentialsId: 'aha-design-status', variable: 'FORGEJO_STATUS_TOKEN')]) {
                     sh '''set +x
                         node -e '
                           fetch(`${process.env.FORGEJO_API_URL}/repos/${process.env.FORGEJO_REPOSITORY}/commits/${process.env.GIT_COMMIT}/status`, {
@@ -51,7 +51,7 @@ pipeline {
                             if (!r.ok) { console.error(`커밋 상태 조회 실패 HTTP ${r.status}`); process.exit(1); }
                             const { state } = await r.json();
                             if (state !== "success") {
-                              console.error(`CI_NOT_PASSED: 이 커밋의 검사 상태가 "${state}"입니다. design-hub-ci가 통과한 main 커밋에 tag를 다세요.`);
+                              console.error(`CI_NOT_PASSED: 이 커밋의 검사 상태가 "${state}"입니다. aha-design-ci가 통과한 main 커밋에 tag를 다세요.`);
                               process.exit(1);
                             }
                             console.log("CI 통과 확인");
@@ -70,7 +70,7 @@ pipeline {
         stage('Publish') {
             steps {
                 // 레지스트리 주소는 Forgejo ROOT_URL(localhost:3000)이라, 이 단계 동안만 socat으로 forgejo:3000에 잇는다.
-                withCredentials([string(credentialsId: 'design-hub-package-publish', variable: 'PACKAGE_TOKEN')]) {
+                withCredentials([string(credentialsId: 'aha-design-package-publish', variable: 'PACKAGE_TOKEN')]) {
                     sh '''set +x
                         socat TCP-LISTEN:3000,bind=127.0.0.1,fork,reuseaddr TCP:forgejo:3000 &
                         SOCAT_PID=$!

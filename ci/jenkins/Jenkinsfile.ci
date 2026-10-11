@@ -1,4 +1,4 @@
-// design-hub 검사 작업 (Jenkins job: design-hub-ci).
+// aha-design 검사 작업 (Jenkins job: aha-design-ci).
 // main 푸시 웹훅으로 실행된다. 배포 credential은 받지 않는다 (forgejo-platform D-012, D-013).
 // 플랫폼 규칙상 Jenkins job에는 이 파일 내용을 인라인으로 넣는다 (Pipeline from SCM을 쓰지 않는다). 바꾸면 setup으로 job을 다시 만든다.
 pipeline {
@@ -10,7 +10,7 @@ pipeline {
     }
     environment {
         FORGEJO_API_URL = 'http://forgejo:3000/api/v1'
-        FORGEJO_REPOSITORY = 'jay/design-hub'
+        FORGEJO_REPOSITORY = 'jay/aha-design'
         STORYBOOK_DISABLE_TELEMETRY = '1'
         // 에이전트 메모리(4GB, 그중 검사에 약 3GB)에 맞춰 turbo 작업을 하나씩 돌린다.
         TURBO_CONCURRENCY = '1'
@@ -19,7 +19,7 @@ pipeline {
         stage('Checkout main') {
             steps {
                 deleteDir()
-                git branch: 'main', credentialsId: 'design-hub-read', url: 'http://forgejo:3000/jay/design-hub.git'
+                git branch: 'main', credentialsId: 'aha-design-read', url: 'http://forgejo:3000/jay/aha-design.git'
                 script { env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim() }
             }
         }
@@ -66,11 +66,11 @@ pipeline {
 
 // Forgejo 커밋 상태. 토큰은 이 단계에서만 꺼내고 출력하지 않는다.
 def reportStatus(String state, String description) {
-    withCredentials([string(credentialsId: 'design-hub-status', variable: 'FORGEJO_STATUS_TOKEN')]) {
+    withCredentials([string(credentialsId: 'aha-design-status', variable: 'FORGEJO_STATUS_TOKEN')]) {
         withEnv(["STATUS_STATE=${state}", "STATUS_DESCRIPTION=${description}"]) {
             sh '''set +x
                 node -e '
-                  const body = JSON.stringify({ state: process.env.STATUS_STATE, context: "jenkins/design-hub-ci",
+                  const body = JSON.stringify({ state: process.env.STATUS_STATE, context: "jenkins/aha-design-ci",
                     description: process.env.STATUS_DESCRIPTION, target_url: process.env.BUILD_URL });
                   fetch(`${process.env.FORGEJO_API_URL}/repos/${process.env.FORGEJO_REPOSITORY}/statuses/${process.env.GIT_COMMIT}`, {
                     method: "POST", body,

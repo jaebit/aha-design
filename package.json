@@ -1,5 +1,5 @@
 {
-  "name": "design-hub",
+  "name": "aha-design",
   "private": true,
   "description": "AHA 사내 디자인 시스템 모노레포 (토큰, UI 컴포넌트, Storybook 갤러리 + MCP)",
   "packageManager": "pnpm@10.34.6",

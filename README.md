@@ -1,4 +1,4 @@
-# design-hub
+# aha-design
 
 AHA 사내 디자인 시스템. 토큰, React 컴포넌트, Storybook 갤러리를 한 저장소에서 관리하고, 같은 정보를 MCP로 AI 에이전트에 제공한다.
 
