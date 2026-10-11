@@ -190,6 +190,7 @@ export function LoginPage() {
       title: 'IAM 브랜드',
       items: [
         '모든 IAM 화면의 `<html>`에 `data-brand="iam"`을 단다. 없으면 AHA 색(검정 primary)으로 보인다. 다크(`data-theme`)·밀도(`data-density`) 속성과 함께 쓸 수 있다.',
+        '`@iam/*`(예전 IAM 패키지)를 쓰는 프로젝트는 aha-design의 코드모드(`scripts/codemods/iam-to-actoz.mjs`)와 안내(`docs/migration/iam-to-actoz.md`)로 `@actoz/*`로 옮긴다. `@iam/*`는 더 올리지 않는다.',
         '부품은 AHA와 같은 패키지(`@actoz/ui`, `@actoz/kit-admin`, `@actoz/kit-auth`)를 쓴다. 브랜드마다 다른 것은 prop으로 넘긴다: AuthLayout `logo`, NavRail `logo`·`aria-label="주 메뉴"`, AccountMenu `adminLabel="관리 콘솔"`.',
       ],
     },

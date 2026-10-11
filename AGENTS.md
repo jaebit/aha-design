@@ -16,7 +16,8 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 | `ci/jenkins/` | 로컬 Jenkins 파이프라인 원본(`Jenkinsfile.ci` main 검사, `Jenkinsfile.pr` PR 검사(D-016, 격리 Agent 준비 뒤 켬), `Jenkinsfile.release` 수동 배포). job에는 인라인으로 들어가므로 바꾸면 forgejo-platform의 `setup-design-hub.py --update-jobs`로 반영한다 |
 | `Dockerfile`, `compose.yaml` | 두 사이트의 갤러리 + MCP + Storybook 정적 빌드를 한 이미지로 만들고, compose가 `SITE=aha`(4100)와 `SITE=iam`(4200) 두 서비스로 띄운다 |
 | `scripts/check-tokens.mjs` | 하드코딩 색상 검사 |
-| `docs/` | 와이어프레임 원본 (aha.actoz.com v0.2.0) |
+| `scripts/codemods/iam-to-actoz.mjs` | `@iam/*`를 쓰는 프로젝트를 `@actoz/*`로 옮기는 코드모드 (기본은 미리보기, `--write`로 고침). 안내는 `docs/migration/iam-to-actoz.md` |
+| `docs/` | 와이어프레임 원본 (aha.actoz.com v0.2.0), 이전 안내(`docs/migration/`) |
 
 ## 명령
 
@@ -28,6 +29,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - `pnpm check:tokens` — 컴포넌트에 하드코딩된 색상이 없는지 검사
 - `pnpm check:mcp-docs` — Storybook을 띄운 상태에서, MCP가 내보내는 예제 코드의 import와 설명을 검사
 - `pnpm check:contrast` — 토큰을 빌드하고 라이트·다크의 글자/배경 대비(4.5:1)를 검사. 토큰 값을 바꾸면 반드시 돌린다
+- `pnpm test:codemods` — `@iam/*` → `@actoz/*` 코드모드 검사. 코드모드를 바꾸면 돌린다
 - `pnpm build-storybook` — Storybook 정적 빌드 (갤러리 카탈로그의 원본)
 - `pnpm gallery` — Storybook 정적 빌드 후 AHA 갤러리 개발 서버 http://localhost:5180. IAM 갤러리는 `pnpm gallery:iam` (http://localhost:5280)
 - `pnpm docker:up` — 갤러리 + MCP를 Docker로 띄운다. AHA http://localhost:4100, IAM http://localhost:4200. MCP는 각각 `/mcp`
