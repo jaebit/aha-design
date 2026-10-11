@@ -1,4 +1,42 @@
-# @aha/ui
+# @actoz/ui
+
+0.3.x까지(토큰은 0.2.x, 키트는 0.1.x) 이름은 `@aha/ui`였다. 예전 이름은 호환 패키지(`compat/aha-ui`)가 `@actoz/ui`를 다시 내보내며 이어 배포한다.
+
+## 0.4.0
+
+### Minor Changes
+
+- d382f3b: 패키지 범위를 `@aha`에서 `@actoz`로 바꿨다 (AHA·IAM 통합 5단계). 레지스트리는 Forgejo `actoz` 조직(`http://localhost:3000/api/packages/actoz/npm/`)이다. 쓰는 프로젝트는 `.npmrc`를 `@actoz:registry=...`로 바꾸고 import와 CSS를 `@actoz/*`로 옮긴다 (`@import "@actoz/ui/styles.css";`). API와 화면은 바뀌지 않는다.
+
+### Patch Changes
+
+- 919e799: IAM 디자인 시스템의 공통 부품 변경을 합쳤다 (AHA·IAM 통합 2단계).
+  
+  - Button: `destructive-solid` 변형을 추가했다. `link` 변형은 primary 색 글자를 쓰고, 크기의 높이·여백을 `compoundVariants`로 지워 `size`와 함께 써도 깨지지 않는다.
+  - AccountMenu: 관리자 메뉴 이름 `adminLabel`(기본 "관리자 설정")을 추가하고 트리거에 `data-slot`을 달았다.
+  - NavRail: 내비게이션 이름 `aria-label`(기본 "서비스")을 받는다.
+  - DataTable: 표 행에 지원되지 않는 `aria-selected` 대신 `data-state="selected"`를 단다. Checkbox: `label`이 없으면 `aria-describedby`를 달지 않는다.
+  - TooltipTerm에 `data-slot`을 달고, 여러 부품의 props 설명을 보강해 두 브랜드의 예시를 함께 적었다.
+- 8f80509: FormField를 관리자 키트에서 공통 부품(`@actoz/ui`)으로 옮겼다 (AHA·IAM 통합 2단계). IAM의 FormField에 있던 라벨 오른쪽 보조 요소(`labelAction`), `id` prop, ReactNode 라벨·오류를 더했다. 자식이 이미 가진 `aria-describedby`·`aria-invalid`·`aria-required`를 지우지 않고 함께 잇는다. `@actoz/kit-admin`의 `FormField`는 `@actoz/ui`를 다시 내보내며 deprecated다. `@actoz/ui`에서 import한다.
+- 43ed70f: IAM 관리 콘솔 키트(`@iam/kit-console`)를 관리자 키트로 합쳤다 (AHA·IAM 통합 3단계).
+  
+  - `@actoz/kit-admin`: `SecretField`(가린 비밀값, 복사, 한 번만 보기, 재발급)와 `SessionList`(로그인 세션 목록, 끊기)를 추가했다. SecretField의 안내 문구 prop은 `description`이다.
+  - `@actoz/ui`: `ScopeList`(OAuth 권한 목록)를 추가했다. 인증 화면과 관리 화면이 함께 쓰므로 공통 부품에 둔다.
+  - BulkActionBar: 선택 수 알림 영역을 선택이 없을 때도 남겨 두어, 처음 고를 때도 스크린리더가 읽는다.
+  - ConfirmDialog: destructive 확인 버튼이 `Button variant="destructive-solid"`를 쓴다 (모양은 같다).
+  - 관리 콘솔 템플릿 5개(`Templates/Console…`: 사용자 관리·사용자 상세·OAuth 클라이언트 상세·역할 편집·감사 로그)를 IAM 브랜드로 추가했다.
+- f5bad9d: 토큰의 CSS 변수 접두사와 테마 설정 키를 통합 디자인 시스템 이름 `actoz`로 바꿨다 (AHA·IAM 통합 1단계 마무리). 값은 바뀌지 않는다.
+  
+  - CSS 변수: `--aha-color-primary` → `--actoz-color-primary` (모든 변수)
+  - JS 상수: `AhaColorPrimary` → `ActozColorPrimary`
+  - 테마 설정 키: `$extensions["aha.theme"]` → `$extensions["actoz.theme"]`, manifest `prefix`: `"actoz"`
+  
+  `@actoz/tokens/tailwind.css`의 Tailwind 클래스(`bg-primary` 등)는 그대로라, 클래스만 쓰는 앱은 바꿀 것이 없다. CSS 변수나 JS 상수를 직접 쓰는 앱은 이름을 바꾼다.
+- Updated dependencies [d382f3b]
+- Updated dependencies [f5bad9d]
+- Updated dependencies [b85c48e]
+- Updated dependencies [ebc6e23]
+  - @actoz/tokens@0.3.0
 
 ## 0.3.3
 
