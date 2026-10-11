@@ -9,6 +9,7 @@
     "dev": "node scripts/build-catalog.mjs && vite",
     "build": "node scripts/build-catalog.mjs && vite build",
     "start": "node server/index.ts",
+    "test:server": "node --test server/index.test.mjs",
     "typecheck": "node scripts/build-catalog.mjs && tsc -p tsconfig.json"
   },
   "dependencies": {
