@@ -6,7 +6,7 @@ AHA 사내 디자인 시스템 모노레포. 사람은 갤러리 사이트(`apps
 
 | 경로 | 내용 |
 | --- | --- |
-| `packages/tokens` | W3C DTCG 2025.10 토큰(`tokens/**/*.json`) → Style Dictionary 빌드 → `dist/tokens.css`, `dist/tokens.js`, `dist/tokens.manifest.json` |
+| `packages/tokens` | W3C DTCG 2025.10 토큰(`tokens/**/*.json`) → Style Dictionary 빌드 → `dist/tokens.css`, `dist/tokens.js`, `dist/tokens.manifest.json`. CSS 변수 접두사와 테마 설정 키는 통합 디자인 시스템 이름 `actoz`를 쓴다 (`--actoz-color-primary`, `actoz.theme`) |
 | `packages/tokens/src/tailwind.css` | 토큰 → Tailwind v4 `@theme` 매핑. 색상 이름은 shadcn/ui 규약을 따른다 |
 | `packages/ui` | 공통 React 컴포넌트(`@aha/ui`) + Storybook 10 (`@storybook/addon-mcp`). Storybook은 여기 하나만 두고 키트 스토리까지 함께 싣는다. `pnpm build`로 배포용 `dist/`를 만든다 (`vite.lib.config.ts` + `tsconfig.build.json`) |
 | `packages/kit-*` | 도메인 키트 패키지. `kit-ai`(`@aha/kit-ai`): AI 대화 부품과 화면 템플릿. `kit-admin`(`@aha/kit-admin`): 관리 화면의 폼·상세·일괄 작업·권한 부품과 템플릿. `kit-dashboard`(`@aha/kit-dashboard`): 선·도넛·히트맵 차트, 기간 선택, 위젯 그리드와 대시보드 템플릿. 키트 차트도 공통 차트 규칙(chart-1부터, 범례, 표로 보기)을 따른다. 빌드 방식은 `packages/ui`와 같고, `@aha/ui`를 peer 의존성으로 둔다 |
@@ -38,7 +38,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 - **서체:** Pretendard. `@aha/ui/styles.css`가 `pretendard` 패키지의 dynamic subset 웹폰트를 불러온다. 외부 CDN을 쓰지 않는다.
 - **다크 모드:** 시스템 설정을 따르고, `<html data-theme="light|dark">`로 고정할 수 있다. 다크 값은 `packages/tokens/tokens/themes/dark.json`에 있으며 시맨틱 토큰만 덮어쓴다. 컴포넌트에서 테마별 분기를 쓰지 않는다 (시맨틱 토큰이 알아서 바뀐다).
 - **브랜드 테마:** IAM 통합 준비로 `<html data-brand="iam">` 브랜드 테마가 있다 (`tokens/themes/brand-iam.json`, 다크 조합은 `brand-iam-dark.json`). `primary`, `primary-hover`, `ring`만 IAM 파랑(원시 `color.brand.*`)으로 바꾼다. 컴포넌트에서 브랜드별 분기(`data-brand` 선택자 포함)를 쓰지 않는다. 브랜드마다 다른 문구·로고는 기본값을 AHA로 둔 prop으로 받는다 (예: AccountMenu `adminLabel`, NavRail `logo`·`aria-label`). Storybook 툴바의 브랜드 전환으로 모든 스토리를 두 브랜드로 볼 수 있고, 스토리의 기본 브랜드는 `parameters.brand`에 적는다.
-- **테마 추가:** `tokens/themes/<이름>.json`을 만들고 `$extensions["aha.theme"]`에 적용 조건(`attribute`, `value`, 선택: `colorScheme`, `media`, `mediaUnless`, `label`, `with`)을 적는다. 두 테마가 같은 토큰을 덮어써서 조합마다 값이 달라야 하면 조합 테마를 따로 만들고 `with`에 함께 쓰는 테마 이름을 적는다 (예: `brand-iam-dark`는 `"with": "dark"`). 빌드가 파일을 자동으로 찾아 CSS 블록과 manifest의 `<이름>` 값을 만들고, `check:contrast`도 색을 바꾸는 모든 테마를 검사한다. 다른 축의 테마는 다른 attribute를 쓴다 (예: 밀도는 `data-density`).
+- **테마 추가:** `tokens/themes/<이름>.json`을 만들고 `$extensions["actoz.theme"]`에 적용 조건(`attribute`, `value`, 선택: `colorScheme`, `media`, `mediaUnless`, `label`, `with`)을 적는다. 두 테마가 같은 토큰을 덮어써서 조합마다 값이 달라야 하면 조합 테마를 따로 만들고 `with`에 함께 쓰는 테마 이름을 적는다 (예: `brand-iam-dark`는 `"with": "dark"`). 빌드가 파일을 자동으로 찾아 CSS 블록과 manifest의 `<이름>` 값을 만들고, `check:contrast`도 색을 바꾸는 모든 테마를 검사한다. 다른 축의 테마는 다른 attribute를 쓴다 (예: 밀도는 `data-density`).
 - **밀도:** 기본 밀도와 촘촘한 밀도(`<html data-density="compact">`, `tokens/themes/compact.json`) 두 가지. 테마 속성은 `<html>`이 아닌 요소에 달아도 그 안쪽에만 적용된다 (갤러리 미리보기가 쓴다). 키트의 기본 밀도는 `catalog.config.json`의 `kits[].density`, 스토리의 기본 밀도는 `parameters.density`에 적는다. 간격 단위 토큰 `space.unit`(Tailwind `--spacing`)만 4px → 3.5px로 줄여 모든 간격·크기 클래스가 함께 줄어든다. 글자 크기와 색은 그대로다. 관리자 화면은 compact로 쓴다. 컴포넌트에 밀도별 분기나 작은 크기 클래스를 따로 넣지 않는다.
 - **키트:** 공통 부품(core) 위에 도메인 키트(AI 서비스, 관리자, CMS 등)를 얹는다. 키트는 core만 참조하고 키트끼리는 참조하지 않는다. 두 키트 이상에서 쓰는 부품만 core에 둔다. 확장 계획은 「AHA 디자인 시스템 다중 디자인 확장 검토」 문서를 따른다.
 - **상태색:** `status-good|warning|serious|critical`은 아이콘·마크용, `status-*-foreground`는 글자용이다. 상태는 색만으로 전달하지 않고 아이콘 + 라벨과 함께 쓴다 (`<Badge tone="warning">일부 품질 저하</Badge>`). 라이트 모드의 warning·serious 아이콘은 배경 대비가 3:1 미만이므로, 라벨 글자가 반드시 상태를 말해야 한다.
@@ -46,7 +46,7 @@ pnpm은 corepack으로 실행한다 (`packageManager`: pnpm 10).
 ## UI 작업 규칙
 
 1. **먼저 조회한다.** 컴포넌트를 쓰거나 만들기 전에 Storybook MCP의 `docs-list`로 이미 있는 컴포넌트를 확인하고, `docs-show`로 props와 예제를 읽는다. 있는 것을 새로 만들지 않는다.
-2. **시맨틱 토큰만 쓴다.** 색상은 `bg-primary`, `text-muted-foreground`, `border-border` 같은 토큰 클래스만 쓴다. hex, `rgb()`, `bg-[#...]` 같은 임의값은 금지다 (`pnpm check:tokens`가 막는다). 원시 팔레트(`--aha-color-neutral-*`)를 컴포넌트에서 직접 참조하지 않는다.
+2. **시맨틱 토큰만 쓴다.** 색상은 `bg-primary`, `text-muted-foreground`, `border-border` 같은 토큰 클래스만 쓴다. hex, `rgb()`, `bg-[#...]` 같은 임의값은 금지다 (`pnpm check:tokens`가 막는다). 원시 팔레트(`--actoz-color-neutral-*`)를 컴포넌트에서 직접 참조하지 않는다.
 3. **글자 크기는 의미 이름을 쓴다.** `text-caption`, `text-body-sm`, `text-body`, `text-heading`, `text-title`, `text-display`. Tailwind 기본 크기(`text-sm`, `text-lg`)는 쓰지 않는다.
 4. **모서리는 토큰 스케일만 쓴다.** `rounded-sm|md|lg|xl|full`. 각 단계의 용도는 `packages/tokens/tokens/primitive/shape.json`의 `$description`에 있다.
 5. **상태는 `tone`으로 표시한다.** Badge·RiskItem은 `tone`, StatCard 변화량은 `delta.tone`을 쓴다. 상태색 클래스를 직접 조합하지 않는다.

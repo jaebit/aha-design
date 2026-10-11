@@ -6,16 +6,16 @@ import { Button } from '@aha/ui';
 
 // SVG 속성에는 Tailwind 클래스를 쓸 수 없어 토큰 CSS 변수를 직접 참조한다.
 export const SERIES_COLORS = [
-  'var(--aha-color-chart-1)',
-  'var(--aha-color-chart-2)',
-  'var(--aha-color-chart-3)',
-  'var(--aha-color-chart-4)',
-  'var(--aha-color-chart-5)',
-  'var(--aha-color-chart-6)',
+  'var(--actoz-color-chart-1)',
+  'var(--actoz-color-chart-2)',
+  'var(--actoz-color-chart-3)',
+  'var(--actoz-color-chart-4)',
+  'var(--actoz-color-chart-5)',
+  'var(--actoz-color-chart-6)',
 ] as const;
 
-export const AXIS_COLOR = 'var(--aha-color-chart-axis)';
-export const GRID_COLOR = 'var(--aha-color-chart-grid)';
+export const AXIS_COLOR = 'var(--actoz-color-chart-axis)';
+export const GRID_COLOR = 'var(--actoz-color-chart-grid)';
 
 export const defaultFormat = (value: number) => `${value.toLocaleString('ko-KR')}건`;
 

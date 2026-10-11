@@ -1,7 +1,7 @@
 {
   "$description": "IAM 브랜드 테마의 다크 값. data-brand=\"iam\"과 다크 테마(시스템 설정 또는 data-theme=\"dark\")가 함께 적용될 때만 쓰인다. 다크 테마가 primary를 밝은 무채색으로 바꾸므로, IAM에서는 밝은 파랑으로 다시 덮어쓴다.",
   "$extensions": {
-    "aha.theme": {
+    "actoz.theme": {
       "label": "IAM 브랜드 다크",
       "attribute": "data-brand",
       "value": "iam",

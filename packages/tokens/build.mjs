@@ -1,6 +1,6 @@
 // DTCG 토큰(tokens/**/*.json)을 CSS 변수, JS/TS 상수, 에이전트용 manifest로 빌드한다.
 // - 기본(라이트): tokens/primitive + tokens/semantic → :root
-// - 테마: tokens/themes/<이름>.json이 semantic 값을 덮어쓴다. 적용 조건은 각 파일의 $extensions["aha.theme"]에 적는다.
+// - 테마: tokens/themes/<이름>.json이 semantic 값을 덮어쓴다. 적용 조건은 각 파일의 $extensions["actoz.theme"]에 적는다.
 //     attribute, value   <html attribute="value">일 때 적용 (필수). 다른 요소에 달면 그 안쪽에만 적용된다
 //     colorScheme        light | dark. 네이티브 요소(날짜 입력, 스크롤바)의 색 체계
 //     media, mediaUnless 시스템 설정(media)을 따르되, attribute="mediaUnless"로 고정한 페이지는 제외
@@ -30,14 +30,14 @@ const cssVariables = (dictionary) =>
   formattedVariables({ format: 'css', dictionary, outputReferences: true, usesDtcg: true });
 
 StyleDictionary.registerFormat({
-  name: 'aha/css-light',
+  name: 'actoz/css-light',
   format: async ({ dictionary }) =>
     `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n:root {\n  color-scheme: light;\n${cssVariables(dictionary)}\n}\n`,
 });
 
-/** 테마 하나의 CSS 블록. 설정은 options.theme ($extensions["aha.theme"]). */
+/** 테마 하나의 CSS 블록. 설정은 options.theme ($extensions["actoz.theme"]). */
 StyleDictionary.registerFormat({
-  name: 'aha/css-theme',
+  name: 'actoz/css-theme',
   format: async ({ dictionary, options }) => {
     const { name, label = name, attribute, value, colorScheme, media, mediaUnless, withTheme } = options.theme;
     const indent = (text, depth) => text.replace(/^ {2}/gm, ' '.repeat(depth));
@@ -101,7 +101,7 @@ StyleDictionary.registerFormat({
 });
 
 StyleDictionary.registerFormat({
-  name: 'aha/agent-manifest',
+  name: 'actoz/agent-manifest',
   // 에이전트가 토큰의 "의도"까지 읽을 수 있도록 이름, CSS 변수, 값, 설명을 평평한 JSON으로 낸다.
   format: ({ dictionary, options }) => {
     const tokens = dictionary.allTokens.map((token) => ({
@@ -110,12 +110,12 @@ StyleDictionary.registerFormat({
     }));
     // fallbacks: 테마가 덮어쓰지 않은 토큰을 어느 테마 값에서 찾을지 (앞에서부터, 없으면 기본값). 조합 테마만 있다.
     const { themeNames, fallbacks } = options;
-    return JSON.stringify({ prefix: 'aha', themes: ['light', ...themeNames], fallbacks, tokens }, null, 2) + '\n';
+    return JSON.stringify({ prefix: 'actoz', themes: ['light', ...themeNames], fallbacks, tokens }, null, 2) + '\n';
   },
 });
 
 StyleDictionary.registerFormat({
-  name: 'aha/agent-manifest-theme',
+  name: 'actoz/agent-manifest-theme',
   format: ({ dictionary }) => JSON.stringify(dictionary.allTokens.map(manifestEntry), null, 2),
 });
 
@@ -124,9 +124,9 @@ const themeFiles = (await readdir('tokens/themes')).filter((file) => file.endsWi
 const themes = [];
 for (const file of themeFiles) {
   const name = file.replace(/\.json$/, '');
-  const config = JSON.parse(await readFile(`tokens/themes/${file}`, 'utf8')).$extensions?.['aha.theme'];
+  const config = JSON.parse(await readFile(`tokens/themes/${file}`, 'utf8')).$extensions?.['actoz.theme'];
   if (!config?.attribute || !config?.value) {
-    throw new Error(`tokens/themes/${file}: $extensions["aha.theme"]에 attribute와 value가 필요합니다.`);
+    throw new Error(`tokens/themes/${file}: $extensions["actoz.theme"]에 attribute와 value가 필요합니다.`);
   }
   themes.push({ name, file, ...config });
 }
@@ -163,13 +163,13 @@ const base = new StyleDictionary({
   platforms: {
     css: {
       transformGroup: 'css',
-      prefix: 'aha',
+      prefix: 'actoz',
       buildPath: 'dist/',
-      files: [{ destination: 'tokens.css', format: 'aha/css-light' }],
+      files: [{ destination: 'tokens.css', format: 'actoz/css-light' }],
     },
     js: {
       transformGroup: 'js',
-      prefix: 'aha',
+      prefix: 'actoz',
       buildPath: 'dist/',
       files: [
         { destination: 'tokens.js', format: 'javascript/es6' },
@@ -178,12 +178,12 @@ const base = new StyleDictionary({
     },
     agent: {
       transformGroup: 'css',
-      prefix: 'aha',
+      prefix: 'actoz',
       buildPath: 'dist/',
       files: [
         {
           destination: 'tokens.manifest.json',
-          format: 'aha/agent-manifest',
+          format: 'actoz/agent-manifest',
           options: { themeNames: themes.map((t) => t.name), fallbacks },
         },
       ],
@@ -208,15 +208,15 @@ for (const theme of themes) {
     platforms: {
       css: {
         transformGroup: 'css',
-        prefix: 'aha',
+        prefix: 'actoz',
         buildPath: tmpDir,
-        files: [{ destination: `${theme.name}.css`, format: 'aha/css-theme', filter: fromTheme, options: { theme } }],
+        files: [{ destination: `${theme.name}.css`, format: 'actoz/css-theme', filter: fromTheme, options: { theme } }],
       },
       agent: {
         transformGroup: 'css',
-        prefix: 'aha',
+        prefix: 'actoz',
         buildPath: tmpDir,
-        files: [{ destination: `${theme.name}.json`, format: 'aha/agent-manifest-theme', filter: fromTheme }],
+        files: [{ destination: `${theme.name}.json`, format: 'actoz/agent-manifest-theme', filter: fromTheme }],
       },
     },
   });
