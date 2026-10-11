@@ -7,16 +7,18 @@ export interface SwitchProps {
   checked: boolean;
   /** 눌렀을 때. 바뀐 값을 넘긴다. */
   onCheckedChange: (checked: boolean) => void;
-  /** 스크린리더용 이름. 무엇을 켜고 끄는지. 예: "AI 소식 구독". */
+  /** 스크린리더용 이름. 무엇을 켜고 끄는지. 예: "AI 소식 구독", "새 기기 로그인 알림". */
   label: string;
   /** 스위치 아래에 보이는 현재 상태 문구. 예: { on: "구독 중", off: "구독 안 함" } (14쪽). */
   stateLabels?: { on: string; off: string };
+  /** true면 누를 수 없다. 권한이 없어 바꿀 수 없는 설정. */
   disabled?: boolean;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
 /**
- * 켜고 끄는 스위치 (14쪽 뉴스레터 구독).
+ * 켜고 끄는 스위치 (14쪽 뉴스레터 구독, 보안 설정의 알림 받기).
  * 누르는 즉시 적용되는 설정에 쓴다. 저장 버튼을 눌러야 적용되는 폼 항목에는 체크박스를 쓴다.
  */
 export function Switch({ checked, onCheckedChange, label, stateLabels, disabled = false, className }: SwitchProps) {

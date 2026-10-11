@@ -60,6 +60,23 @@ export const Destructive: Story = {
   },
 };
 
+/** 되돌릴 수 없는 액션의 최종 확인. 확인 대화상자의 "삭제", "비활성화" 버튼. 대화상자 밖에서는 쓰지 않는다. */
+export const DestructiveSolid: Story = {
+  args: { variant: 'destructive-solid', children: '삭제' },
+};
+
+/** IAM 브랜드. 주요 버튼과 링크가 IAM 파랑이 된다. 컴포넌트는 같고 `<html data-brand="iam">`만 다르다. */
+export const IamBrand: Story = {
+  parameters: { brand: 'iam' },
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Button>로그인</Button>
+      <Button variant="secondary">취소</Button>
+      <Button variant="link">비밀번호를 잊으셨나요?</Button>
+    </div>
+  ),
+};
+
 /** 원형 아이콘 버튼. 입력창의 전송 버튼. 아이콘만 있을 때는 aria-label 필수. */
 export const IconRound: Story = {
   args: { size: 'icon-round', 'aria-label': '보내기', children: <ArrowUp /> },

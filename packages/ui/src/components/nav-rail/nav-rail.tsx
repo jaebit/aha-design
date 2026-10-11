@@ -4,7 +4,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/tooltip';
 import { cn } from '../../lib/cn';
 
 export interface NavRailItem {
+  /** 항목 id. `activeId`와 비교한다. */
   id: string;
+  /** 메뉴 이름. 좁은 레일에서는 툴팁과 스크린리더 이름이 된다. */
   label: string;
   /** lucide-react 아이콘 요소. 예: `<MessageSquareText />` */
   icon: ReactNode;
@@ -13,7 +15,7 @@ export interface NavRailItem {
 }
 
 export interface NavRailProps {
-  /** 서비스 목록 (사내 가이드 챗, 회의록 생성 …). */
+  /** 주 메뉴. AHA는 서비스 목록(사내 가이드 챗, 회의록 생성 …), IAM 관리 콘솔은 사용자·그룹·역할·클라이언트·감사 로그. */
   items: NavRailItem[];
   /** 레일 아래쪽 항목. 와이어프레임은 "전체 기록" 하나 (1쪽). */
   bottomItems?: NavRailItem[];
@@ -28,8 +30,11 @@ export interface NavRailProps {
   onNavigate?: (id: string) => void;
   /** 맨 아래 계정 영역. `AccountMenu`. */
   account?: ReactNode;
-  /** 로고 영역. 기본은 "AHA 💡". */
+  /** 로고 영역. 기본은 "AHA 💡". 다른 브랜드는 로고를 넘긴다 (예: IAM은 `ShieldCheck` 아이콘 + "IAM"). */
   logo?: ReactNode;
+  /** 내비게이션의 스크린리더 이름. 기본 "서비스". IAM은 "주 메뉴". */
+  'aria-label'?: string;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
@@ -42,12 +47,13 @@ export function NavRail({
   onNavigate,
   account,
   logo,
+  'aria-label': ariaLabel = '서비스',
   className,
 }: NavRailProps) {
   return (
     <nav
       data-slot="nav-rail"
-      aria-label="서비스"
+      aria-label={ariaLabel}
       data-expanded={expanded}
       className={cn(
         'flex h-full shrink-0 flex-col border-r border-border bg-subtle',

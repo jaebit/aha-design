@@ -32,11 +32,15 @@ const toneIcons = {
 export type BadgeTone = keyof typeof toneIcons;
 
 export interface BadgeProps extends ComponentProps<'span'>, VariantProps<typeof badgeVariants> {
+  /** 모양. `outline`(기본): 태그·상태·단계, `solid`: 개수 강조, `soft`: 키워드·제약 정보. */
+  variant?: VariantProps<typeof badgeVariants>['variant'];
+  /** 크기. `sm`(기본): 목록·표 안, `md`: 상세 화면 머리글. */
+  size?: VariantProps<typeof badgeVariants>['size'];
   /**
    * 상태 배지. 라벨 앞에 상태색 아이콘을 붙인다. 글자색은 바꾸지 않는다 (색만으로 상태를 전달하지 않는다).
-   * - `good`: 정상, 완료 · `warning`: 주의 (예: 일부 품질 저하, 15쪽)
-   * - `serious`: 심각 (예: 리스크 보통, 13쪽) · `critical`: 위험, 실패 (예: 리스크 높음, 13쪽)
-   * 라벨은 상태를 글로 말해야 한다 (예: "높음", "실패").
+   * - `good`: 정상, 완료 (예: 활성) · `warning`: 주의 (예: 일부 품질 저하 15쪽, 초대 대기)
+   * - `serious`: 심각 (예: 리스크 보통 13쪽, 비밀번호 만료) · `critical`: 위험, 실패 (예: 리스크 높음 13쪽, 계정 잠김)
+   * 라벨은 상태를 글로 말해야 한다 (예: "높음", "잠김", "실패").
    */
   tone?: BadgeTone;
 }
@@ -44,9 +48,9 @@ export interface BadgeProps extends ComponentProps<'span'>, VariantProps<typeof 
 /**
  * 짧은 라벨. 클릭할 수 없다 (클릭이 필요하면 Chip을 쓴다).
  *
- * - `outline`: 서비스 태그(사내 가이드 챗, ITH), 상태(일부 품질 저하), 심각도(높음/보통), 단계(1/3 음성 원문).
- * - `solid`: 개수 강조. 관리자 메뉴의 대기 건수 (20쪽).
- * - `soft`: 키워드와 제약 정보. 뉴스레터 키워드(14쪽), 파일 형식·용량 안내(10, 12쪽).
+ * - `outline`: 서비스 태그(사내 가이드 챗, ITH), 역할 태그(관리자, 감사 담당), 상태(일부 품질 저하), 심각도(높음/보통), 단계(1/3 음성 원문).
+ * - `solid`: 개수 강조. 관리자 메뉴의 대기 건수 (20쪽), 관리 콘솔의 승인 대기 건수.
+ * - `soft`: 키워드와 제약 정보. 뉴스레터 키워드(14쪽), 파일 형식·용량 안내(10, 12쪽), OAuth scope(`openid profile`).
  * 상태를 나타낼 때는 `tone`을 함께 준다.
  */
 export function Badge({ className, variant, size, tone, children, ...props }: BadgeProps) {

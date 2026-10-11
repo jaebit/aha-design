@@ -14,7 +14,7 @@ import { cn } from '../../lib/cn';
 export interface AccountMenuProps {
   /** 사용자 이름. 예: "김하마". */
   name: string;
-  /** 소속 팀. 예: "팀아하". */
+  /** 소속 팀. 예: "팀아하", "보안플랫폼팀". */
   team: string;
   /** 메뉴 맨 위에 보이는 회사 이메일. */
   email: string;
@@ -22,17 +22,20 @@ export interface AccountMenuProps {
   initials: string;
   /** true면 아바타 옆에 이름과 팀을 보여준다 (넓은 레일, 1쪽). */
   expanded?: boolean;
-  /** 생략하면 "관리자 설정" 항목을 숨긴다. 관리자에게만 넘긴다. */
+  /** 생략하면 관리자 메뉴 항목(`adminLabel`)을 숨긴다. 관리자에게만 넘긴다. */
   onAdminSettings?: () => void;
+  /** 관리자 메뉴 항목의 이름. 기본 "관리자 설정"(AHA, 19쪽). IAM은 "관리 콘솔". */
+  adminLabel?: string;
   /** "로그아웃"을 눌렀을 때. */
   onLogout: () => void;
 }
 
-/** 내비 레일 맨 아래 계정 버튼과 메뉴 (19쪽). */
-export function AccountMenu({ name, team, email, initials, expanded = false, onAdminSettings, onLogout }: AccountMenuProps) {
+/** 내비 레일 맨 아래 계정 버튼과 메뉴 (19쪽). 이름·팀·이메일, 관리자 메뉴(관리자만), 로그아웃. */
+export function AccountMenu({ name, team, email, initials, expanded = false, onAdminSettings, adminLabel = '관리자 설정', onLogout }: AccountMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        data-slot="account-menu"
         aria-label={`${name} 계정 메뉴`}
         className={cn(
           'flex cursor-pointer items-center gap-3 rounded-lg text-left hover:bg-accent data-[state=open]:bg-accent',
@@ -58,7 +61,7 @@ export function AccountMenu({ name, team, email, initials, expanded = false, onA
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={onAdminSettings}>
-              <Settings /> 관리자 설정
+              <Settings /> {adminLabel}
             </DropdownMenuItem>
           </>
         ) : null}

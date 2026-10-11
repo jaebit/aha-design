@@ -11,13 +11,13 @@ export interface SearchInputProps extends Omit<ComponentProps<'input'>, 'type'> 
   /** 비제어 모드 초깃값. */
   defaultValue?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  /** 입력 전 안내 문구. 예: "대화 내용 검색". 라벨을 대신하지 않으므로 `aria-label`도 준다. */
+  /** 입력 전 안내 문구. 예: "대화 내용 검색", "이름 또는 이메일". 라벨을 대신하지 않으므로 `aria-label`도 준다. */
   placeholder?: string;
-  /** 스크린리더용 이름. 화면에 라벨이 없으므로 필수다. 예: "대화 검색". */
+  /** 스크린리더용 이름. 화면에 라벨이 없으므로 필수다. 예: "대화 검색", "사용자 검색". */
   'aria-label': string;
 }
 
-/** 돋보기 아이콘이 있는 큰 검색창 (2쪽 전체 기록). */
+/** 돋보기 아이콘이 있는 큰 검색창 (2쪽 전체 기록, 사용자 목록). */
 export function SearchInput({ className, ...props }: SearchInputProps) {
   return (
     <div data-slot="search-input" className={cn('relative w-full', className)}>

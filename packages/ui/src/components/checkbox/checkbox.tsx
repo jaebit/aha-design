@@ -14,17 +14,19 @@ export interface CheckboxProps {
   indeterminate?: boolean;
   /** 옆에 보이는 라벨. 누르면 체크박스가 바뀐다. 생략하면 `aria-label`을 준다. */
   label?: ReactNode;
-  /** 라벨 아래 보조 설명. */
+  /** 라벨 아래 보조 설명. `label`과 함께 쓴다. */
   description?: ReactNode;
   /** 라벨이 없을 때 스크린리더용 이름. 예: "김하마 선택". */
   'aria-label'?: string;
+  /** true면 누를 수 없다. 지금 바꿀 수 없는 항목. */
   disabled?: boolean;
-  /** 폼 전송용 이름과 값. */
+  /** 폼 전송용 이름. */
   name?: string;
-  /** 폼 전송 값. */
+  /** 폼 전송용 값. 생략하면 브라우저 기본값 "on". */
   value?: string;
-  /** `<label htmlFor>`와 잇는 id. `label`을 주면 생략해도 된다. */
+  /** input의 id. 생략하면 자동으로 만든다. */
   id?: string;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
@@ -67,7 +69,8 @@ export function Checkbox({
         name={name}
         value={value}
         aria-label={props['aria-label']}
-        aria-describedby={description ? descriptionId : undefined}
+        // 설명 요소는 label이 있을 때만 그린다.
+        aria-describedby={label && description ? descriptionId : undefined}
         className="peer size-5 cursor-pointer appearance-none rounded-sm border border-border-strong bg-background transition-colors checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary disabled:cursor-not-allowed disabled:opacity-40"
       />
       <Check

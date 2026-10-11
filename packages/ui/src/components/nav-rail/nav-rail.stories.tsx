@@ -1,5 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ChartColumn, FileSearch, History, Mail, MessageSquareText, Mic, ReceiptText, Wallet } from 'lucide-react';
+import {
+  AppWindow,
+  ChartColumn,
+  FileSearch,
+  History,
+  Mail,
+  MessageSquareText,
+  Mic,
+  ReceiptText,
+  ScrollText,
+  Settings,
+  ShieldCheck,
+  Users,
+  Wallet,
+} from 'lucide-react';
 import { fn } from 'storybook/test';
 
 import { AccountMenu } from '@aha/ui';
@@ -50,5 +64,39 @@ export const Collapsed: Story = {
   args: {
     activeId: 'guide-chat',
     account: <AccountMenu name="김하마" team="팀아하" email="hama@actoz.com" initials="하마" onAdminSettings={fn()} onLogout={fn()} />,
+  },
+};
+
+/** IAM 관리 콘솔. 로고와 내비게이션 이름을 넘기고, 색은 `<html data-brand="iam">`이 바꾼다. */
+export const IamBrand: Story = {
+  parameters: { brand: 'iam' },
+  args: {
+    expanded: true,
+    'aria-label': '주 메뉴',
+    logo: (
+      <span className="flex items-center gap-2 text-title font-bold tracking-wide">
+        <ShieldCheck aria-hidden className="size-7 text-primary" />
+        IAM
+      </span>
+    ),
+    items: [
+      { id: 'users', label: '사용자', icon: <Users />, href: '#users' },
+      { id: 'clients', label: '클라이언트', icon: <AppWindow />, href: '#clients' },
+      { id: 'audit-log', label: '감사 로그', icon: <ScrollText />, href: '#audit-log' },
+    ],
+    bottomItems: [{ id: 'settings', label: '설정', icon: <Settings />, href: '#settings' }],
+    activeId: 'users',
+    account: (
+      <AccountMenu
+        name="김하마"
+        team="보안플랫폼팀"
+        email="hama@actoz.com"
+        initials="하마"
+        expanded
+        adminLabel="관리 콘솔"
+        onAdminSettings={fn()}
+        onLogout={fn()}
+      />
+    ),
   },
 };

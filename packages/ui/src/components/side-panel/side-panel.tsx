@@ -5,16 +5,17 @@ import { Button } from '../button/button';
 import { cn } from '../../lib/cn';
 
 export interface SidePanelProps {
-  /** 패널 제목. 예: "10/03 처리 메일 급증 원인". */
+  /** 패널 제목. 예: "10/03 처리 메일 급증 원인", "이수달". */
   title: string;
-  /** 제목 앞 배지. 예: `<Badge>ITH</Badge>` (16쪽). */
+  /** 제목 앞 배지. 예: `<Badge>ITH</Badge>` (16쪽), `<Badge tone="critical">잠김</Badge>`. */
   badge?: ReactNode;
   /** 닫기. 생략하면 닫기 버튼을 숨긴다. */
   onClose?: () => void;
-  /** 하단 고정 영역. 버튼이나 입력창을 둔다. 대화 패널이면 AI 키트의 `<Composer variant="compact">`. */
+  /** 하단 고정 영역. 버튼이나 입력창을 둔다. 대화 패널이면 AI 키트의 `<Composer variant="compact">`, 상세 패널이면 작업 버튼(잠금 해제, 세션 종료). */
   footer?: ReactNode;
   /** 본문. 항목 상세나 메시지 목록. */
   children: ReactNode;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 

@@ -24,10 +24,11 @@ export interface AvatarProps extends VariantProps<typeof avatarVariants> {
   src?: string;
   /** 스크린리더용 이름. 생략하면 `initials`를 읽는다. */
   alt?: string;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
-/** 사용자 아바타. 내비 레일 하단의 계정 버튼 (1, 19쪽). */
+/** 사용자 아바타. 내비 레일 하단의 계정 버튼 (1, 19쪽), 사용자 목록 표의 이름 칸, 계정 상세 머리말. */
 export function Avatar({ initials, src, alt, size, className }: AvatarProps) {
   return (
     <AvatarPrimitive.Root data-slot="avatar" className={cn(avatarVariants({ size }), className)}>

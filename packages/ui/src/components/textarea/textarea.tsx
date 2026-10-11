@@ -8,6 +8,7 @@ export interface TextareaProps extends ComponentProps<'textarea'> {
   value?: string;
   /** 비제어 모드 초깃값. */
   defaultValue?: string;
+  /** 값이 바뀔 때. 새 값은 `event.target.value`. */
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   /** 입력 전 안내 문구. 라벨을 대신하지 않는다. */
   placeholder?: string;
@@ -20,6 +21,7 @@ export interface TextareaProps extends ComponentProps<'textarea'> {
   /** 값이 잘못됐으면 true. 테두리가 destructive 색으로 바뀐다. */
   'aria-invalid'?: boolean;
   disabled?: boolean;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 

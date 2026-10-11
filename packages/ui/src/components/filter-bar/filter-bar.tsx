@@ -11,7 +11,7 @@ export interface FilterBarProps {
   onSubmit: () => void;
   /** 초기화. 생략하면 버튼을 숨긴다. */
   onReset?: () => void;
-  /** 조회 결과 요약. 예: "7건의 보고서 · 전체 서비스 · 날짜 내림차순". */
+  /** 조회 결과 요약. 예: "7건의 보고서 · 전체 서비스 · 날짜 내림차순", "128건 · 로그인 실패 · 최근순". */
   summary?: string;
   /**
    * 접힌 상태 (16쪽). 옆에 대화 패널이 열려 폭이 좁을 때 쓴다.
@@ -22,13 +22,14 @@ export interface FilterBarProps {
   collapsedLabels?: string[];
   /** 접힌 요약 버튼을 눌렀을 때. 보통 `collapsed`를 false로 바꾼다. */
   onExpand?: () => void;
-  /** 조회 버튼 문구. 기본 "조회". 예: "보고서 조회". */
+  /** 조회 버튼 문구. 기본 "조회". 예: "보고서 조회", "감사 로그 조회". */
   submitLabel?: string;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
 /**
- * 데이터 조회 조건 (15쪽 ITH 일일 오류 보고서).
+ * 데이터 조회 조건 (15쪽 ITH 일일 오류 보고서, 사용자 목록의 상태·역할, 감사 로그의 기간·이벤트).
  * 테두리가 없으므로 DataTable과 함께 하나의 `Card padding="none"` 안에 위아래로 둔다.
  */
 export function FilterBar({
@@ -101,6 +102,7 @@ export interface FilterFieldProps {
   label: string;
   /** 입력 요소 하나. `Input type="date"`, `NativeSelect` 등. 라벨과 자동으로 연결된다. */
   children: ReactNode;
+  /** 바깥 요소에 더할 클래스. */
   className?: string;
 }
 
