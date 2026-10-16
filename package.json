@@ -21,7 +21,7 @@
     "docker:up": "docker compose up -d --build",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build --filter=./packages/* --filter=./compat/* && changeset publish --no-git-tag"
+    "release": "turbo run build --filter=./packages/* && changeset publish --no-git-tag"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
