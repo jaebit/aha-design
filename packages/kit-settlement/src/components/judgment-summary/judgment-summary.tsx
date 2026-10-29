@@ -10,7 +10,7 @@ export interface JudgmentItem {
   code: string;
   /** 상황 문장. */
   situation: string;
-  /** 동작 버튼. 진행 불가 줄에는 해제·무시 버튼을 두지 않는다. label에 원인을 풀 방법을 적는다 (예: "계약서 올리기"). */
+  /** 동작 버튼. 진행 불가 줄에는 해제·무시 버튼을 두지 않는다. label에 원인을 풀 방법을 적는다 (예: "수정 정산서 업로드"). */
   action?: { label: string; onClick?: () => void };
   /** 처리 기록. 있으면 줄을 지우지 않고 "처리됨 · 확인자 · 시각"으로 보이고 버튼은 숨긴다. */
   resolved?: { by: string; at: string };

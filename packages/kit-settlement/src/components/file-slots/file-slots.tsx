@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import { cn } from '@actoz/ui';
 
 export interface FileSlot {
-  /** 자료 이름 (예: "계약서"). */
+  /** 자료 이름 (예: "구글"). */
   name: string;
   /** 수령 여부. */
   received: boolean;
