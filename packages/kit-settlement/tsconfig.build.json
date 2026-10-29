@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": ["vite/client"],
+    "paths": {
+      // 워크스페이스의 @actoz/ui는 소스(src)를 가리키므로, 선언 파일은 빌드된 dist 타입을 참조한다.
+      "@actoz/ui": ["../ui/dist/index.d.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.stories.tsx", "src/templates/*.tsx", "src/templates/*.ts"]
+}

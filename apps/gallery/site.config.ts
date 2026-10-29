@@ -73,7 +73,7 @@ export interface SiteConfig {
 const aha: SiteConfig = {
   id: 'aha',
   brand: 'aha',
-  kits: ['admin', 'ai', 'dashboard'],
+  kits: ['admin', 'ai', 'dashboard', 'settlement'],
   name: 'AHA',
   title: 'AHA 디자인',
   fullName: 'AHA 사내 디자인 시스템',
