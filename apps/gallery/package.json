@@ -22,6 +22,7 @@
     "@actoz/kit-ai": "workspace:*",
     "@actoz/kit-auth": "workspace:*",
     "@actoz/kit-dashboard": "workspace:*",
+    "@actoz/kit-settlement": "workspace:*",
     "@actoz/tokens": "workspace:*",
     "@actoz/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",

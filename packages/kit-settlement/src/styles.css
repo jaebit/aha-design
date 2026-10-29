@@ -1,0 +1,7 @@
+/*
+ * 정산 키트 컴포넌트의 Tailwind 클래스를 생성 대상에 넣는다. 토큰·서체·Tailwind는 @actoz/ui/styles.css가 불러오므로
+ * 앱의 메인 CSS에서 그 다음 줄에 둔다:
+ *   @import "@actoz/ui/styles.css";
+ *   @import "@actoz/kit-settlement/styles.css";
+ */
+@source "./";
