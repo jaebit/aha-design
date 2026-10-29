@@ -9,7 +9,7 @@ export interface SourcedValueProps extends Omit<ComponentProps<'div'>, 'children
   children?: ReactNode;
   /** 글자로 된 값. children이 없을 때 쓴다. */
   value?: string;
-  /** 출처 (예: "계약서 제4조"). 앞에 "출처: "를 자동으로 붙인다. */
+  /** 출처 (예: "정산서 C12"). 앞에 "출처: "를 자동으로 붙인다. */
   source?: string;
   /** true면 핵심 금액으로 값을 크게 보인다. */
   emphasis?: boolean;

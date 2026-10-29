@@ -27,8 +27,8 @@ export const NoException: Story = {};
 export const Exceptions: Story = {
   args: {
     items: [
-      { code: 'E01', situation: '보고 기간이 계약 기간과 일부 겹칩니다', action: { label: '확인', onClick: fn() } },
-      { code: 'E07', situation: '환율 기준일이 비어 있습니다', action: { label: '기준일 입력', onClick: fn() } },
+      { code: 'E05', situation: '재계산 로열티 ≠ 정산서 로열티', action: { label: '확인', onClick: fn() } },
+      { code: 'E07', situation: '기준환율 자동 조회 실패', action: { label: '기준환율 입력', onClick: fn() } },
     ],
   },
 };
@@ -37,8 +37,8 @@ export const Exceptions: Story = {
 export const Blocked: Story = {
   args: {
     items: [
-      { code: 'E06', situation: '계약서 원본이 없습니다', action: { label: '계약서 올리기', onClick: fn() } },
-      { code: 'E01', situation: '보고 기간이 계약 기간과 일부 겹칩니다', action: { label: '확인', onClick: fn() } },
+      { code: 'E06', situation: '정산서 환율 ≠ 계약 기준환율', action: { label: '수정 정산서 업로드', onClick: fn() } },
+      { code: 'E05', situation: '재계산 로열티 ≠ 정산서 로열티', action: { label: '확인', onClick: fn() } },
     ],
   },
 };
@@ -47,8 +47,8 @@ export const Blocked: Story = {
 export const Resolved: Story = {
   args: {
     items: [
-      { code: 'E01', situation: '보고 기간이 계약 기간과 일부 겹칩니다', resolved: { by: '김정산', at: '2026.09.21 14:02' } },
-      { code: 'E07', situation: '환율 기준일이 비어 있습니다', action: { label: '기준일 입력', onClick: fn() } },
+      { code: 'E05', situation: '재계산 로열티 ≠ 정산서 로열티', resolved: { by: '담당자', at: '2026.09.21 14:02' } },
+      { code: 'E07', situation: '기준환율 자동 조회 실패', action: { label: '기준환율 입력', onClick: fn() } },
     ],
   },
 };

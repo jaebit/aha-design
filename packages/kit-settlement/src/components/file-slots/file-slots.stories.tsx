@@ -7,11 +7,13 @@ const meta = {
   component: FileSlots,
   tags: ['autodocs', 'kit:settlement'],
   args: {
-    title: '필수 자료',
+    title: '1차 자료',
     slots: [
-      { name: '계약서', received: true },
-      { name: '판매 보고서', received: true },
-      { name: '환율 증빙', received: false },
+      { name: '구글', received: true },
+      { name: '갤럭시', received: true },
+      { name: '원스토어', received: true },
+      { name: '애플', received: true },
+      { name: 'now.gg', received: false },
     ],
   },
   decorators: [
@@ -33,9 +35,11 @@ export const Partial: Story = {};
 export const AllReceived: Story = {
   args: {
     slots: [
-      { name: '계약서', received: true },
-      { name: '판매 보고서', received: true },
-      { name: '환율 증빙', received: true },
+      { name: '구글', received: true },
+      { name: '갤럭시', received: true },
+      { name: '원스토어', received: true },
+      { name: '애플', received: true },
+      { name: 'now.gg', received: true },
     ],
   },
 };
@@ -44,9 +48,11 @@ export const AllReceived: Story = {
 export const NoneReceived: Story = {
   args: {
     slots: [
-      { name: '계약서', received: false },
-      { name: '판매 보고서', received: false },
-      { name: '환율 증빙', received: false },
+      { name: '구글', received: false },
+      { name: '갤럭시', received: false },
+      { name: '원스토어', received: false },
+      { name: '애플', received: false },
+      { name: 'now.gg', received: false },
     ],
   },
 };

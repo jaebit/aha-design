@@ -47,7 +47,7 @@ const kindStyles: Record<ExceptionKind, { box: string; text: string }> = {
 export interface ExceptionBadgeProps extends Omit<ComponentProps<'span'>, 'children'> {
   /** 예외 코드 (E01~E14). */
   code: string;
-  /** 상황 문장 (예: "환율 기준일 누락"). 코드 배지 뒤에 보인다. */
+  /** 상황 문장 (예: "재계산 로열티 ≠ 정산서 로열티"). 코드 배지 뒤에 보인다. */
   children?: ReactNode;
   /** 종류. 생략하면 코드에서 정한다. attend(확인 후 진행), block(진행 불가), supply(보완 입력), policy(정책 미정), wait(대기). */
   kind?: ExceptionKind;
