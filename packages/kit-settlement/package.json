@@ -1,6 +1,6 @@
 {
   "name": "@actoz/kit-settlement",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AHA 정산 키트: IP 라이선스 로열티 정산 화면의 부품 (@actoz/ui 위에 얹는다)",
   "type": "module",
   "sideEffects": [
